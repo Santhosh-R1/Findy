@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Lato:wght@400;700&display=swap');
+:root {
+  --org-primary-color: #6f42c1; 
+  --org-primary-dark: #5a349b;
+}
+
+.organisation-login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: gainsboro;
+  padding: 2rem;
+}
+
+.organisation-login-card {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  max-width: 900px;
+  width: 100%;
+  background-color: var(--light-color);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden; 
+}
+
+.organisation-login-visual {
+  background: linear-gradient(135deg, var(--org-primary-color), var(--org-primary-dark));
+  color: var(--light-color);
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.organisation-login-icon {
+  font-size: 5rem;
+  color: var(--light-color);
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+}
+
+.organisation-login-visual h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.organisation-login-visual p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+}
+
+.organisation-login-form-section {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.organisation-login-form-section h2 {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  color: var(--dark-color);
+  margin: 0;
+}
+
+.organisation-login-subtitle {
+  color: var(--text-light);
+  margin: 0.5rem 0 2rem 0;
+}
+
+.organisation-login-form {
+  width: 100%;
+}
+
+.organisation-login-form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.organisation-login-form .organisation-login-form-group:last-of-type {
+  margin-bottom: 0;
+}
+
+.organisation-login-input-icon {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.organisation-login-form-group input {
+  width: 100%;
+  box-sizing: border-box; 
+  padding: 1rem 1rem 1rem 3.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: var(--bg-light-gray);
+}
+
+.organisation-login-form-group input:focus {
+  outline: none;
+  border-color: var(--org-primary-color);
+  box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.25);
+}
+
+.organisation-login-form-group input:focus ~ .organisation-login-input-icon {
+  color: var(--org-primary-color);
+}
+
+.organisation-login-button {
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  background-color: var(--org-primary-color);
+  color: var(--light-color);
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 10px 20px rgba(111, 66, 193, 0.25);
+}
+
+.organisation-login-button:hover {
+  background-color: var(--org-primary-dark);
+  transform: translateY(-3px);
+}
+
+.organisation-login-links {
+  margin-top: 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.organisation-login-forgot-password {
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.organisation-login-forgot-password:hover {
+  color: var(--dark-color);
+  text-decoration: underline;
+}
+
+.organisation-login-signup-link {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.organisation-login-signup-link a {
+  color: var(--org-primary-color);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.organisation-login-signup-link a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 800px) {
+  .organisation-login-card {
+    grid-template-columns: 1fr;
+    max-width: 450px;
+  }
+  .organisation-login-visual {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .organisation-login-form-section {
+    padding: 2.5rem 2rem;
+  }
+  .organisation-login-form-section h2 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+  .organisation-login-subtitle {
+    text-align: center;
+  }
+}

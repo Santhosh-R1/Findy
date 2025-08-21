@@ -1,0 +1,177 @@
+:root {
+  --user-primary-color: #20c997; 
+  --user-primary-dark: #19a47a;
+}
+
+.user-forgot-pass-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 3rem 1.5rem;
+}
+
+.user-forgot-pass-card {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  max-width: 900px;
+  width: 100%;
+  background-color: var(--light-color);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.user-forgot-pass-visual {
+  background: linear-gradient(135deg, var(--user-primary-color), var(--user-primary-dark));
+  color: var(--light-color);
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.user-forgot-pass-icon {
+  font-size: 5rem;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+}
+
+.user-forgot-pass-visual h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+}
+
+.user-forgot-pass-form-section {
+  padding: 2.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.user-forgot-pass-form-section h2 {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  color: var(--dark-color);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.user-forgot-pass-subtitle {
+  color: var(--text-light);
+  margin: 0.5rem 0 2rem 0;
+  text-align: center;
+}
+
+.user-forgot-pass-error-message,
+.user-forgot-pass-success-message {
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.user-forgot-pass-error-message {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+.user-forgot-pass-success-message {
+  color: #155724;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+
+.user-forgot-pass-form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.user-forgot-pass-input-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  pointer-events: none;
+}
+
+.user-forgot-pass-form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem 1rem 1rem 3.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: var(--bg-light-gray);
+}
+
+.user-forgot-pass-form-group input:focus {
+  outline: none;
+  border-color: var(--user-primary-color);
+  box-shadow: 0 0 0 3px rgba(32, 201, 151, 0.25); 
+}
+
+.user-forgot-pass-form-group input:focus ~ .user-forgot-pass-input-icon {
+  color: var(--user-primary-color);
+}
+
+.user-forgot-pass-button {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  cursor: pointer;
+  background-color: var(--user-primary-color);
+  color: var(--light-color);
+  border-radius: 8px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(32, 201, 151, 0.25); 
+}
+
+.user-forgot-pass-button:hover {
+  background-color: var(--user-primary-dark);
+  transform: translateY(-3px);
+}
+
+.user-forgot-pass-back-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.user-forgot-pass-back-link a {
+  color: var(--user-primary-color);
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.user-forgot-pass-back-link a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .user-forgot-pass-card {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+  }
+  .user-forgot-pass-visual {
+    display: none;
+  }
+  .user-forgot-pass-form-section {
+    padding: 2.5rem 2rem;
+  }
+}

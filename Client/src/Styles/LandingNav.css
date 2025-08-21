@@ -1,0 +1,79 @@
+/* --- LandingNav.css --- */
+/* All class names have been refactored with the 'landingNav-' prefix. */
+
+/* Base style for the AppBar */
+.landingNav-app-bar {
+  /* Default "glassy" state */
+  background-color: rgba(10, 37, 64, 0.2) !important; /* Semi-transparent dark blue */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* For Safari */
+  box-shadow: none !important;
+  
+  /* Smooth transition for background color change */
+  transition: background-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out !important;
+}
+
+/* Style for the AppBar when the user has scrolled down */
+.landingNav-app-bar.scrolled {
+  background-color: var(--dark-color) !important; /* Solid dark color from your theme */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Style for the main logo link */
+.landingNav-logo-link {
+  color: white !important;
+  text-decoration: none !important;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.3s ease;
+}
+
+.landingNav-logo-link:hover {
+  opacity: 0.9;
+}
+
+/* Common style for navigation and login buttons */
+.landingNav-nav-link-button {
+  color: white !important;
+  font-family: var(--font-body) !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  margin: 0 8px !important;
+  padding: 8px 16px !important;
+  position: relative;
+  overflow: hidden;
+  text-transform: none !important; /* Overrides MUI default uppercase */
+}
+
+/* Underline effect on hover */
+.landingNav-nav-link-button::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background-color: var(--primary-color);
+  transition: width 0.3s ease-in-out;
+}
+
+.landingNav-nav-link-button:hover::after {
+  width: 80%; /* Animate the underline to 80% width */
+}
+
+/* Special styling for the login button */
+.landingNav-login-button {
+  border-radius: 20px !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  transition: background-color 0.3s ease !important;
+}
+
+.landingNav-login-button:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Hide the hover underline for the login button */
+.landingNav-login-button:hover::after {
+  width: 0;
+}
