@@ -126,8 +126,24 @@ body {
   transition: background-color 0.3s ease, transform 0.3s ease;
   box-shadow: 0 10px 20px rgba(0, 123, 255, 0.25);
 }
-
+.landing-cta-button-footer {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: var(--light-color);
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 123, 255, 0.25);
+}
 .landing-cta-button:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-3px);
+}
+.landing-cta-button-footer {
   background-color: var(--primary-dark);
   transform: translateY(-3px);
 }
@@ -204,7 +220,6 @@ body {
     margin-top: 0.5rem;
 }
 
-
 .landing-how-it-works-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -238,8 +253,14 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  border: 4px solid var(--light-color);
+  border: 4px solid var(--bg-light-gray); /* Changed to use variable */
 }
+
+/* Ensure step number on white background sections has white border */
+.landing-section:not(.landing-alt-bg) .landing-step-number {
+  border-color: var(--light-color);
+}
+
 
 .landing-step-icon {
   font-size: 3rem;
@@ -325,7 +346,7 @@ body {
 }
 
 .landing-testimonial-card {
-  background-color: var(--bg-light-gray);
+  background-color: var(--light-color); /* Changed for contrast on alt-bg */
   padding: 2rem;
   border-radius: 12px;
   display: flex;

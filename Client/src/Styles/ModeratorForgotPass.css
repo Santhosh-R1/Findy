@@ -1,0 +1,188 @@
+/* You might want to have a global CSS file for fonts and common variables */
+:root {
+  /* Moderator Theme */
+  --mod-primary-color: #fd7e14; /* A watchful, warm orange */
+  --mod-primary-dark: #e86a02;
+
+  /* Shared Variables (assuming you have these defined elsewhere) */
+  --light-color: #fff;
+  --dark-color: #333;
+  --text-light: #6c757d;
+  --border-color: #dee2e6;
+  --bg-light-gray: #f8f9fa;
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Lato', sans-serif;
+}
+
+.moderator-forgot-pass-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 3rem 1.5rem;
+}
+
+.moderator-forgot-pass-card {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  max-width: 900px;
+  width: 100%;
+  background-color: var(--light-color);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.moderator-forgot-pass-visual {
+  background: linear-gradient(135deg, var(--mod-primary-color), var(--mod-primary-dark));
+  color: var(--light-color);
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.moderator-forgot-pass-icon {
+  font-size: 5rem;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+}
+
+.moderator-forgot-pass-visual h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+}
+
+.moderator-forgot-pass-form-section {
+  padding: 2.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.moderator-forgot-pass-form-section h2 {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  color: var(--dark-color);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.moderator-forgot-pass-subtitle {
+  color: var(--text-light);
+  margin: 0.5rem 0 2rem 0;
+  text-align: center;
+}
+
+.moderator-forgot-pass-error-message,
+.moderator-forgot-pass-success-message {
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.moderator-forgot-pass-error-message {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+.moderator-forgot-pass-success-message {
+  color: #155724;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+
+.moderator-forgot-pass-form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.moderator-forgot-pass-input-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  pointer-events: none;
+}
+
+.moderator-forgot-pass-form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem 1rem 1rem 3.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: var(--bg-light-gray);
+}
+
+.moderator-forgot-pass-form-group input:focus {
+  outline: none;
+  border-color: var(--mod-primary-color);
+  box-shadow: 0 0 0 3px rgba(253, 126, 20, 0.25);
+}
+
+.moderator-forgot-pass-form-group input:focus ~ .moderator-forgot-pass-input-icon {
+  color: var(--mod-primary-color);
+}
+
+.moderator-forgot-pass-button {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  cursor: pointer;
+  background-color: var(--mod-primary-color);
+  color: var(--light-color);
+  border-radius: 8px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(253, 126, 20, 0.25);
+}
+
+.moderator-forgot-pass-button:hover {
+  background-color: var(--mod-primary-dark);
+  transform: translateY(-3px);
+}
+
+.moderator-forgot-pass-back-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.moderator-forgot-pass-back-link a {
+  color: var(--mod-primary-color);
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.moderator-forgot-pass-back-link a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .moderator-forgot-pass-card {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+  }
+  .moderator-forgot-pass-visual {
+    display: none;
+  }
+  .moderator-forgot-pass-form-section {
+    padding: 2.5rem 2rem;
+  }
+}

@@ -1,0 +1,117 @@
+/* Using the color theme from AdminLogin for consistency */
+:root {
+  --primary-color: #007bff; 
+  --primary-dark: #0056b3;
+  --dark-color: #0a2540;
+  --light-color: #ffffff;
+}
+
+.admin-sidemenu {
+  width: 260px;
+  height: 100vh;
+  background-color: #0a2540;
+  color: var(--light-color);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 4px 0px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.admin-sidemenu-header {
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--primary-color);
+}
+
+.admin-sidemenu-nav {
+  flex-grow: 1; /* Pushes the logout button to the bottom */
+  overflow-y: auto;
+}
+
+.admin-sidemenu-nav ul {
+  list-style: none;
+  padding: 1rem 0;
+  margin: 0;
+}
+
+.admin-sidemenu-nav a,
+.admin-sidemenu-logout button {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent; /* For active state indicator */
+}
+
+/* Styles for the Logout Button to match the NavLink */
+.admin-sidemenu-logout button {
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+
+.admin-sidemenu-icon {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+  width: 20px; /* Ensures text aligns perfectly */
+  text-align: center;
+}
+
+.admin-sidemenu-nav a:hover,
+.admin-sidemenu-logout button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--light-color);
+}
+
+/* Active link style for NavLink */
+.admin-sidemenu-nav a.active {
+  background-color: var(--primary-color);
+  color: var(--light-color);
+  font-weight: 700;
+  border-left-color: var(--light-color);
+}
+
+.admin-sidemenu-logout {
+  padding: 1rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Simple responsive adjustment */
+@media (max-width: 768px) {
+  .admin-sidemenu {
+    width: 70px; /* Collapse the sidebar */
+  }
+
+  .admin-sidemenu-header h3 {
+    display: none; /* Hide text, could be replaced with an icon */
+  }
+
+  .admin-sidemenu-nav a span,
+  .admin-sidemenu-logout button span {
+    display: none; /* Hide the text label for links */
+  }
+
+  .admin-sidemenu-nav a,
+  .admin-sidemenu-logout button {
+    justify-content: center;
+    padding: 1rem 0;
+  }
+  
+  .admin-sidemenu-icon {
+    margin-right: 0;
+  }
+}

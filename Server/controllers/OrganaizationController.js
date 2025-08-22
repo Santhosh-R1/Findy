@@ -175,11 +175,69 @@ const resetPassword = async (req, res) => {
         res.status(500).json({ message: 'Error resetting password. Please try again.' });
     }
 };
+const getAllOrganisations = async (req, res) => {
+    try {
+        const organisations = await Organisation.find({}).select('-password');
+        res.status(200).json({
+            count: organisations.length,
+            data: organisations
+        });
+    } catch (error) {
+        console.error('Get All Organisations Error:', error);
+        res.status(500).json({ message: 'Server error while fetching organisations.' });
+    }
+};
 
+/**
+ * @desc    Activate an organisation's account (by Admin)
+ * @route   PATCH /api/organisation/:id/activate
+ * @access  Private/Admin
+ */
+const activateOrganisation = async (req, res) => {
+    try {
+        const organisation = await Organisation.findById(req.params.id);
+        if (!organisation) {
+            return res.status(404).json({ message: 'Organisation not found.' });
+        }
+        organisation.isActive = true;
+        await organisation.save({ validateBeforeSave: false });
+        res.status(200).json({ 
+            message: `Organisation '${organisation.organisationName}' has been activated.` 
+        });
+    } catch (error) {
+        console.error('Activate Organisation Error:', error);
+        res.status(500).json({ message: 'Server error while activating organisation.' });
+    }
+};
+
+/**
+ * @desc    Deactivate an organisation's account (by Admin)
+ * @route   PATCH /api/organisation/:id/deactivate
+ * @access  Private/Admin
+ */
+const deactivateOrganisation = async (req, res) => {
+    try {
+        const organisation = await Organisation.findById(req.params.id);
+        if (!organisation) {
+            return res.status(404).json({ message: 'Organisation not found.' });
+        }
+        organisation.isActive = false;
+        await organisation.save({ validateBeforeSave: false });
+        res.status(200).json({ 
+            message: `Organisation '${organisation.organisationName}' has been deactivated.` 
+        });
+    } catch (error) {
+        console.error('Deactivate Organisation Error:', error);
+        res.status(500).json({ message: 'Server error while deactivating organisation.' });
+    }
+};
 
 module.exports = {
     registerOrganisation,
     loginOrganisation,
     forgotPassword,
     resetPassword,
+    deactivateOrganisation,
+    activateOrganisation,
+    getAllOrganisations
 };

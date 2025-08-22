@@ -3,11 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import { FaBullseye, FaUsers, FaHeart } from 'react-icons/fa';
-
-// Import the specific stylesheet for this page
 import '../../Styles/About.css';
-
-// Import your images
 import heroBackground from '../../assets/Hand2.jpg';
 import missionImage from '../../assets/Find.jpg';
 import ecosystemImage from '../../assets/MembersSupport.jpg';
@@ -21,9 +17,11 @@ function About() {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // --- HERO ANIMATION ---
+
+      // 1. --- HERO SECTION ANIMATIONS ---
       gsap.to(".about-hero-section", {
-        backgroundPosition: `50% 80%`, ease: "none",
+        backgroundPosition: `50% 80%`,
+        ease: "none",
         scrollTrigger: { trigger: ".about-hero-section", start: "top top", end: "bottom top", scrub: true },
       });
 
@@ -32,37 +30,71 @@ function About() {
         .from(".about-hero-content h1 span", { y: '110%', skewY: 7, duration: 1.5, stagger: 0.1, ease: 'expo.out' })
         .from(".about-hero-content p", { opacity: 0, y: 20, duration: 1, ease: 'expo.out' }, "-=1.2");
 
-      // --- REUSABLE ANIMATION FUNCTION ---
-      const animateOnScroll = (selector, animProps, trigger = null) => {
-        gsap.from(selector, {
-          scrollTrigger: { trigger: trigger || selector, start: "top 85%", once: true },
-          duration: 1.2, ease: 'expo.out', ...animProps,
+      
+      // 2. --- GENERAL SECTION TITLE ANIMATIONS (WITH EXCLUSION) ---
+      // FIX: Select all titles EXCEPT the one inside the mission section to avoid conflict.
+      const generalTitles = gsap.utils.toArray('.about-section .about-section-title:not(.about-mission-content .about-section-title)');
+      generalTitles.forEach(title => {
+        gsap.from(title, {
+          scrollTrigger: { trigger: title, start: "top 90%", once: true },
+          opacity: 0, y: 50, duration: 1.2, ease: 'expo.out',
         });
-      };
-
-      // Animate all section titles and subtitles
-      const sections = gsap.utils.toArray('.about-section');
-      sections.forEach(section => {
-        const title = section.querySelector('.about-section-title');
-        const subtitle = section.querySelector('.about-section-subtitle');
-        if (title) animateOnScroll(title, { opacity: 0, y: 50 });
-        if (subtitle) animateOnScroll(subtitle, { opacity: 0, y: 40, delay: 0.1 });
       });
 
-      // --- SPECIFIC SECTION ANIMATIONS ---
-      animateOnScroll(".about-origin-story-content > *", { opacity: 0, y: 40, stagger: 0.15 }, ".about-origin-story-content");
+      // Animate all subtitles (no conflicts here, but good practice to keep it organized)
+      const subtitles = gsap.utils.toArray('.about-section-subtitle');
+      subtitles.forEach(subtitle => {
+        gsap.from(subtitle, {
+          scrollTrigger: { trigger: subtitle, start: "top 90%", once: true },
+          opacity: 0, y: 40, duration: 1.2, ease: 'expo.out', delay: 0.1,
+        });
+      });
 
-      const animateImageAndContent = (triggerSelector, imageSelector, contentSelector) => {
-        const tl = gsap.timeline({ scrollTrigger: { trigger: triggerSelector, start: 'top 75%', once: true } });
-        tl.from(imageSelector, { clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', duration: 1.5, ease: 'expo.out' })
-          .from(contentSelector, { opacity: 0, y: 40, stagger: 0.15, duration: 1, ease: 'power3.out' }, '-=1.2');
-      };
 
-      animateImageAndContent('.about-mission-section', '.about-mission-image', '.about-mission-content > *');
+      // 3. --- SPECIFIC SECTION CONTENT ANIMATIONS ---
       
-      animateOnScroll(".about-ecosystem-card", { opacity: 0, y: 60, stagger: 0.15 }, ".about-ecosystem-grid");
-      animateOnScroll(".about-value-card", { opacity: 0, y: 60, stagger: 0.15 }, ".about-values-grid");
-      animateOnScroll(".about-join-us-section .about-container > *", { opacity: 0, y: 50, stagger: 0.1 }, ".about-join-us-section");
+      // Origin Story Text
+      gsap.from(".about-origin-story-content > *", {
+        scrollTrigger: { trigger: ".about-origin-story-content", start: "top 85%", once: true },
+        opacity: 0, y: 40, duration: 1.2, ease: 'expo.out', stagger: 0.15
+      });
+
+      // Mission Section (Image reveal + Content, now handling its own title correctly)
+      const missionTimeline = gsap.timeline({
+        scrollTrigger: { trigger: '.about-mission-section', start: 'top 75%', once: true }
+      });
+      missionTimeline
+        .from('.about-mission-image', {
+          clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)',
+          duration: 1.5,
+          ease: 'expo.out'
+        })
+        .from('.about-mission-content > *', { // This now has exclusive control over the h2 and p
+          opacity: 0, y: 40, stagger: 0.15, duration: 1.2, ease: 'power3.out'
+        }, '-=1.2');
+
+      // Ecosystem Section
+      gsap.from(".about-ecosystem-image-wrapper", {
+        scrollTrigger: { trigger: ".about-ecosystem-image-wrapper", start: "top 85%", once: true },
+        opacity: 0, y: 50, scale: 0.95, duration: 1.5, ease: 'expo.out',
+      });
+      gsap.from(".about-ecosystem-card", {
+        scrollTrigger: { trigger: ".about-ecosystem-grid", start: "top 85%", once: true },
+        opacity: 0, y: 60, duration: 1.2, ease: 'expo.out', stagger: 0.15
+      });
+
+      // Values Section Cards
+      gsap.from(".about-value-card", {
+        scrollTrigger: { trigger: ".about-values-grid", start: "top 85%", once: true },
+        opacity: 0, y: 60, duration: 1.2, ease: 'expo.out', stagger: 0.15
+      });
+
+      // Final "Join Us" CTA Section
+      gsap.from(".about-join-us-section .about-container > *", {
+        scrollTrigger: { trigger: ".about-join-us-section", start: "top 80%", once: true },
+        opacity: 0, y: 50, duration: 1.2, ease: 'expo.out', stagger: 0.1
+      });
+
     }, main);
 
     return () => ctx.revert();
@@ -72,6 +104,7 @@ function About() {
     <div>
       <LandingNav />
       <div className="about-page" ref={main}>
+        {/* Hero Section */}
         <section className="about-hero-section about-section" style={{ backgroundImage: `url(${heroBackground})` }}>
           <div className="about-hero-overlay"></div>
           <div className="about-container">
@@ -85,6 +118,7 @@ function About() {
           </div>
         </section>
 
+        {/* Origin Story Section */}
         <section className="about-origin-story-section about-section">
           <div className="about-container">
             <h2 className="about-section-title">From a Simple Problem to a Shared Solution</h2>
@@ -95,6 +129,7 @@ function About() {
           </div>
         </section>
 
+        {/* Mission Section */}
         <section className="about-mission-section about-section about-alt-bg">
           <div className="about-container about-mission-container">
             <div className="about-mission-image">
@@ -107,6 +142,7 @@ function About() {
           </div>
         </section>
 
+        {/* Ecosystem Section */}
         <section className="about-ecosystem-section about-section">
           <div className="about-container">
             <h2 className="about-section-title">The Findy Ecosystem</h2>
@@ -131,6 +167,7 @@ function About() {
           </div>
         </section>
 
+        {/* Values Section */}
         <section className="about-values-section about-section about-alt-bg">
           <div className="about-container">
             <h2 className="about-section-title">Our Core Values</h2>
@@ -155,6 +192,7 @@ function About() {
           </div>
         </section>
 
+        {/* Join Us CTA Section */}
         <section className="about-join-us-section about-section" style={{ backgroundImage: `url(${joinImage})` }}>
           <div className="about-hero-overlay"></div>
           <div className="about-container">

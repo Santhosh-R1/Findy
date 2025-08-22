@@ -1,8 +1,8 @@
 /* --- LandingNav.css --- */
-/* All class names have been refactored with the 'landingNav-' prefix. */
+/* All class names have been refactored with the 'common-landingNav-' prefix. */
 
 /* Base style for the AppBar */
-.landingNav-app-bar {
+.common-landingNav-app-bar {
   /* Default "glassy" state */
   background-color: rgba(10, 37, 64, 0.2) !important; /* Semi-transparent dark blue */
   backdrop-filter: blur(10px);
@@ -14,13 +14,13 @@
 }
 
 /* Style for the AppBar when the user has scrolled down */
-.landingNav-app-bar.scrolled {
-  background-color: var(--dark-color) !important; /* Solid dark color from your theme */
+.common-landingNav-app-bar.scrolled {
+  background-color: #0a2540 !important; /* Solid dark color from your theme */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
 }
 
 /* Style for the main logo link */
-.landingNav-logo-link {
+.common-landingNav-logo-link {
   color: white !important;
   text-decoration: none !important;
   display: flex;
@@ -28,12 +28,12 @@
   transition: opacity 0.3s ease;
 }
 
-.landingNav-logo-link:hover {
+.common-landingNav-logo-link:hover {
   opacity: 0.9;
 }
 
 /* Common style for navigation and login buttons */
-.landingNav-nav-link-button {
+.common-landingNav-nav-link-button {
   color: white !important;
   font-family: var(--font-body) !important;
   font-weight: 700 !important;
@@ -46,7 +46,7 @@
 }
 
 /* Underline effect on hover */
-.landingNav-nav-link-button::after {
+.common-landingNav-nav-link-button::after {
   content: '';
   position: absolute;
   bottom: 4px;
@@ -58,22 +58,22 @@
   transition: width 0.3s ease-in-out;
 }
 
-.landingNav-nav-link-button:hover::after {
+.common-landingNav-nav-link-button:hover::after {
   width: 80%; /* Animate the underline to 80% width */
 }
 
 /* Special styling for the login button */
-.landingNav-login-button {
+.common-landingNav-login-button {
   border-radius: 20px !important;
   background-color: rgba(255, 255, 255, 0.1) !important;
   transition: background-color 0.3s ease !important;
 }
 
-.landingNav-login-button:hover {
+.common-landingNav-login-button:hover {
   background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 /* Hide the hover underline for the login button */
-.landingNav-login-button:hover::after {
+.common-landingNav-login-button:hover::after {
   width: 0;
 }

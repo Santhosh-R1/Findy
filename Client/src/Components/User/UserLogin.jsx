@@ -4,7 +4,6 @@ import { FaEnvelope, FaLock, FaUserCircle } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/UserLogin.css';
-import LandingNav from '../Common/LandingNav';
 
 function UserLogin() {
   const main = useRef();
@@ -57,7 +56,6 @@ function UserLogin() {
 
   return (
     <>
-      <LandingNav />
       <div className="user-login-page" ref={main}>
         <div className="user-login-card">
           

@@ -14,7 +14,13 @@ import OrganisationForgotPass from './Components/Organisation/OrganaisationForgo
 import UserForgotPass from './Components/User/ForgotPass';
 import ResetPassword from './Components/User/ResetPassword';
 import OrganisationResetPassword from './Components/Organisation/OrganisationResetPassword';
-
+import AdminDashboard from './Components/Admin/AdminDashboard';
+import AdminSidemenu from './Components/Admin/AdminSidemenu';
+import AddModerators from './Components/Admin/AddModerarors';
+import ModeratorForgotPass from './Components/Moderator/ModeratorForgotPass';
+import ModeratorResetPass from './Components/Moderator/ModeratorResetPass';
+import ManageModerators from './Components/Admin/ManageModerators';
+import ManageOrganaisation from './Components/Admin/ManageOrganaisation';
 function App() {
   return (
     <Router>
@@ -33,6 +39,13 @@ function App() {
         <Route path="/User/Forgot-Password" element={[<LandingNav />, <UserForgotPass />]} />
         <Route path="/reset-password/:token" element={[<LandingNav />, <ResetPassword />]} />
         <Route path="/organisation/reset-password/:token" element={[<LandingNav/>,<OrganisationResetPassword />]} />
+        <Route path="/admin/dashBoard" element={[<AdminSidemenu/>,<AdminDashboard />]} />
+        <Route path="/admin/AddModerators" element={[<AdminSidemenu/>,<AddModerators />]} />
+        <Route path="/moderator/Forgot-Password" element={[<LandingNav />, <ModeratorForgotPass />]} />
+        <Route path="/moderator/reset-password/:token" element={[<LandingNav/>,<ModeratorResetPass />]} />
+        <Route path="/admin/manage-moderators" element={[<AdminSidemenu/>,<ManageModerators />]} />
+        <Route path="/admin/manage-organisation" element={[<AdminSidemenu/>,<ManageOrganaisation />]} />
+
       </Routes>
     </Router>
   );

@@ -42,6 +42,10 @@ const organisationSchema = new Schema({
         minlength: 6,
         select: false, 
     },
+    isActive: {
+    type: Boolean,
+    default: true 
+},
     organisationLogo: { 
         type: String,
     },
