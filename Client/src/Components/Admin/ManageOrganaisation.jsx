@@ -15,7 +15,7 @@ import '../../Styles/ManageOrganaisation.css';
 
 function ManageOrganaisation() {
   const main = useRef();
-  const modalContentRef = useRef(); // Ref for modal's inner content animation
+  const modalContentRef = useRef(); 
   const [organisations, setOrganisations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,7 +23,6 @@ function ManageOrganaisation() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedOrg, setSelectedOrg] = useState(null);
 
-  // GSAP Animation for the main page content
   useLayoutEffect(() => {
     if (!loading) {
       const ctx = gsap.context(() => {
@@ -36,7 +35,6 @@ function ManageOrganaisation() {
     }
   }, [loading]);
 
-  // Data fetching logic
   useEffect(() => {
     const fetchOrganisations = async () => {
       try {
@@ -73,13 +71,10 @@ function ManageOrganaisation() {
     }
   };
 
-  // GSAP-powered modal opening function
   const handleOpenModal = (organisation) => {
     setSelectedOrg(organisation);
     setModalOpen(true);
-    
-    // Animate modal content AFTER it's rendered in the DOM
-    setTimeout(() => {
+        setTimeout(() => {
         gsap.from(modalContentRef.current.querySelectorAll('.modal-header, .modal-list-item'), {
             opacity: 0,
             y: 25,
@@ -87,13 +82,12 @@ function ManageOrganaisation() {
             duration: 0.6,
             ease: 'power3.out'
         });
-    }, 10); // A tiny delay ensures React has updated the state and rendered the content
+    }, 10); 
   };
 
   const handleCloseModal = () => setModalOpen(false);
   const handleCloseSnackbar = () => setSnackbar(prev => ({ ...prev, open: false }));
 
-  // Helper to structure details for rendering in the modal
   const orgDetails = selectedOrg ? [
     { icon: <Business />, label: 'Type', value: selectedOrg.organisationType },
     { icon: <Person />, label: 'Contact Person', value: selectedOrg.contactPerson },

@@ -4,7 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import { FaSearch, FaCloudUploadAlt, FaHeart, FaUsers, FaShieldAlt, FaLightbulb } from 'react-icons/fa';
 
-// Import your styles and assets
 import '../../Styles/LandingPage.css';
 import heroBackground from '../../assets/Hand2.jpg';
 import phoneImage from '../../assets/Traveller.jpg';

@@ -2,13 +2,8 @@
   --user-primary-color: #20c997;
   --user-primary-dark: #19a47a;
 }
-/* In your Styles/UserRegistration.css file */
-
-/* ... other styles ... */
-
-/* Style for individual field validation errors */
 .registration-validation-error {
-  color: #e74c3c; /* A standard error red color */
+  color: #e74c3c; 
   font-size: 0.8rem;
   font-weight: 500;
   margin-top: 5px;
@@ -16,15 +11,11 @@
   width: 100%;
 }
 
-/* Helper class to center the gender error message */
 .registration-validation-error.center-text {
   text-align: center;
 }
-
-/* Ensure the form group can accommodate the error message below the input */
 .registration-form-group {
   position: relative;
-  /* Adjust margin-bottom if needed to avoid layout shifts */
   margin-bottom: 1.2rem; 
 }
 

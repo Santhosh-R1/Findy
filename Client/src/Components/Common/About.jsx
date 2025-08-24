@@ -18,7 +18,6 @@ function About() {
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
 
-      // 1. --- HERO SECTION ANIMATIONS ---
       gsap.to(".about-hero-section", {
         backgroundPosition: `50% 80%`,
         ease: "none",
@@ -31,8 +30,6 @@ function About() {
         .from(".about-hero-content p", { opacity: 0, y: 20, duration: 1, ease: 'expo.out' }, "-=1.2");
 
       
-      // 2. --- GENERAL SECTION TITLE ANIMATIONS (WITH EXCLUSION) ---
-      // FIX: Select all titles EXCEPT the one inside the mission section to avoid conflict.
       const generalTitles = gsap.utils.toArray('.about-section .about-section-title:not(.about-mission-content .about-section-title)');
       generalTitles.forEach(title => {
         gsap.from(title, {
@@ -41,7 +38,6 @@ function About() {
         });
       });
 
-      // Animate all subtitles (no conflicts here, but good practice to keep it organized)
       const subtitles = gsap.utils.toArray('.about-section-subtitle');
       subtitles.forEach(subtitle => {
         gsap.from(subtitle, {
@@ -51,15 +47,11 @@ function About() {
       });
 
 
-      // 3. --- SPECIFIC SECTION CONTENT ANIMATIONS ---
-      
-      // Origin Story Text
       gsap.from(".about-origin-story-content > *", {
         scrollTrigger: { trigger: ".about-origin-story-content", start: "top 85%", once: true },
         opacity: 0, y: 40, duration: 1.2, ease: 'expo.out', stagger: 0.15
       });
 
-      // Mission Section (Image reveal + Content, now handling its own title correctly)
       const missionTimeline = gsap.timeline({
         scrollTrigger: { trigger: '.about-mission-section', start: 'top 75%', once: true }
       });
@@ -69,11 +61,10 @@ function About() {
           duration: 1.5,
           ease: 'expo.out'
         })
-        .from('.about-mission-content > *', { // This now has exclusive control over the h2 and p
+        .from('.about-mission-content > *', { 
           opacity: 0, y: 40, stagger: 0.15, duration: 1.2, ease: 'power3.out'
         }, '-=1.2');
 
-      // Ecosystem Section
       gsap.from(".about-ecosystem-image-wrapper", {
         scrollTrigger: { trigger: ".about-ecosystem-image-wrapper", start: "top 85%", once: true },
         opacity: 0, y: 50, scale: 0.95, duration: 1.5, ease: 'expo.out',
@@ -83,13 +74,11 @@ function About() {
         opacity: 0, y: 60, duration: 1.2, ease: 'expo.out', stagger: 0.15
       });
 
-      // Values Section Cards
       gsap.from(".about-value-card", {
         scrollTrigger: { trigger: ".about-values-grid", start: "top 85%", once: true },
         opacity: 0, y: 60, duration: 1.2, ease: 'expo.out', stagger: 0.15
       });
 
-      // Final "Join Us" CTA Section
       gsap.from(".about-join-us-section .about-container > *", {
         scrollTrigger: { trigger: ".about-join-us-section", start: "top 80%", once: true },
         opacity: 0, y: 50, duration: 1.2, ease: 'expo.out', stagger: 0.1
@@ -104,7 +93,6 @@ function About() {
     <div>
       <LandingNav />
       <div className="about-page" ref={main}>
-        {/* Hero Section */}
         <section className="about-hero-section about-section" style={{ backgroundImage: `url(${heroBackground})` }}>
           <div className="about-hero-overlay"></div>
           <div className="about-container">
@@ -118,7 +106,6 @@ function About() {
           </div>
         </section>
 
-        {/* Origin Story Section */}
         <section className="about-origin-story-section about-section">
           <div className="about-container">
             <h2 className="about-section-title">From a Simple Problem to a Shared Solution</h2>
@@ -129,7 +116,6 @@ function About() {
           </div>
         </section>
 
-        {/* Mission Section */}
         <section className="about-mission-section about-section about-alt-bg">
           <div className="about-container about-mission-container">
             <div className="about-mission-image">
@@ -142,7 +128,6 @@ function About() {
           </div>
         </section>
 
-        {/* Ecosystem Section */}
         <section className="about-ecosystem-section about-section">
           <div className="about-container">
             <h2 className="about-section-title">The Findy Ecosystem</h2>
@@ -167,7 +152,6 @@ function About() {
           </div>
         </section>
 
-        {/* Values Section */}
         <section className="about-values-section about-section about-alt-bg">
           <div className="about-container">
             <h2 className="about-section-title">Our Core Values</h2>
@@ -192,7 +176,6 @@ function About() {
           </div>
         </section>
 
-        {/* Join Us CTA Section */}
         <section className="about-join-us-section about-section" style={{ backgroundImage: `url(${joinImage})` }}>
           <div className="about-hero-overlay"></div>
           <div className="about-container">

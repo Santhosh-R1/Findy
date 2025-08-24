@@ -7,8 +7,6 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/UserRegistration.css';
-// LandingNav is commented out as it was not provided, but you can uncomment if you use it.
-// import LandingNav from '../Common/LandingNav';
 
 function UserRegistration() {
   const main = useRef();
@@ -16,9 +14,9 @@ function UserRegistration() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const [serverError, setServerError] = useState(''); // For API errors
+  const [serverError, setServerError] = useState(''); 
   const [success, setSuccess] = useState('');
-  const [errors, setErrors] = useState({}); // For form validation errors
+  const [errors, setErrors] = useState({}); 
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -33,7 +31,6 @@ function UserRegistration() {
   });
 
   useLayoutEffect(() => {
-    // GSAP animation code remains the same
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.3 });
       tl.from(".registration-card", { opacity: 0, scale: 0.9, duration: 0.8, ease: 'expo.out' })
@@ -64,7 +61,6 @@ function UserRegistration() {
     
     let processedValue = value;
 
-    // Real-time input filtering
     if (name === 'firstName' || name === 'lastName') {
       processedValue = value.replace(/[^a-zA-Z]/g, '');
     } else if (name === 'phone') {
@@ -72,8 +68,6 @@ function UserRegistration() {
     }
 
     setFormData(prev => ({ ...prev, [name]: processedValue }));
-
-    // Clear the specific error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: null }));
     }
@@ -107,7 +101,7 @@ function UserRegistration() {
       setErrors(formErrors);
       return;
     }
-    setErrors({}); // Clear previous errors
+    setErrors({});
 
     const registrationData = new FormData();
     for (const key in formData) {
@@ -140,7 +134,6 @@ function UserRegistration() {
 
   return (
     <>
-      {/* <LandingNav /> */}
       <div className="registration-page" ref={main}>
         <div className="registration-card">
           <div className="registration-visual">

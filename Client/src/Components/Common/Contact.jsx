@@ -2,17 +2,17 @@ import React, { useState, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FaEnvelope, FaPhoneAlt, FaTwitter, FaFacebook, FaInstagram } from 'react-icons/fa';
-import axios from 'axios'; // Import axios
+import axios from 'axios'; 
 import '../../Styles/Contact.css';
 import heroBackground from '../../assets/HappyFace.jpg';
 import LandingNav from './LandingNav';
+import axiosInstance from '../../api/baseUrl';
 
 gsap.registerPlugin(ScrollTrigger);
 
 function Contact() {
   const main = useRef();
   
-  // State for form fields
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -20,12 +20,10 @@ function Contact() {
     message: ''
   });
 
-  // State for loading and form status messages (success/error)
   const [loading, setLoading] = useState(false);
   const [formStatus, setFormStatus] = useState({ message: '', type: '' });
 
   useLayoutEffect(() => {
-    // GSAP animations remain the same
     const ctx = gsap.context(() => {
       gsap.to(".contact-hero-section", {
         backgroundPosition: `50% 70%`,
@@ -56,29 +54,23 @@ function Contact() {
     return () => ctx.revert();
   }, []);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormStatus({ message: '', type: '' }); // Clear previous status
+    setFormStatus({ message: '', type: '' }); 
     setLoading(true);
 
     try {
-      // The API endpoint URL provided
-      const response = await axios.post('http://localhost:5001/api/contact', formData);
+      const response = await axiosInstance.post('/api/contact', formData);
       
       setFormStatus({ message: response.data.message || "Message sent successfully!", type: 'success' });
-      
-      // Clear the form on success
-      setFormData({ name: '', email: '', subject: '', message: '' });
+            setFormData({ name: '', email: '', subject: '', message: '' });
 
     } catch (err) {
-      // Handle errors, prioritizing the message from the backend
       const errorMessage = err.response?.data?.message || 'Failed to send message. Please try again later.';
       setFormStatus({ message: errorMessage, type: 'error' });
       console.error('Contact Form Error:', err);
@@ -121,7 +113,6 @@ function Contact() {
               <div className="contact-form">
                 <h3>Send Us a Message</h3>
                 <form onSubmit={handleSubmit}>
-                  {/* Display Success or Error Messages */}
                   {formStatus.message && (
                     <div className={`contact-form-status ${formStatus.type}`}>
                       {formStatus.message}

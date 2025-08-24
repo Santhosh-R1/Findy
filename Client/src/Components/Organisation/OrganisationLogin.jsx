@@ -2,7 +2,6 @@ import React, { useState, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { FaBuilding, FaEnvelope, FaLock } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import '../../Styles/OrganisationLogin.css';
 import LandingNav from '../Common/LandingNav';
 import axiosInstance from '../../api/baseUrl';
@@ -73,7 +72,7 @@ function OrganisationLogin() {
       navigate('/organisation/dashboard');
 
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 'Invalid email or password. Please try again.';
+      const errorMessage = err.response?.data?.message || "An unexpected error occurred. Please try again.";
       setError(errorMessage);
       console.error('Login error:', err.response || err);
       

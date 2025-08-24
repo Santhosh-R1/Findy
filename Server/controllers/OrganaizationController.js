@@ -78,8 +78,12 @@ const loginOrganisation = async (req, res) => {
     try {
         if (!email || !password) {
             return res.status(400).json({ message: 'Please provide email and password.' });
-        }        const organisation = await Organisation.findOne({ email }).select('+password');
+        }        
+        const organisation = await Organisation.findOne({ email }).select('+password');
                 if (organisation && (await organisation.comparePassword(password))) {
+                    if (!organisation.isActive) {
+                return res.status(403).json({ message: 'Your account has been deactivated. Please contact the administrator.' });
+            }
             res.status(200).json({
                 _id: organisation._id,
                 organisationName: organisation.organisationName,
@@ -188,11 +192,6 @@ const getAllOrganisations = async (req, res) => {
     }
 };
 
-/**
- * @desc    Activate an organisation's account (by Admin)
- * @route   PATCH /api/organisation/:id/activate
- * @access  Private/Admin
- */
 const activateOrganisation = async (req, res) => {
     try {
         const organisation = await Organisation.findById(req.params.id);
@@ -210,11 +209,6 @@ const activateOrganisation = async (req, res) => {
     }
 };
 
-/**
- * @desc    Deactivate an organisation's account (by Admin)
- * @route   PATCH /api/organisation/:id/deactivate
- * @access  Private/Admin
- */
 const deactivateOrganisation = async (req, res) => {
     try {
         const organisation = await Organisation.findById(req.params.id);

@@ -11,11 +11,11 @@ import '../../Styles/AddModerators.css';
 function AddModerators() {
   const main = useRef();
   const fileInputRef = useRef(null);
-  
+
   const [loading, setLoading] = useState(false);
-  const [serverError, setServerError] = useState(''); // For API errors
+  const [serverError, setServerError] = useState('');
   const [success, setSuccess] = useState('');
-  const [errors, setErrors] = useState({}); // For form validation errors
+  const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -35,8 +35,8 @@ function AddModerators() {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.2 });
       tl.from(".add-moderator-card", { opacity: 0, y: 50, scale: 0.98, duration: 0.8, ease: 'expo.out' })
-        .from([".add-moderator-form-section h2", ".add-moderator-subtitle", ".add-moderator-form-group"], 
-              { opacity: 0, y: 30, stagger: 0.07, duration: 0.8, ease: 'power3.out' }, "-=0.5");
+        .from([".add-moderator-form-section h2", ".add-moderator-subtitle", ".add-moderator-form-group"],
+          { opacity: 0, y: 30, stagger: 0.07, duration: 0.8, ease: 'power3.out' }, "-=0.5");
     }, main);
     return () => ctx.revert();
   }, []);
@@ -53,16 +53,15 @@ function AddModerators() {
     if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters long.';
     if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match.';
     if (!formData.gender) newErrors.gender = 'Please select a gender.';
-    
+
     return newErrors;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     let processedValue = value;
 
-    // Real-time input filtering based on field name
     if (name === 'firstName' || name === 'lastName') {
       processedValue = value.replace(/[^a-zA-Z]/g, '');
     } else if (name === 'phone') {
@@ -75,7 +74,6 @@ function AddModerators() {
 
     setFormData(prev => ({ ...prev, [name]: processedValue }));
 
-    // Clear the specific error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: null }));
     }
@@ -91,7 +89,7 @@ function AddModerators() {
   const handleGenderChange = (selectedGender) => {
     setFormData(prev => ({ ...prev, gender: selectedGender }));
     if (errors.gender) {
-        setErrors(prev => ({...prev, gender: null}));
+      setErrors(prev => ({ ...prev, gender: null }));
     }
   };
 
@@ -103,13 +101,13 @@ function AddModerators() {
     e.preventDefault();
     setServerError('');
     setSuccess('');
-    
+
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       return;
     }
-    setErrors({}); // Clear previous errors if validation passes
+    setErrors({});
 
     const moderatorData = new FormData();
     for (const key in formData) {
@@ -124,12 +122,12 @@ function AddModerators() {
       const response = await axiosInstance.post('/api/moderator/register', moderatorData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}` 
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         },
       });
 
       setSuccess(response.data.message || 'Moderator account created successfully!');
-      
+
       setFormData({
         firstName: '', lastName: '', email: '', phone: '',
         aadhaarNumber: '', voterIdNumber: '', address: '',
@@ -179,12 +177,12 @@ function AddModerators() {
             <div className="add-moderator-form-row">
               <div className="add-moderator-form-group">
                 <FaUser className="add-moderator-input-icon" />
-                <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} required pattern="[A-Za-z]+" title="Only letters are allowed"/>
+                <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} required pattern="[A-Za-z]+" title="Only letters are allowed" />
                 {errors.firstName && <p className="add-moderator-validation-error">{errors.firstName}</p>}
               </div>
               <div className="add-moderator-form-group">
                 <FaUser className="add-moderator-input-icon" />
-                <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} required pattern="[A-Za-z]+" title="Only letters are allowed"/>
+                <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} required pattern="[A-Za-z]+" title="Only letters are allowed" />
                 {errors.lastName && <p className="add-moderator-validation-error">{errors.lastName}</p>}
               </div>
             </div>
@@ -197,7 +195,7 @@ function AddModerators() {
               </div>
               <div className="add-moderator-form-group">
                 <FaPhone className="add-moderator-input-icon" />
-                <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required maxLength="10" pattern="\d{10}" title="Must be 10 digits"/>
+                <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required maxLength="10" pattern="\d{10}" title="Must be 10 digits" />
                 {errors.phone && <p className="add-moderator-validation-error">{errors.phone}</p>}
               </div>
             </div>
@@ -205,12 +203,12 @@ function AddModerators() {
             <div className="add-moderator-form-row">
               <div className="add-moderator-form-group">
                 <FaIdCard className="add-moderator-input-icon" />
-                <input type="text" name="aadhaarNumber" placeholder="Aadhaar Number" value={formData.aadhaarNumber} onChange={handleChange} required maxLength="12" pattern="\d{12}" title="Must be 12 digits"/>
+                <input type="text" name="aadhaarNumber" placeholder="Aadhaar Number" value={formData.aadhaarNumber} onChange={handleChange} required maxLength="12" pattern="\d{12}" title="Must be 12 digits" />
                 {errors.aadhaarNumber && <p className="add-moderator-validation-error">{errors.aadhaarNumber}</p>}
               </div>
               <div className="add-moderator-form-group">
                 <FaAddressCard className="add-moderator-input-icon" />
-                <input type="text" name="voterIdNumber" placeholder="Voter ID Number" value={formData.voterIdNumber} onChange={handleChange} required maxLength="10" pattern="[A-Z0-9]{10}" title="Must be 10 alphanumeric characters"/>
+                <input type="text" name="voterIdNumber" placeholder="Voter ID Number" value={formData.voterIdNumber} onChange={handleChange} required maxLength="10" pattern="[A-Z0-9]{10}" title="Must be 10 alphanumeric characters" />
                 {errors.voterIdNumber && <p className="add-moderator-validation-error">{errors.voterIdNumber}</p>}
               </div>
             </div>
@@ -232,7 +230,7 @@ function AddModerators() {
             <div className="add-moderator-form-row">
               <div className="add-moderator-form-group">
                 <FaLock className="add-moderator-input-icon" />
-                <input type="password" name="password" placeholder="Create Password" value={formData.password} onChange={handleChange} required minLength="8"/>
+                <input type="password" name="password" placeholder="Create Password" value={formData.password} onChange={handleChange} required minLength="8" />
                 {errors.password && <p className="add-moderator-validation-error">{errors.password}</p>}
               </div>
               <div className="add-moderator-form-group">

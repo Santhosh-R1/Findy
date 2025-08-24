@@ -30,11 +30,7 @@ exports.submitContactForm = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @desc    Get all contact messages
-// @route   GET /api/contact
-// @access  Private/Admin
 exports.getAllContacts = asyncHandler(async (req, res, next) => {
-  // Find all contacts and sort them by the newest first
   const contacts = await Contact.find().sort({ createdAt: -1 });
 
   res.status(200).json({
@@ -46,9 +42,6 @@ exports.getAllContacts = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @desc    Get a single contact message by ID
-// @route   GET /api/contact/:id
-// @access  Private/Admin
 exports.getContactById = asyncHandler(async (req, res, next) => {
   const contact = await Contact.findById(req.params.id);
 
@@ -67,11 +60,7 @@ exports.getContactById = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @desc    Update a contact message's status
-// @route   PATCH /api/contact/:id
-// @access  Private/Admin
 exports.updateContactStatus = asyncHandler(async (req, res, next) => {
-  // We only allow updating the status
   const { status } = req.body;
 
   if (!status) {
@@ -85,8 +74,8 @@ exports.updateContactStatus = asyncHandler(async (req, res, next) => {
     req.params.id,
     { status },
     {
-      new: true, // Return the modified document
-      runValidators: true, // Ensure the status is one of the allowed enum values
+      new: true, 
+      runValidators: true, 
     }
   );
 
@@ -105,9 +94,6 @@ exports.updateContactStatus = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @desc    Delete a contact message
-// @route   DELETE /api/contact/:id
-// @access  Private/Admin
 exports.deleteContact = asyncHandler(async (req, res, next) => {
   const contact = await Contact.findByIdAndDelete(req.params.id);
 
@@ -118,7 +104,6 @@ exports.deleteContact = asyncHandler(async (req, res, next) => {
     });
   }
 
-  // A 204 response means success but no content is sent back
   res.status(204).json({
     status: 'success',
     data: null,

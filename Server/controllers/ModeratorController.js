@@ -1,21 +1,15 @@
-const Moderator = require('../models/moderator'); // Use the Moderator model
+const Moderator = require('../models/moderator');
 const jwt = require('jsonwebtoken');
 const sendEmail = require('../utils/email');
 const crypto = require('crypto');
 const { getPasswordResetHTML } = require('../utils/emailTemplates');
 
-// Helper function to generate JWT
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: '30d',
     });
 };
 
-/**
- * @desc    Add a new moderator (by an Admin)
- * @route   POST /api/moderator/register
- * @access  Private/Admin
- */
 const addModerator = async (req, res) => {
     const {
         firstName, lastName, email, phone, aadhaarNumber,
@@ -71,11 +65,6 @@ const addModerator = async (req, res) => {
     }
 };
 
-/**
- * @desc    Authenticate a moderator & get token
- * @route   POST /api/moderator/login
- * @access  Public
- */
 const loginModerator = async (req, res) => {
     const { email, password } = req.body;
 
@@ -87,7 +76,6 @@ const loginModerator = async (req, res) => {
         const moderator = await Moderator.findOne({ email }).select('+password');
 
         if (moderator && (await moderator.comparePassword(password))) {
-            // **ENHANCEMENT**: Check if the moderator account is active
             if (!moderator.isActive) {
                 return res.status(403).json({ message: 'Your account has been deactivated. Please contact the administrator.' });
             }
@@ -111,11 +99,6 @@ const loginModerator = async (req, res) => {
 };
 
 
-/**
- * @desc    Get all moderators (by Admin)
- * @route   GET /api/moderators
- * @access  Private/Admin
- */
 const getAllModerators = async (req, res) => {
     try {
         const moderators = await Moderator.find({}).select('-password');
@@ -129,11 +112,6 @@ const getAllModerators = async (req, res) => {
     }
 };
 
-/**
- * @desc    Activate a moderator's account (by Admin)
- * @route   PATCH /api/moderators/:id/activate
- * @access  Private/Admin
- */
 const activateModerator = async (req, res) => {
     try {
         const moderator = await Moderator.findById(req.params.id);
@@ -155,11 +133,6 @@ const activateModerator = async (req, res) => {
     }
 };
 
-/**
- * @desc    Deactivate a moderator's account (by Admin)
- * @route   PATCH /api/moderators/:id/deactivate
- * @access  Private/Admin
- */
 const deactivateModerator = async (req, res) => {
     try {
         const moderator = await Moderator.findById(req.params.id);
@@ -182,11 +155,6 @@ const deactivateModerator = async (req, res) => {
 };
 
 
-/**
- * @desc    Forgot password for a moderator
- * @route   POST /api/moderator/forgot-password
- * @access  Public
- */
 const forgotModeratorPassword = async (req, res) => {
     let moderator;
     try {
@@ -223,11 +191,6 @@ const forgotModeratorPassword = async (req, res) => {
     }
 };
 
-/**
- * @desc    Reset password for a moderator
- * @route   PATCH /api/moderator/reset-password/:token
- * @access  Public
- */
 const resetModeratorPassword = async (req, res) => {
     try {
         const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
@@ -244,7 +207,7 @@ const resetModeratorPassword = async (req, res) => {
         if (req.body.password !== req.body.confirmPassword) {
             return res.status(400).json({ message: "Passwords do not match." });
         }
-        if (req.body.password.length < 8) { // Increased to 8 for better security
+        if (req.body.password.length < 8) { 
             return res.status(400).json({ message: "Password must be at least 8 characters long." });
         }
 
@@ -265,9 +228,9 @@ const resetModeratorPassword = async (req, res) => {
 module.exports = {
     addModerator,
     loginModerator,
-    getAllModerators, // Export new function
-    activateModerator,  // Export new function
-    deactivateModerator,// Export new function
+    getAllModerators, 
+    activateModerator,  
+    deactivateModerator,
     forgotModeratorPassword,
     resetModeratorPassword
 };

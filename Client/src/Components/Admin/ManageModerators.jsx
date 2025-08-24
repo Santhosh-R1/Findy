@@ -23,7 +23,6 @@ function ManageModerators() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedModerator, setSelectedModerator] = useState(null);
 
-  // GSAP Animation for the main page content
   useLayoutEffect(() => {
     if (!loading) {
       const ctx = gsap.context(() => {
@@ -36,7 +35,6 @@ function ManageModerators() {
     }
   }, [loading]);
 
-  // Data fetching logic
   useEffect(() => {
     const fetchModerators = async () => {
       try {
@@ -56,7 +54,6 @@ function ManageModerators() {
     fetchModerators();
   }, []);
 
-  // --- Handler for Activate/Deactivate Functionality ---
   const handleStatusChange = async (moderatorId, newStatus) => {
     const action = newStatus ? 'activate' : 'deactivate';
     try {
@@ -64,7 +61,6 @@ function ManageModerators() {
       const response = await axiosInstance.patch(`/api/moderator/${moderatorId}/${action}`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      // Update state locally for instant UI feedback
       setModerators(prevModerators =>
         prevModerators.map(mod =>
           mod._id === moderatorId ? { ...mod, isActive: newStatus } : mod
@@ -78,7 +74,6 @@ function ManageModerators() {
     }
   };
 
-  // GSAP-powered modal opening function
   const handleOpenModal = (moderator) => {
     setSelectedModerator(moderator);
     setModalOpen(true);
@@ -96,7 +91,6 @@ function ManageModerators() {
   const handleCloseModal = () => setModalOpen(false);
   const handleCloseSnackbar = () => setSnackbar(prev => ({ ...prev, open: false }));
 
-  // Helper for structuring modal details
   const moderatorDetails = selectedModerator ? [
     { icon: <Email />, label: 'Email Address', value: selectedModerator.email },
     { icon: <Phone />, label: 'Phone Number', value: selectedModerator.phone },

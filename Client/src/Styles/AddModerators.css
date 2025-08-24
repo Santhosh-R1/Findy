@@ -1,10 +1,7 @@
 :root {
-  /* Admin Sidemenu Color Theme */
   --mod-primary-color: #007bff;
   --mod-primary-dark: #0056b3;
-  
-  /* Retaining base colors for consistency */
-  --dark-color: #0a2540;
+    --dark-color: #0a2540;
   --light-color: #ffffff;
   --text-color: #333;
   --text-light: #5f6f81;
@@ -13,13 +10,8 @@
   --font-heading: 'Poppins', sans-serif;
   --font-body: 'Lato', sans-serif;
 }
-/* In your Styles/AddModerators.css file */
-
-/* ... other styles ... */
-
-/* Style for individual field validation errors */
 .add-moderator-validation-error {
-  color: #e74c3c; /* A standard error red color */
+  color: #e74c3c; 
   font-size: 0.8rem;
   font-weight: 500;
   margin-top: 5px;
@@ -27,35 +19,23 @@
   width: 100%;
 }
 
-/* Ensure the form group can accommodate the error message below the input */
 .add-moderator-form-group {
   position: relative;
-  /* You may need to adjust margin-bottom if it's already set */
   margin-bottom: 1.2rem; 
 }
 
-/* Adjust gender error message position */
 .add-moderator-gender-options + .add-moderator-validation-error {
   text-align: center;
   margin-top: 8px;
 }
-/* --- THIS IS THE KEY CHANGE --- */
 .add-moderator-page {
-  /* Push the whole page to the right to clear the 260px sidebar */
   margin-left: 260px;
-  
-  /* Ensure the page width doesn't cause a horizontal scrollbar */
-  width: calc(100% - 260px);
-
-  /* Add padding inside the content area */
+    width: calc(100% - 260px);
   padding: 2rem;
-  box-sizing: border-box; /* Important for correct width calculation */
-  
-  /* Center the card within the available space */
+  box-sizing: border-box; 
   display: flex;
   justify-content: center;
 }
-/* ------------------------------- */
 
 .add-moderator-card {
   grid-template-columns: 1fr;
@@ -95,7 +75,6 @@
   width: 100%;
 }
 
-/* ... (rest of your CSS is correct and does not need to be changed) ... */
 .add-moderator-profile-photo-group {
   display: flex;
   justify-content: center;
@@ -237,13 +216,13 @@
   margin-right: 0.5rem;
 }
 .add-moderator-gender-options button:hover {
-  border-color: var(--mod-primary-color);
-  color: var(--mod-primary-color);
+  border-color: #0056b3;
+  color: #0056b3;
 }
 .add-moderator-gender-options button.active {
-  background-color: var(--mod-primary-color);
+  background-color: #0056b3;
   color: #fff;
-  border-color: var(--mod-primary-color);
+  border-color: #0056b3;
 }
 .add-moderator-button {
   width: 100%;
@@ -270,11 +249,9 @@
   box-shadow: none;
 }
 
-/* --- ADD THIS MEDIA QUERY --- */
-/* This ensures the page layout adapts when the sidebar collapses */
 @media (max-width: 768px) {
   .add-moderator-page {
-    margin-left: 70px; /* Match the collapsed sidebar width */
+    margin-left: 70px; 
     width: calc(100% - 70px);
     padding: 1rem;
   }

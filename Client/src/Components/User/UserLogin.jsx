@@ -41,7 +41,7 @@ function UserLogin() {
 
       localStorage.setItem('userInfo', JSON.stringify(response.data));
 
-      navigate('/dashboard/user');
+      navigate('/user/dashboard');
 
     } catch (err) {
       if (err.response && err.response.data && err.response.data.message) {

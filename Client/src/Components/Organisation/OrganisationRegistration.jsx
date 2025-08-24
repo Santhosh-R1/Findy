@@ -26,8 +26,8 @@ function OrganisationRegistration() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [serverError, setServerError] = useState(''); // For API errors
-  const [errors, setErrors] = useState({}); // For form validation errors
+  const [serverError, setServerError] = useState(''); 
+  const [errors, setErrors] = useState({}); 
 
   useLayoutEffect(() => {
     gsap.fromTo(
@@ -57,13 +57,11 @@ function OrganisationRegistration() {
     const { name, value } = e.target;
     
     let processedValue = value;
-    // Real-time filtering for contact person name
     if (name === 'contactPerson') {
         processedValue = value.replace(/[^a-zA-Z\s]/g, '');
     }
 
     setFormData(prev => ({ ...prev, [name]: processedValue }));
-    // Clear error when user starts typing
     if (errors[name]) {
         setErrors(prev => ({...prev, [name]: null}));
     }

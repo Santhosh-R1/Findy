@@ -3,13 +3,8 @@
   --org-primary-dark: #5a349b;
 }
 
-/* In your Styles/OrganisationRegistration.css file */
-
-/* ... other styles ... */
-
-/* Style for individual field validation errors */
 .org-registration-validation-error {
-  color: #e74c3c; /* A standard error red color */
+  color: #e74c3c;
   font-size: 0.8rem;
   font-weight: 500;
   margin-top: 5px;
@@ -17,10 +12,8 @@
   width: 100%;
 }
 
-/* Ensure the form group can accommodate the error message below the input */
 .org-registration-form-group {
   position: relative;
-  /* Adjust margin-bottom if needed to avoid layout shifts */
   margin-bottom: 1.2rem; 
 }
 .org-registration-page {

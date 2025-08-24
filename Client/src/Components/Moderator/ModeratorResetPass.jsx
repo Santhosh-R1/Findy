@@ -4,7 +4,7 @@ import { FaKey, FaLock, FaArrowLeft } from 'react-icons/fa';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import axiosInstance from '../../api/baseUrl';
-import '../../Styles/ModeratorResetPass.css'; // Changed CSS import
+import '../../Styles/ModeratorResetPass.css'; 
 
 function ModeratorResetPass() {
   const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ function ModeratorResetPass() {
 
   useLayoutEffect(() => {
     gsap.fromTo(
-      ".moderator-reset-pass-card", // Updated class name for GSAP
+      ".moderator-reset-pass-card", 
       { opacity: 0, y: 50 },
       { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
     );
@@ -42,7 +42,6 @@ function ModeratorResetPass() {
       setError("Passwords do not match.");
       return;
     }
-    // Updated to a more secure password length
     if (formData.password.length < 8) {
       setError("Password must be at least 8 characters long.");
       return;
@@ -50,7 +49,6 @@ function ModeratorResetPass() {
 
     setLoading(true);
     try {
-      // Updated API endpoint for moderators
       const response = await axiosInstance.post(`/api/moderator/reset-password/${token}`, {
         password: formData.password,
         confirmPassword: formData.confirmPassword,
@@ -58,7 +56,7 @@ function ModeratorResetPass() {
 
       setSuccessMessage(response.data.message || "Password updated successfully! Redirecting...");
       setTimeout(() => {
-        navigate('/login/moderator'); // Navigate to moderator login
+        navigate('/login/moderator'); 
       }, 3000);
 
     } catch (err) {

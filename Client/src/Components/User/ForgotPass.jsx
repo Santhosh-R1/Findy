@@ -35,7 +35,7 @@ function ForgotPassword() {
     try {
       const response = await axiosInstance.post('/api/users/forgot-password', { email });
       setSuccessMessage(response.data.message);
-      setEmail(''); // Clear input on success
+      setEmail(''); 
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to send reset link. Please try again.");
       console.error("Forgot Password Error:", err);

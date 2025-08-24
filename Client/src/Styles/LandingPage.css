@@ -253,10 +253,9 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  border: 4px solid var(--bg-light-gray); /* Changed to use variable */
+  border: 4px solid var(--bg-light-gray);
 }
 
-/* Ensure step number on white background sections has white border */
 .landing-section:not(.landing-alt-bg) .landing-step-number {
   border-color: var(--light-color);
 }
@@ -346,7 +345,7 @@ body {
 }
 
 .landing-testimonial-card {
-  background-color: var(--light-color); /* Changed for contrast on alt-bg */
+  background-color: var(--light-color); 
   padding: 2rem;
   border-radius: 12px;
   display: flex;
@@ -376,7 +375,7 @@ body {
 }
 
 .landing-final-cta-section {
-  background-color: var(--dark-color);
+  background-color: #0a2540;
   color: var(--light-color);
   text-align: center;
 }

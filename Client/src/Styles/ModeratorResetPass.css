@@ -1,10 +1,6 @@
-/* You might want to have a global CSS file for fonts and common variables */
 :root {
-  /* Moderator Theme */
-  --mod-primary-color: #fd7e14; /* A watchful, warm orange */
+  --mod-primary-color: #fd7e14; 
   --mod-primary-dark: #e86a02;
-  
-  /* Shared Variables (assuming you have these defined elsewhere) */
   --light-color: #fff;
   --dark-color: #333;
   --text-light: #6c757d;
@@ -121,7 +117,7 @@
 .moderator-reset-pass-form-group input:focus {
   outline: none;
   border-color: var(--mod-primary-color);
-  box-shadow: 0 0 0 3px rgba(253, 126, 20, 0.25); /* Orange shadow */
+  box-shadow: 0 0 0 3px rgba(253, 126, 20, 0.25); 
 }
 
 .moderator-reset-pass-form-group input:focus ~ .moderator-reset-pass-input-icon {
@@ -140,7 +136,7 @@
   font-weight: 600;
   font-size: 1.1rem;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 20px rgba(253, 126, 20, 0.25); /* Orange shadow */
+  box-shadow: 0 10px 20px rgba(253, 126, 20, 0.25); 
 }
 
 .moderator-reset-pass-button:hover {

@@ -1,10 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Lato:wght@400;700&display=swap');
 
 :root {
-  --mod-primary-color: #fd7e14; /* A watchful, warm orange */
+  --mod-primary-color: #fd7e14; 
   --mod-primary-dark: #e86a02;
 }
-/* Add this to your Styles/ModeratorLogin.css file */
 
 .moderator-login-error-message {
   width: 100%;
@@ -38,7 +37,6 @@
   overflow: hidden; 
 }
 
-/* --- Left Visual Section --- */
 .moderator-login-visual {
   background: linear-gradient(135deg, var(--mod-primary-color), var(--mod-primary-dark));
   color: var(--light-color);
@@ -69,7 +67,6 @@
   line-height: 1.6;
 }
 
-/* --- Right Form Section --- */
 .moderator-login-form-section {
   padding: 3rem;
   display: flex;
@@ -89,7 +86,6 @@
   margin: 0.5rem 0 2rem 0;
 }
 
-/* Form Styles */
 .moderator-login-form {
   width: 100%;
 }
@@ -170,7 +166,6 @@
 }
 
 
-/* --- RESPONSIVE DESIGN --- */
 @media (max-width: 800px) {
   .moderator-login-card {
     grid-template-columns: 1fr;

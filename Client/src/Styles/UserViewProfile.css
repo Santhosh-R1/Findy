@@ -1,0 +1,106 @@
+:root {
+  --clean-primary-color: #20c997;
+  --clean-primary-dark: #19a47a;
+  --clean-bg-color: #f8f9fa;
+  --clean-border-color: #dee2e6;
+  --clean-text-primary: #212529;
+  --clean-text-secondary: #6c757d;
+  --clean-shadow-md: 0 4px 12px -4px rgba(0, 0, 0, 0.08);
+}
+
+.view-profile-container {
+  margin-left: 260px;
+  padding: 2.5rem;
+  background-color: var(--clean-bg-color);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.loading-container { align-items: center; }
+
+.profile-paper {
+  width: 100%; max-width: 900px;
+  padding: 2.5rem; border-radius: 16px !important;
+  border: 1px solid var(--clean-border-color) !important;
+  background-color: #fff; align-self: flex-start;
+}
+
+.profile-header {
+  position: relative; display: flex; flex-direction: column;
+  align-items: center; margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem; border-bottom: 1px solid var(--clean-border-color);
+}
+
+.avatar-container { position: relative; cursor: pointer; margin-bottom: 1rem; }
+.avatar-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 50%; opacity: 0; transition: opacity 0.3s ease; }
+.avatar-container:hover .avatar-overlay { opacity: 1; }
+
+.profile-name { font-weight: 700 !important; }
+.profile-email { margin-top: 0.25rem !important; }
+
+.edit-profile-btn {
+  position: absolute !important; top: 0; right: 0;
+  background-color: var(--clean-primary-dark) !important;
+  text-transform: none !important;
+}
+
+.profile-details-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem; align-items: start;
+}
+
+.address-gender-container { display: flex; gap: 1.5rem; align-items: stretch; }
+.view-mode-column { flex: 1; min-width: 0; }
+
+.detail-item {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0 14px; min-height: 56px;
+  box-sizing: border-box; background-color: var(--clean-bg-color);
+  border: 1px solid var(--clean-border-color);
+  border-radius: 8px;
+}
+.detail-icon { font-size: 1.2rem; color: var(--clean-primary-dark); }
+.detail-label { font-size: 0.8rem; color: var(--clean-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* --- THIS IS THE KEY CHANGE FOR TRUNCATION --- */
+.detail-text-content {
+  overflow: hidden; /* Hide anything that goes outside the box */
+}
+.detail-value { 
+  font-size: 1rem; color: var(--clean-text-primary); font-weight: 500;
+  text-transform: capitalize;
+
+  /* The magic for ellipsis */
+  white-space: nowrap;         /* Don't allow the text to wrap to the next line */
+  overflow: hidden;            /* Hide the overflowing text */
+  text-overflow: ellipsis;     /* Add the "..." at the end */
+}
+/* --- END OF KEY CHANGE --- */
+
+.read-only { background-color: #e9ecef; }
+
+.gender-label { margin-bottom: 0.5rem !important; font-size: 0.9rem !important; color: var(--clean-text-secondary) !important; font-weight: 600 !important; padding-left: 4px; }
+.gender-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.75rem; }
+.gender-options .MuiButton-root { display: flex; align-items: center; justify-content: center; padding: 0.8rem; border: 1px solid var(--clean-border-color) !important; border-radius: 8px !important; background-color: #fff !important; color: var(--clean-text-secondary) !important; font-weight: 600 !important; cursor: pointer; transition: all 0.2s ease; text-transform: none !important; }
+.gender-options .MuiButton-root svg { margin-right: 0.5rem; }
+.gender-options .MuiButton-root:hover { border-color: var(--clean-primary-dark) !important; color: var(--clean-primary-dark) !important; background-color: #f8f9fa !important; }
+.gender-options .MuiButton-root.active { background-color: var(--clean-primary-dark) !important; color: #fff !important; border-color: var(--clean-primary-dark) !important; }
+
+.edit-actions {
+  display: flex; justify-content: flex-end; gap: 1rem;
+  margin-top: 2rem; padding-top: 1.5rem;
+  border-top: 1px solid var(--clean-border-color);
+}
+.save-changes-btn { background-color: var(--clean-primary-dark) !important; font-weight: 600 !important; text-transform: none !important; }
+
+/* Responsive */
+@media (max-width: 900px) { .view-profile-container { margin-left: 80px; } }
+@media (max-width: 768px) {
+  .view-profile-container { margin-left: 0; padding: 1rem 0; background-color: #fff; }
+  .profile-paper { box-shadow: none !important; border: none !important; padding: 1.5rem; }
+  .profile-details-grid { grid-template-columns: 1fr; }
+  .profile-header { padding-bottom: 2rem; }
+  .edit-profile-btn { position: static !important; margin-top: 1rem; }
+  .address-gender-container { flex-direction: column; }
+}

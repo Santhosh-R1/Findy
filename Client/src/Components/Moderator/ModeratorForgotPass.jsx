@@ -4,7 +4,7 @@ import { FaKey, FaEnvelope, FaArrowLeft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 import axiosInstance from '../../api/baseUrl';
-import '../../Styles/ModeratorForgotPass.css'; // Changed CSS import
+import '../../Styles/ModeratorForgotPass.css'; 
 
 function ModeratorForgotPass() {
   const [email, setEmail] = useState('');
@@ -14,7 +14,7 @@ function ModeratorForgotPass() {
 
   useLayoutEffect(() => {
     gsap.fromTo(
-      ".moderator-forgot-pass-card", // Updated class for GSAP
+      ".moderator-forgot-pass-card", 
       { opacity: 0, y: 50 },
       { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
     );
@@ -33,10 +33,9 @@ function ModeratorForgotPass() {
     setLoading(true);
 
     try {
-      // Updated API endpoint for moderators
       const response = await axiosInstance.post('/api/moderator/forgot-password', { email });
       setSuccessMessage(response.data.message);
-      setEmail(''); // Clear input on success
+      setEmail(''); 
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to send reset link. Please try again.");
       console.error("Forgot Password Error:", err);
@@ -86,7 +85,6 @@ function ModeratorForgotPass() {
             </div>
           </form>
           <p className="moderator-forgot-pass-back-link">
-            {/* Updated link to moderator login */}
             <Link to="/login/moderator">
               <FaArrowLeft /> Back to Login
             </Link>

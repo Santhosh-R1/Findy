@@ -6,7 +6,7 @@
   --admin-border-color: #dee2e6;
 }
 
-.manage-moderators-container {
+.view-users-container {
   margin-left: 240px;
   width: calc(100% - 240px);
   box-sizing: border-box;
@@ -15,27 +15,27 @@
   min-height: 100vh;
 }
 
-.manage-moderators-header h1 {
+.view-users-header h1 {
   font-family: 'Poppins', sans-serif;
   color: var(--admin-text-primary);
 }
 
-.manage-moderators-table-container {
+.view-users-table-container {
   border-radius: 12px !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
 }
 
-.moderator-table-header .MuiTableCell-root {
+.user-table-header .MuiTableCell-root {
   font-weight: 600 !important;
   color: var(--admin-text-secondary);
   border-bottom: 2px solid var(--admin-border-color);
 }
 
-.moderator-info-cell { display: flex; align-items: center; gap: 1rem; }
-.moderator-avatar { width: 48px !important; height: 48px !important; }
-.moderator-actions { display: flex; justify-content: center; gap: 0.75rem; }
+.user-info-cell { display: flex; align-items: center; gap: 1rem; }
+.user-avatar { width: 48px !important; height: 48px !important; }
+.user-actions { display: flex; justify-content: center; gap: 0.75rem; }
 
-.moderator-actions .MuiButton-outlinedInfo {
+.user-actions .MuiButton-outlinedInfo {
   color: var(--admin-primary-color) !important;
   border-color: var(--admin-primary-color) !important;
 }
@@ -47,12 +47,13 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
+
 .modal-backdrop {
   backdrop-filter: blur(4px);
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-.moderator-details-modal {
+.user-details-modal {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -123,6 +124,7 @@
   right: 12px;
   color: var(--admin-text-secondary);
   background-color: rgba(0, 0, 0, 0.05);
+  z-index: 100;
 }
 .modal-close-button:hover {
   background-color: rgba(0, 0, 0, 0.1);

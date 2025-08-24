@@ -1,9 +1,6 @@
-/* --- ManageOrganaisation.css --- */
-
-/* --- COLOR THEME --- */
 :root {
-  --admin-primary-color: #0d6efd; /* A vibrant, professional blue */
-  --admin-primary-light: #f0f6ff; /* A very light blue for backgrounds */
+  --admin-primary-color: #0d6efd; 
+  --admin-primary-light: #f0f6ff; 
   --admin-text-primary: #212529;
   --admin-text-secondary: #6c757d;
   --admin-border-color: #dee2e6;
@@ -56,7 +53,6 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-/* --- NEW PROFESSIONAL MODAL STYLING --- */
 
 .modal-backdrop {
   backdrop-filter: blur(4px);
@@ -144,5 +140,5 @@
 
 .modal-list a:hover {
   text-decoration: underline;
-  color: #0b5ed7; /* Darker blue on hover */
+  color: #0b5ed7; 
 }

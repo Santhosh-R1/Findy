@@ -21,6 +21,13 @@ import ModeratorForgotPass from './Components/Moderator/ModeratorForgotPass';
 import ModeratorResetPass from './Components/Moderator/ModeratorResetPass';
 import ManageModerators from './Components/Admin/ManageModerators';
 import ManageOrganaisation from './Components/Admin/ManageOrganaisation';
+import ViewUsers from './Components/Admin/ViewUsers';
+import UserSideMenu from './Components/User/UserSideMenu';
+import UserDashBoard from './Components/User/UserDashBoard';
+import AddItems from './Components/User/AddItems';
+import ViewItems from './Components/User/ViewItems';
+import EditItem from './Components/User/EditItem';
+import UserViewProfile from './Components/User/UserViewProfile';
 function App() {
   return (
     <Router>
@@ -45,10 +52,15 @@ function App() {
         <Route path="/moderator/reset-password/:token" element={[<LandingNav/>,<ModeratorResetPass />]} />
         <Route path="/admin/manage-moderators" element={[<AdminSidemenu/>,<ManageModerators />]} />
         <Route path="/admin/manage-organisation" element={[<AdminSidemenu/>,<ManageOrganaisation />]} />
+        <Route path="/admin/view-users" element={[<AdminSidemenu/>,<ViewUsers />]} />
+        <Route path="/user/dashboard" element={[<UserSideMenu/>,<UserDashBoard />]} />
+        <Route path="/user/add-item" element={[<UserSideMenu/>,<AddItems />]} />
+        <Route path="/user/view-items" element={[<UserSideMenu/>,<ViewItems />]} />
+        <Route path="/user/edit-item/:itemId" element={[<UserSideMenu/>,<EditItem />]} />
+        <Route path="/user/profile" element={[<UserSideMenu/>,<UserViewProfile />]} />
 
       </Routes>
     </Router>
   );
 }
-
 export default App;
