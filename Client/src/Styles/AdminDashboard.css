@@ -1,0 +1,196 @@
+:root {
+  --dashboard-bg: #f8f9fa; 
+  --card-bg: #ffffff;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --border-radius: 12px;
+}
+
+.dashboard-container {
+  display: flex;
+  background-color: var(--dashboard-bg);
+}
+
+.dashboard-content {
+  margin-left: 260px; 
+  width: calc(100% - 260px);
+  padding: 2.5rem;
+  flex-grow: 1;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem; 
+}
+
+.dashboard-header h4 {
+  font-weight: 700 !important;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.dashboard-header p {
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+  font-size: 1rem;
+}
+
+.center-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 1.25rem;
+  flex-shrink: 0;
+  color: white;
+  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.3);
+}
+
+.stat-icon-wrapper svg {
+  font-size: 1.75rem;
+}
+
+.stat-info .stat-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.stat-info .stat-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.data-container {
+  background-color: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  height: 100%;
+}
+
+.data-container-header {
+  font-weight: 600 !important;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem !important;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.chart-wrapper {
+  height: 320px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.dashboard-table .MuiTableCell-head {
+  font-weight: 600 !important;
+  color: var(--text-secondary);
+  background-color: var(--dashboard-bg);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.8rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-table .MuiTableRow-hover:hover {
+  background-color: #f1f3f5 !important;
+}
+
+.table-cell-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.table-cell-content .MuiAvatar-root {
+  width: 40px;
+  height: 40px;
+}
+
+.table-cell-content .MuiTypography-root {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.notification-popover {
+  max-width: 400px;
+  max-height: 500px;
+  border-radius: var(--border-radius) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: 1px solid var(--border-color);
+}
+
+.notification-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--dashboard-bg);
+}
+
+.notification-header .MuiTypography-subtitle1 {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.notification-item:hover {
+  background-color: #f1f3f5;
+}
+
+@media (max-width: 900px) {
+  .dashboard-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-content {
+    padding: 1rem;
+  }
+  .stat-card {
+    padding: 1rem;
+  }
+  .stat-info .stat-value {
+    font-size: 1.75rem;
+  }
+}

@@ -5,10 +5,13 @@ const itemSchema = new mongoose.Schema(
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User', 
-      required: [true, "Every item must have an owner."],
       index: true, 
     },
-
+    finder: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      index: true,
+    },
     mainCategory: {
       type: String,
       enum: ['electronics', 'pets'], 
@@ -19,13 +22,11 @@ const itemSchema = new mongoose.Schema(
       enum: ['phone', 'laptop', 'dog', 'cat'],
       required: [true, "Sub-category is required."],
     },
-
     status: {
         type: String,
         enum: ['registered', 'lost', 'found', 'claimed'],
         default: 'registered',
     },
-
     itemName: {
       type: String,
       required: [true, "Item name or breed is required."],
@@ -40,40 +41,45 @@ const itemSchema = new mongoose.Schema(
       required: [true, "A description is required."],
       trim: true,
     },
-    purchaseDate: {
-      type: Date,
-    },
+    purchaseDate: { type: Date },
+    brand: { type: String, trim: true },
+    serialNumber: { type: String, trim: true },
+    petName: { type: String, trim: true },
+    color: { type: String, trim: true },
 
-    brand: {
-      type: String,
-      trim: true,
-    },
-    serialNumber: {
-      type: String,
-      trim: true,
-    },
-
-    petName: {
-      type: String,
-      trim: true,
-    },
-    color: {
-        type: String,
-        trim: true,
-    },
-
+    lostLocationAddress: { type: String, trim: true },
     lostLocation: {
-        address: String,
-        city: String,
-        zipCode: String,
+      type: {
+        type: String,
+        enum: ['Point'],
+      },
+      coordinates: {
+        type: [Number], 
+      }
     },
-    lostDate: {
-        type: Date,
+    lostDate: { type: Date },
+    
+    foundLocationAddress: {
+      type: String,
+      trim: true,
     },
+    foundLocation: {
+      type: {
+        type: String,
+        enum: ['Point'],
+      },
+      coordinates: {
+        type: [Number], 
+      }
+    },
+    foundDate: { type: Date },
   },
   {
     timestamps: true,
   }
 );
+
+itemSchema.index({ foundLocation: '2dsphere' });
+itemSchema.index({ lostLocation: '2dsphere' }); 
 
 module.exports = mongoose.model("Item", itemSchema);

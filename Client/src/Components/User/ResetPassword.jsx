@@ -55,9 +55,6 @@ function ResetPassword() {
       });
 
       setSuccessMessage(response.data.message || "Password updated successfully! Redirecting...");
-      setTimeout(() => {
-        navigate('/login/user');
-      }, 3000);
 
     } catch (err) {
       const message = err.response?.data?.message || "Failed to reset password. The link may be invalid or expired.";

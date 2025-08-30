@@ -20,6 +20,8 @@ body {
   padding: 2.5rem;
   background-color: var(--clean-bg-color);
   min-height: 100vh;
+  margin-top: 50px;
+
 }
 
 .page-header-container {

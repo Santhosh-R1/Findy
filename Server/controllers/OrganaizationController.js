@@ -117,7 +117,7 @@ const forgotPassword = async (req, res) => {
         const htmlContent = getPasswordResetHTML(organisation.contactPerson, frontendURL, appName);
         const plainTextMessage = `Hi ${organisation.contactPerson},\n\nPlease use the following link to reset your password (link is valid for 10 minutes):\n${frontendURL}\n\nIf you did not request this, please ignore this email.\n\nThanks,\nThe ${appName} Team`;
 
-        await sendEmail({
+        await sendEmail.sendEmail({
             email: organisation.email,
             subject: `[${appName}] Your Organisation Password Reset Link`,
             message: plainTextMessage,

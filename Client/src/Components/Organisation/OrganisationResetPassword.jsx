@@ -54,11 +54,8 @@ function OrganisationResetPassword() {
         confirmPassword: formData.confirmPassword,
       });
 
-      setSuccessMessage(response.data.message || "Password updated successfully! Redirecting...");
-      setTimeout(() => {
-        navigate('/login/organisation');
-      }, 3000);
-
+      setSuccessMessage(response.data.message || "Password updated successfully!");
+      
     } catch (err) {
       const message = err.response?.data?.message || "Failed to reset password. The link may be invalid or expired.";
       setError(message);

@@ -78,6 +78,7 @@ function AddItems() {
     }
 
     if (!formData.description.trim()) errors.description = "Additional details are required.";
+    
     if (mainCategory === 'pets') {
       if (!formData.petName.trim()) errors.petName = "Pet's name is required.";
       else if (!nameRegex.test(formData.petName)) errors.petName = "Name can only contain letters and spaces.";
@@ -90,6 +91,7 @@ function AddItems() {
       if (!formData.itemName.trim()) errors.itemName = "Model name is required.";
       if (!formData.brand.trim()) errors.brand = "Brand is required.";
       if (!formData.serialNumber.trim()) errors.serialNumber = "Serial number is required.";
+      if (!formData.color.trim()) errors.color = "Color is required."; 
     }
 
     return errors;
@@ -160,6 +162,7 @@ function AddItems() {
         <TextField fullWidth required label="Model Name" name="itemName" value={formData.itemName} onChange={handleChange} placeholder="e.g., iPhone 14 Pro, Dell XPS 15" InputProps={{ startAdornment: <InputAdornment position="start"><FaTag /></InputAdornment> }} error={!!formErrors.itemName} helperText={formErrors.itemName} />
         <TextField fullWidth required label="Brand" name="brand" value={formData.brand} onChange={handleChange} placeholder="e.g., Apple, Samsung" InputProps={{ startAdornment: <InputAdornment position="start"><FaBuilding /></InputAdornment> }} error={!!formErrors.brand} helperText={formErrors.brand} />
         <TextField fullWidth required label="Serial Number" name="serialNumber" value={formData.serialNumber} onChange={handleChange} InputProps={{ startAdornment: <InputAdornment position="start"><FaBarcode /></InputAdornment> }} error={!!formErrors.serialNumber} helperText={formErrors.serialNumber} />
+        <TextField fullWidth required label="Color" name="color" value={formData.color} onChange={handleChange} placeholder="e.g., Space Gray, Midnight Black" InputProps={{ startAdornment: <InputAdornment position="start"><FaShapes /></InputAdornment> }} error={!!formErrors.color} helperText={formErrors.color} />
       </>
     );
 
@@ -170,7 +173,7 @@ function AddItems() {
         </Typography>
         {fields}
         <TextField fullWidth label={isPet ? "Acquired On / Date of Birth" : "Date of Purchase"} name="purchaseDate" type="date" value={formData.purchaseDate} onChange={handleChange} InputLabelProps={{ shrink: true }} inputProps={{ max: getTodayDateString() }} InputProps={{ startAdornment: <InputAdornment position="start"><FaCalendarAlt /></InputAdornment> }} error={!!formErrors.purchaseDate} helperText={formErrors.purchaseDate} />
-        <TextField fullWidth required label="Additional Details" name="description" value={formData.description} onChange={handleChange} multiline rows={4} placeholder={isPet ? "Collar details, temperament, microchip number..." : "Color, any damage, custom stickers..."} InputProps={{ startAdornment: <InputAdornment position="start" sx={{ alignItems: 'flex-start', mt: '1rem' }}><FaAlignLeft /></InputAdornment> }} error={!!formErrors.description} helperText={formErrors.description} />
+        <TextField fullWidth required label="Additional Details" name="description" value={formData.description} onChange={handleChange} multiline rows={4} placeholder={isPet ? "Collar details, temperament, microchip number..." : "Any damage, custom stickers, distinguishing marks..."} InputProps={{ startAdornment: <InputAdornment position="start" sx={{ alignItems: 'flex-start', mt: '1rem' }}><FaAlignLeft /></InputAdornment> }} error={!!formErrors.description} helperText={formErrors.description} />
       </Box>
     );
   };

@@ -9,9 +9,9 @@ import heroBackground from '../../assets/Hand2.jpg';
 import phoneImage from '../../assets/Traveller.jpg';
 import petsImage from '../../assets/Pets.jpg';
 import creativeTech from '../../assets/TakeItEasy.jpg';
-import avatar1 from '../../assets/Avatar1.jpg';
-import avatar2 from '../../assets/Avatar2.jpg';
-import avatar3 from '../../assets/Avatar3.jpg';
+// import avatar1 from '../../assets/Avatar1.jpg';
+// import avatar2 from '../../assets/Avatar2.jpg';
+// import avatar3 from '../../assets/Avatar3.jpg';
 import LandingNav from './LandingNav';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -162,7 +162,6 @@ function LandingPage() {
 
   return (
     <div>
-      <LandingNav />
       <div className="landing-page" ref={main}>
         <section className="landing-hero-section" style={{ backgroundImage: `url(${heroBackground})` }}>
           <div className="landing-hero-overlay"></div>
@@ -252,7 +251,7 @@ function LandingPage() {
               </div>
               <div className="landing-feature-content">
                 <h3>The Forgetful Creative</h3>
-                <p>Left your laptop at a coffee shop or your tablet on the train? Your valuable work isn't gone forever. Connect with finders in your area.</p>
+                <p>Left your laptop at a coffee shop or your Smart phone on the train? Your valuable work isn't gone forever. Connect with finders in your area.</p>
                 <Link to="/login/user" className="landing-feature-link">Find your lost electronics</Link>
               </div>
             </div>
@@ -274,7 +273,7 @@ function LandingPage() {
           <div className="landing-container">
             <h2>Rediscover What's Lost.</h2>
             <p>Whether you've lost a device or found a pet, you can make a difference. Sign up today and help bring things home.</p>
-            <Link to="/register" className="landing-cta-button-footer">Create Your Free Account</Link>
+            <Link to="/User/register" className="landing-cta-button-footer">Create Your Free Account</Link>
           </div>
         </section>
 

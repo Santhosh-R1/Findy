@@ -28,14 +28,20 @@ import AddItems from './Components/User/AddItems';
 import ViewItems from './Components/User/ViewItems';
 import EditItem from './Components/User/EditItem';
 import UserViewProfile from './Components/User/UserViewProfile';
+import UserNav from './Components/User/UserNav';
+import LostItem from './Components/User/LostItem';
+import FoundItem from './Components/User/FoundItem';
+import UserFounds from './Components/User/UserFounds';
+import UserLostItems from './Components/User/UserLostItems';
+import AdminViewAllLost from './Components/Admin/AdminViewAllLost';
 function App() {
   return (
     <Router>
 
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/" element={[<LandingNav/>,<LandingPage />]} />
+        <Route path="/about" element={[<LandingNav/>,<About />]} />
+        <Route path="/contact" element={[<LandingNav/>,<Contact />]} />
         <Route path="/login/admin" element={[<LandingNav />, <AdminLogin />]} />
         <Route path="/login/user" element={[<LandingNav />, <UserLogin />]} />
         <Route path="/login/organisation" element={[<LandingNav />, <OrganisationLogin />]} />
@@ -53,11 +59,16 @@ function App() {
         <Route path="/admin/manage-moderators" element={[<AdminSidemenu/>,<ManageModerators />]} />
         <Route path="/admin/manage-organisation" element={[<AdminSidemenu/>,<ManageOrganaisation />]} />
         <Route path="/admin/view-users" element={[<AdminSidemenu/>,<ViewUsers />]} />
-        <Route path="/user/dashboard" element={[<UserSideMenu/>,<UserDashBoard />]} />
-        <Route path="/user/add-item" element={[<UserSideMenu/>,<AddItems />]} />
-        <Route path="/user/view-items" element={[<UserSideMenu/>,<ViewItems />]} />
-        <Route path="/user/edit-item/:itemId" element={[<UserSideMenu/>,<EditItem />]} />
-        <Route path="/user/profile" element={[<UserSideMenu/>,<UserViewProfile />]} />
+        <Route path="/user/dashboard" element={[<UserNav/>,<UserSideMenu/>,<UserDashBoard />]} />
+        <Route path="/user/add-item" element={[<UserNav/>,<UserSideMenu/>,<AddItems />]} />
+        <Route path="/user/view-items" element={[<UserNav/>,<UserSideMenu/>,<ViewItems />]} />
+        <Route path="/user/edit-item/:itemId" element={[<UserNav/>,<UserSideMenu/>,<EditItem />]} />
+        <Route path="/user/profile" element={[<UserNav/>,<UserSideMenu/>,<UserViewProfile />]} />
+        {/* <Route path="/user/lost-items" element={[<UserNav/>,<UserSideMenu/>,<LostItem />]} /> */}
+        <Route path="/user/found-items" element={[<UserNav/>,<UserSideMenu/>,<FoundItem />]} />
+        <Route path="/user/my-found-items" element={[<UserNav/>,<UserSideMenu/>,<UserFounds />]} />
+        <Route path="/user/lost-items-others" element={[<UserNav/>,<UserSideMenu/>,<UserLostItems />]} />
+        <Route path="/admin/view-all-lost" element={[<AdminSidemenu/>,<AdminViewAllLost />]} />
 
       </Routes>
     </Router>

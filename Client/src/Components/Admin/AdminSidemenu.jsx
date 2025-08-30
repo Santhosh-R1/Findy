@@ -33,7 +33,7 @@ function AdminSidemenu() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/admin/lost-items">
+            <NavLink to="/admin/view-all-lost">
               <FaBoxOpen className="admin-sidemenu-icon" />
               <span>View Lost Items</span>
             </NavLink>
@@ -47,13 +47,13 @@ function AdminSidemenu() {
           <li>
             <NavLink to="/admin/manage-moderators">
               <FaUsersCog className="admin-sidemenu-icon" />
-              <span>Manage Moderators</span>
+              <span> Moderators</span>
             </NavLink>
           </li>
           <li>
             <NavLink to="/admin/manage-organisation">
               <FaBuilding className="admin-sidemenu-icon" />
-              <span>Manage Organisation</span>
+              <span> Organisation</span>
             </NavLink>
           </li>
           <li>

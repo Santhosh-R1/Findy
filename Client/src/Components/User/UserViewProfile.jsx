@@ -8,7 +8,7 @@ import {
   FaMars, FaVenus, FaGenderless
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
-import '../../Styles/UserViewProfile.css';
+import '../../Styles/UserViewProfile.css'; 
 
 function UserViewProfile() {
   const [user, setUser] = useState(null);
@@ -151,40 +151,40 @@ function UserViewProfile() {
         helperText={formErrors[name] || ''} 
       />
     ) : (
-      <Box className="detail-item">
-        <span className="detail-icon">{icon}</span>
-        <Box className="detail-text-content">
-          <Typography className="detail-label">{label}</Typography>
-          <Typography className="detail-value" title={value}>{value}</Typography>
+      <Box className="user-profile-detail-item">
+        <span className="user-profile-detail-icon">{icon}</span>
+        <Box className="user-profile-detail-text-content">
+          <Typography className="user-profile-detail-label">{label}</Typography>
+          <Typography className="user-profile-detail-value" title={value}>{value}</Typography>
         </Box>
       </Box>
     )
   );
 
-  if (loading && !user) return <Box className="view-profile-container loading-container"><CircularProgress sx={{ color: '#19a47a' }} /></Box>;
-  if (error && !user) return <Box className="view-profile-container loading-container"><Alert severity="error">{error}</Alert></Box>;
+  if (loading && !user) return <Box className="user-profile-container user-profile-loading-container"><CircularProgress sx={{ color: '#19a47a' }} /></Box>;
+  if (error && !user) return <Box className="user-profile-container user-profile-loading-container"><Alert severity="error">{error}</Alert></Box>;
   if (!user) return null;
 
   return (
-    <Box className="view-profile-container" sx={{ position: 'relative' }}>
+    <Box className="user-profile-container" sx={{ position: 'relative' }}>
       <Box sx={{ position: 'absolute', top: 24, left: '50%', transform: 'translateX(-50%)', zIndex: 1500, minWidth: 300 }}>
         {error && <Alert severity="error" onClose={() => setError(null)}>{error}</Alert>}
         {success && <Alert severity="success" onClose={() => setSuccess('')}>{success}</Alert>}
       </Box>
 
-      <Paper elevation={0} variant="outlined" className="profile-paper" component="form" onSubmit={handleSubmit} noValidate>
-        <Box className="profile-header">
-          <Box className="avatar-container" onClick={() => isEditing && fileInputRef.current.click()}>
+      <Paper elevation={0} variant="outlined" className="user-profile-paper" component="form" onSubmit={handleSubmit} noValidate>
+        <Box className="user-profile-header">
+          <Box className="user-profile-avatar-container" onClick={() => isEditing && fileInputRef.current.click()}>
             <Avatar src={imagePreview} sx={{ width: 120, height: 120 }} />
-            {isEditing && ( <Box className="avatar-overlay"><FaCamera /><Typography variant="caption">Change</Typography></Box> )}
+            {isEditing && ( <Box className="user-profile-avatar-overlay"><FaCamera /><Typography variant="caption">Change</Typography></Box> )}
             <input type="file" ref={fileInputRef} onChange={handleImageChange} accept="image/png, image/jpeg, image/webp" style={{ display: 'none' }} />
           </Box>
-          <Typography variant="h4" className="profile-name">{`${user.firstName} ${user.lastName}`}</Typography>
-          <Typography color="text.secondary" className="profile-email">{user.email}</Typography>
-          {!isEditing && ( <Button variant="contained" className="edit-profile-btn" startIcon={<FaEdit />} onClick={handleEditToggle}>Edit Profile</Button> )}
+          <Typography variant="h4" className="user-profile-name">{`${user.firstName} ${user.lastName}`}</Typography>
+          <Typography color="text.secondary" className="user-profile-email">{user.email}</Typography>
+          {!isEditing && ( <Button variant="contained" className="user-profile-edit-btn" startIcon={<FaEdit />} onClick={handleEditToggle}>Edit Profile</Button> )}
         </Box>
 
-        <Box className="profile-details-grid">
+        <Box className="user-profile-details-grid">
           {renderTextField("First Name", "firstName", formData.firstName, <FaUser />)}
           {renderTextField("Last Name", "lastName", formData.lastName, <FaUser />)}
           {renderTextField("Email Address", "email", formData.email, <FaEnvelope />, "email")}
@@ -194,26 +194,26 @@ function UserViewProfile() {
             <>
               <Box sx={{ gridColumn: '1 / -1' }}>{renderTextField("Address", "address", formData.address, <FaHome />)}</Box>
               <FormControl sx={{ gridColumn: '1 / -1' }}>
-                <FormLabel className="gender-label">Gender</FormLabel>
-                <Box className="gender-options">
-                  <Button type="button" onClick={() => handleGenderChange('male')} className={formData.gender === 'male' ? 'active' : ''}><FaMars /> Male</Button>
-                  <Button type="button" onClick={() => handleGenderChange('female')} className={formData.gender === 'female' ? 'active' : ''}><FaVenus /> Female</Button>
-                  <Button type="button" onClick={() => handleGenderChange('other')} className={formData.gender === 'other' ? 'active' : ''}><FaGenderless /> Other</Button>
+                <FormLabel className="user-profile-gender-label">Gender</FormLabel>
+                <Box className="user-profile-gender-options">
+                  <Button type="button" onClick={() => handleGenderChange('male')} className={`user-profile-gender-btn ${formData.gender === 'male' ? 'user-profile-gender-btn--active' : ''}`}><FaMars /> Male</Button>
+                  <Button type="button" onClick={() => handleGenderChange('female')} className={`user-profile-gender-btn ${formData.gender === 'female' ? 'user-profile-gender-btn--active' : ''}`}><FaVenus /> Female</Button>
+                  <Button type="button" onClick={() => handleGenderChange('other')} className={`user-profile-gender-btn ${formData.gender === 'other' ? 'user-profile-gender-btn--active' : ''}`}><FaGenderless /> Other</Button>
                 </Box>
               </FormControl>
             </>
           ) : (
-            <Box sx={{ gridColumn: '1 / -1' }} className="address-gender-container">
-              <Box className="view-mode-column">{renderTextField("Address", "address", user.address, <FaHome />)}</Box>
-              <Box className="view-mode-column">{renderTextField("Gender", "gender", user.gender, <FaVenusMars />)}</Box>
+            <Box sx={{ gridColumn: '1 / -1' }} className="user-profile-address-gender-container">
+              <Box className="user-profile-view-mode-column">{renderTextField("Address", "address", user.address, <FaHome />)}</Box>
+              <Box className="user-profile-view-mode-column">{renderTextField("Gender", "gender", user.gender, <FaVenusMars />)}</Box>
             </Box>
           )}
         </Box>
 
         {isEditing && (
-          <Box className="edit-actions">
+          <Box className="user-profile-edit-actions">
             <Button variant="text" color="error" onClick={handleCancel} startIcon={<FaTimes />}>Cancel</Button>
-            <Button type="submit" variant="contained" className="save-changes-btn" disabled={loading} startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <FaSave />}>
+            <Button type="submit" variant="contained" className="user-profile-save-btn" disabled={loading} startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <FaSave />}>
               {loading ? 'Saving...' : 'Save Changes'}
             </Button>
           </Box>

@@ -171,7 +171,7 @@ const forgotModeratorPassword = async (req, res) => {
         const htmlContent = getPasswordResetHTML(moderator.firstName, frontendURL, appName);
         const plainTextMessage = `Hi ${moderator.firstName},\n\nPlease use the following link to reset your password (link is valid for 10 minutes):\n${frontendURL}`;
 
-        await sendEmail({
+        await sendEmail.sendEmail({
             email: moderator.email,
             subject: `[${appName}] Moderator Password Reset Link`,
             message: plainTextMessage, 

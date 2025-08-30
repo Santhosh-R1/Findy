@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { Avatar, Box, Typography, Skeleton } from '@mui/material';
-import { 
-  FaTachometerAlt, 
-  FaPlusCircle, 
-  FaListUl, 
-  FaUserCircle, 
-  FaSignOutAlt 
+import {
+  FaTachometerAlt,
+  FaPlusCircle,
+  FaListUl,
+  FaUserCircle,
+  FaSignOutAlt,
+  FaQuestionCircle, 
+  FaSearchPlus     
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/UserSideMenu.css';
@@ -17,6 +19,7 @@ function UserSideMenu() {
   const [loading, setLoading] = useState(true);
 
   const loadUserDataFromAPI = useCallback(async () => {
+    setLoading(true); 
     try {
       const storedUserInfo = localStorage.getItem('userInfo');
       if (storedUserInfo) {
@@ -42,7 +45,6 @@ function UserSideMenu() {
     loadUserDataFromAPI();
 
     const handleProfileUpdate = () => {
-      console.log("Side menu received 'profileUpdated' event. Refetching data from API.");
       loadUserDataFromAPI();
     };
 
@@ -55,6 +57,7 @@ function UserSideMenu() {
 
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
+    localStorage.removeItem('userToken'); 
     setUser(null);
     navigate('/login/user');
   };
@@ -64,7 +67,7 @@ function UserSideMenu() {
       return (
         <Box className="user-profile-section skeleton">
           <Skeleton variant="circular" width={84} height={84} />
-          <Skeleton variant="text" sx={{ fontSize: '1.2rem', width: '80%' }} />
+          <Skeleton variant="text" sx={{ fontSize: '1.2rem', width: '80%', mt: 1 }} />
         </Box>
       );
     }
@@ -101,6 +104,8 @@ function UserSideMenu() {
           <li><NavLink to="/user/dashboard"><FaTachometerAlt className="user-sidemenu-icon" /><span>Dashboard</span></NavLink></li>
           <li><NavLink to="/user/add-item"><FaPlusCircle className="user-sidemenu-icon" /><span>Add Item</span></NavLink></li>
           <li><NavLink to="/user/view-items"><FaListUl className="user-sidemenu-icon" /><span>View My Items</span></NavLink></li>
+          {/* <li><NavLink to="/user/lost-items"><FaQuestionCircle className="user-sidemenu-icon" /><span>Lost Items</span></NavLink></li> */}
+          <li><NavLink to="/user/found-items"><FaSearchPlus className="user-sidemenu-icon" /><span>Found Items</span></NavLink></li>
           <li><NavLink to="/user/profile"><FaUserCircle className="user-sidemenu-icon" /><span>My Profile</span></NavLink></li>
         </ul>
       </nav>
