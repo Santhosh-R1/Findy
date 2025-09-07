@@ -1,0 +1,177 @@
+:root {
+  /* New Organisation Theme Colors */
+  --org-primary-color: #6f42c1; 
+  --org-primary-dark: #5a349b;
+
+  /* General Clean UI Variables (can be shared or customized) */
+  --org-bg-color: #f8f9fa;
+  --org-border-color: #dee2e6;
+  --org-text-primary: #212529;
+  --org-text-secondary: #6c757d;
+  --org-shadow-md: 0 4px 12px -4px rgba(0, 0, 0, 0.08);
+}
+
+.organisation-profile-container {
+  margin-left: 260px; /* Adjust if you have a sidebar */
+  padding: 2.5rem;
+  background-color: var(--org-bg-color);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px; /* Adjust if you have a fixed navbar */
+}
+
+.organisation-profile-loading-container {
+  align-items: center;
+}
+
+.organisation-profile-paper {
+  width: 100%;
+  max-width: 900px;
+  padding: 2.5rem;
+  border-radius: 16px !important;
+  border: 1px solid var(--org-border-color) !important;
+  background-color: #fff;
+  align-self: flex-start;
+}
+
+.organisation-profile-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--org-border-color);
+}
+
+.organisation-profile-avatar-container {
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+.organisation-profile-avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.organisation-profile-avatar-container:hover .organisation-profile-avatar-overlay {
+  opacity: 1;
+}
+
+.organisation-profile-name-edit {
+  font-weight: 700 !important;
+  color: var(--org-text-primary);
+}
+.organisation-profile-email {
+  margin-top: 0.25rem !important;
+}
+
+.organisation-profile-edit-btn {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  background-color: var(--org-primary-dark) !important;
+  text-transform: none !important;
+}
+.organisation-profile-edit-btn:hover {
+    background-color: var(--org-primary-color) !important;
+}
+
+.organisation-profile-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.organisation-profile-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 14px;
+  min-height: 56px;
+  box-sizing: border-box;
+  background-color: var(--org-bg-color);
+  border: 1px solid var(--org-border-color);
+  border-radius: 8px;
+}
+.organisation-profile-detail-icon {
+  font-size: 1.2rem;
+  color: var(--org-primary-dark);
+}
+.organisation-profile-detail-text-content {
+  overflow: hidden; 
+}
+.organisation-profile-detail-label {
+  font-size: 0.8rem;
+  color: var(--org-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.organisation-profile-detail-value {
+  font-size: 1rem;
+  color: var(--org-text-primary);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.organisation-profile-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--org-border-color);
+}
+.organisation-profile-save-btn {
+  background-color: var(--org-primary-dark) !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+}
+.organisation-profile-save-btn:hover {
+    background-color: var(--org-primary-color) !important;
+}
+
+
+/* Responsive */
+@media (max-width: 900px) {
+  .organisation-profile-container {
+    margin-left: 80px;
+  }
+}
+@media (max-width: 768px) {
+  .organisation-profile-container {
+    margin-left: 0;
+    padding: 1rem 0;
+    background-color: #fff;
+  }
+  .organisation-profile-paper {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 1.5rem;
+  }
+  .organisation-profile-details-grid {
+    grid-template-columns: 1fr;
+  }
+  .organisation-profile-header {
+    padding-bottom: 2rem;
+  }
+  .organisation-profile-edit-btn {
+    position: static !important;
+    margin-top: 1rem;
+  }
+}

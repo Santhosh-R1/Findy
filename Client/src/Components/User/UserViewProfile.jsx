@@ -179,7 +179,7 @@ function UserViewProfile() {
             {isEditing && ( <Box className="user-profile-avatar-overlay"><FaCamera /><Typography variant="caption">Change</Typography></Box> )}
             <input type="file" ref={fileInputRef} onChange={handleImageChange} accept="image/png, image/jpeg, image/webp" style={{ display: 'none' }} />
           </Box>
-          <Typography variant="h4" className="user-profile-name">{`${user.firstName} ${user.lastName}`}</Typography>
+          <Typography variant="h4" className="user-profile-name-edit">{`${user.firstName} ${user.lastName}`}</Typography>
           <Typography color="text.secondary" className="user-profile-email">{user.email}</Typography>
           {!isEditing && ( <Button variant="contained" className="user-profile-edit-btn" startIcon={<FaEdit />} onClick={handleEditToggle}>Edit Profile</Button> )}
         </Box>

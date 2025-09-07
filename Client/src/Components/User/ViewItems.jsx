@@ -6,14 +6,22 @@ import {
 import { Link } from 'react-router-dom';
 import {
   FaPaw, FaLaptop, FaMobileAlt, FaDog, FaCat, FaBarcode, FaPalette, FaEdit, FaExclamationTriangle,
-  FaPlus, FaTrash, FaCalendarAlt
+  FaPlus, FaTrash, FaCalendarAlt, FaWallet // 1. Import FaWallet icon
 } from 'react-icons/fa';
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete';
 import axiosInstance from '../../api/baseUrl';
-import '../../Styles/ViewItems.css'; 
-import '@geoapify/geocoder-autocomplete/styles/minimal.css'; 
+import '../../Styles/ViewItems.css';
+import '@geoapify/geocoder-autocomplete/styles/minimal.css';
+
 const getIconForSubCategory = (subCategory) => {
-  const icons = { phone: <FaMobileAlt />, laptop: <FaLaptop />, dog: <FaDog />, cat: <FaCat /> };
+  // 2. Add 'wallet' to the icons mapping
+  const icons = { 
+    phone: <FaMobileAlt />, 
+    laptop: <FaLaptop />, 
+    dog: <FaDog />, 
+    cat: <FaCat />,
+    wallet: <FaWallet /> 
+  };
   return icons[subCategory] || <FaPaw />;
 };
 
@@ -27,17 +35,17 @@ function ViewItems() {
 
   const [modalState, setModalState] = useState({
     open: false,
-    actionType: null, 
+    actionType: null,
     itemId: null,
     itemName: '',
   });
 
   const [lostForm, setLostForm] = useState({
     lostDate: '',
-    location: null, 
+    location: null,
   });
   const [lostFormErrors, setLostFormErrors] = useState({});
-  const [geoKey, setGeoKey] = useState(Date.now()); 
+  const [geoKey, setGeoKey] = useState(Date.now());
 
   useEffect(() => {
     const fetchUserItems = async () => {
@@ -124,27 +132,27 @@ function ViewItems() {
     const { itemId } = modalState;
     const originalItems = [...items];
     setItems(currentItems => currentItems.filter(item => item._id !== itemId));
-    handleCloseModal(); 
+    handleCloseModal();
 
     try {
       await axiosInstance.delete(`/api/items/delete/${itemId}`);
     } catch (err) {
       console.error("Failed to delete item:", err);
-      setItems(originalItems); 
+      setItems(originalItems);
       alert(err.response?.data?.message || "Failed to delete the item. Please try again.");
     }
   };
 
   const handleConfirmReportLost = async () => {
     if (!validateLostForm()) {
-      return; 
+      return;
     }
     await executeReportLost(modalState.itemId, lostForm);
   };
 
   const executeReportLost = async (itemId, formData) => {
     setUpdatingItemId(itemId);
-    setLostFormErrors({}); 
+    setLostFormErrors({});
     try {
       const payload = {
         lostDate: formData.lostDate,
@@ -154,13 +162,13 @@ function ViewItems() {
       };
 
       await axiosInstance.patch(`/api/items/report-lost/${itemId}`, payload);
-      
+
       setItems(currentItems =>
         currentItems.map(item =>
           item._id === itemId ? { ...item, status: 'lost', ...payload } : item
         )
       );
-      handleCloseModal(); 
+      handleCloseModal();
     } catch (err) {
       console.error("Failed to report item as lost:", err);
       setLostFormErrors({ api: err.response?.data?.message || "An error occurred." });
@@ -170,59 +178,59 @@ function ViewItems() {
   };
   const renderContent = () => {
     if (loading) {
-        return (
-          <Box className="status-container">
-            <CircularProgress size={50} sx={{ color: '#19a47a' }} />
-            <Typography variant="h6" color="text.secondary" sx={{ mt: 2 }}>Fetching Your Inventory...</Typography>
-          </Box>
-        );
-      }
-  
-      if (error) {
-        return <Box className="status-container"><Alert severity="error" variant="filled">{error}</Alert></Box>;
-      }
-  
-      if (items.length === 0) {
-        return (
-          <Box className="status-container no-items">
-            <FaPaw className="no-items-icon" />
-            <Typography variant="h5" gutterBottom>Your inventory is empty.</Typography>
-            <Typography color="text.secondary">Start securing your valuables by registering them here.</Typography>
-            <Button component={Link} to="/user/add-item" variant="contained" className="add-first-item-btn" startIcon={<FaPlus />}>
-              Register Your First Item
-            </Button>
-          </Box>
-        );
-      }
-  
       return (
-        <Box className="items-grid">
-          {items.map((item) => (
-            <Paper key={item._id} elevation={0} variant="outlined" className="item-card">
-              <Box className="card-image-container">
-                <img src={`http://localhost:5001/${item.itemImage.replace(/\\/g, '/')}`} alt={item.itemName} className="card-image" />
-                <Chip icon={getIconForSubCategory(item.subCategory)} label={item.subCategory} size="small" className="category-chip" />
-              </Box>
-              <Box className="card-content">
-                <Typography variant="h6" className="item-title">{item.mainCategory === 'pets' ? item.petName : item.itemName}</Typography>
-                <Typography variant="body2" color="text.secondary" className="item-subtitle">{item.mainCategory === 'pets' ? `Breed: ${item.itemName}` : `Brand: ${item.brand}`}</Typography>
-                <Box className="item-details">
-                  {item.mainCategory === 'electronics' && <Typography variant="caption" className="detail-item"><FaBarcode /> S/N: {item.serialNumber}</Typography>}
-                  {item.mainCategory === 'pets' && <Typography variant="caption" className="detail-item"><FaPalette /> Color: {item.color}</Typography>}
-                </Box>
-                <Chip label={item.status} size="small" color={item.status === 'lost' ? 'error' : 'success'} className="status-chip" />
-              </Box>
-              <Box className="card-actions">
-                <Button component={Link} to={`/user/edit-item/${item._id}`} size="small" variant="text" startIcon={<FaEdit />} disabled={item.status === 'lost'}>Edit</Button>
-                <Button size="small" variant="outlined" color="error" startIcon={<FaTrash />} onClick={() => handleOpenModal('delete', item)} disabled={item.status === 'lost'}>Delete</Button>
-                <Button size="small" variant="contained" color="warning" startIcon={updatingItemId === item._id ? <CircularProgress size={16} color="inherit" /> : <FaExclamationTriangle />} onClick={() => handleOpenModal('reportLost', item)} disabled={updatingItemId === item._id || item.status === 'lost'}>
-                  {updatingItemId === item._id ? 'Reporting...' : 'Report Lost'}
-                </Button>
-              </Box>
-            </Paper>
-          ))}
+        <Box className="status-container">
+          <CircularProgress size={50} sx={{ color: '#19a47a' }} />
+          <Typography variant="h6" color="text.secondary" sx={{ mt: 2 }}>Fetching Your Inventory...</Typography>
         </Box>
       );
+    }
+
+    if (error) {
+      return <Box className="status-container"><Alert severity="error" variant="filled">{error}</Alert></Box>;
+    }
+
+    if (items.length === 0) {
+      return (
+        <Box className="status-container no-items">
+          <FaPaw className="no-items-icon" />
+          <Typography variant="h5" gutterBottom>Your inventory is empty.</Typography>
+          <Typography color="text.secondary">Start securing your valuables by registering them here.</Typography>
+          <Button component={Link} to="/user/add-item" variant="contained" className="add-first-item-btn" startIcon={<FaPlus />}>
+            Register Your First Item
+          </Button>
+        </Box>
+      );
+    }
+
+    return (
+      <Box className="items-grid">
+        {items.map((item) => (
+          <Paper key={item._id} elevation={0} variant="outlined" className="item-card">
+            <Box className="card-image-container">
+              <img src={`http://localhost:5001/${item.itemImage.replace(/\\/g, '/')}`} alt={item.itemName} className="card-image" />
+              <Chip icon={getIconForSubCategory(item.subCategory)} label={item.subCategory} size="small" className="category-chip" />
+            </Box>
+            <Box className="card-content">
+              <Typography variant="h6" className="item-title">{item.mainCategory === 'pets' ? item.petName : item.itemName}</Typography>
+              <Typography variant="body2" color="text.secondary" className="item-subtitle">{item.mainCategory === 'pets' ? `Breed: ${item.itemName}` : `Brand: ${item.brand}`}</Typography>
+              <Box className="item-details">
+                {item.mainCategory === 'electronics' && <Typography variant="caption" className="detail-item"><FaBarcode /> S/N: {item.serialNumber}</Typography>}
+                {item.mainCategory === 'pets' && <Typography variant="caption" className="detail-item"><FaPalette /> Color: {item.color}</Typography>}
+              </Box>
+              <Chip label={item.status} size="small" color={item.status === 'lost' ? 'error' : 'success'} className="status-chip" />
+            </Box>
+            <Box className="card-actions">
+              <Button component={Link} to={`/user/edit-item/${item._id}`} size="small" variant="text" startIcon={<FaEdit />} disabled={item.status === 'lost'}>Edit</Button>
+              <Button size="small" variant="outlined" color="error" startIcon={<FaTrash />} onClick={() => handleOpenModal('delete', item)} disabled={item.status === 'lost'}>Delete</Button>
+              <Button size="small" variant="contained" color="warning" startIcon={updatingItemId === item._id ? <CircularProgress size={16} color="inherit" /> : <FaExclamationTriangle />} onClick={() => handleOpenModal('reportLost', item)} disabled={updatingItemId === item._id || item.status === 'lost'}>
+                {updatingItemId === item._id ? 'Reporting...' : 'Report Lost'}
+              </Button>
+            </Box>
+          </Paper>
+        ))}
+      </Box>
+    );
   };
 
   const renderModalContent = () => {

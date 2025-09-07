@@ -18,6 +18,7 @@ function ModeratorLogin() {
   const [error, setError] = useState('');
 
   useLayoutEffect(() => {
+    // GSAP animations for the card remain unchanged
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.3 });
       tl.from(".moderator-login-card", { opacity: 0, scale: 0.9, duration: 0.8, ease: 'expo.out' })
@@ -31,7 +32,7 @@ function ModeratorLogin() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevData => ({ ...prevData, [name]: value }));
-    setError(''); 
+    setError('');
   };
 
   const handleSubmit = async (e) => {
@@ -41,12 +42,9 @@ function ModeratorLogin() {
 
     try {
       const response = await axiosInstance.post('/api/moderator/login', formData);
-
       localStorage.setItem('moderatorToken', response.data.token);
       localStorage.setItem('moderatorInfo', JSON.stringify(response.data));
-
       navigate('/dashboard/moderator');
-
     } catch (err) {
       if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message);
@@ -62,49 +60,59 @@ function ModeratorLogin() {
     <>
       <LandingNav />
       <div className="moderator-login-page" ref={main}>
+        {/* Animated Triangle Background */}
+        <div className="background-triangles">
+            <div className="triangle"></div>
+            <div className="triangle"></div>
+            <div className="triangle"></div>
+            <div className="triangle"></div>
+            <div className="triangle"></div>
+            <div className="triangle"></div>
+            <div className="triangle"></div>
+            <div className="triangle"></div>
+            <div className="triangle"></div>
+            <div className="triangle"></div>
+        </div>
+
         <div className="moderator-login-card">
-          
+          {/* Card content remains the same */}
           <div className="moderator-login-visual">
             <FaBalanceScale className="moderator-login-icon" />
             <h2>Moderator Hub</h2>
             <p>Maintain community standards and ensure a safe, positive environment for all users.</p>
           </div>
-
           <div className="moderator-login-form-section">
             <h2>Moderator Access</h2>
             <p className="moderator-login-subtitle">Please sign in to access moderation tools.</p>
-            
             <form onSubmit={handleSubmit} className="moderator-login-form">
               {error && <p className="moderator-login-error-message">{error}</p>}
-
               <div className="moderator-login-form-group">
                 <FaEnvelope className="moderator-login-input-icon" />
-                <input 
-                  type="email" 
-                  id="email" 
-                  name="email" 
-                  placeholder="Moderator Email" 
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Moderator Email"
                   value={formData.email}
                   onChange={handleChange}
-                  required 
+                  required
                 />
               </div>
               <div className="moderator-login-form-group">
                 <FaLock className="moderator-login-input-icon" />
-                <input 
-                  type="password" 
-                  id="password" 
-                  name="password" 
-                  placeholder="Password" 
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
-                  required 
+                  required
                 />
               </div>
-
               <div className="moderator-login-form-group">
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="moderator-login-button"
                   disabled={loading}
                 >
@@ -112,7 +120,6 @@ function ModeratorLogin() {
                 </button>
               </div>
             </form>
-            
             <Link to="/moderator/forgot-password" className="moderator-login-forgot-password">
               Forgot Password?
             </Link>
@@ -123,4 +130,4 @@ function ModeratorLogin() {
   );
 }
 
-export  default ModeratorLogin;
+export default ModeratorLogin;

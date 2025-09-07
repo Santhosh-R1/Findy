@@ -4,7 +4,7 @@ import { FaKey, FaEnvelope, FaArrowLeft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 import axiosInstance from '../../api/baseUrl';
-import '../../Styles/ModeratorForgotPass.css'; 
+import '../../Styles/ModeratorForgotPass.css';
 
 function ModeratorForgotPass() {
   const [email, setEmail] = useState('');
@@ -13,8 +13,9 @@ function ModeratorForgotPass() {
   const [successMessage, setSuccessMessage] = useState(null);
 
   useLayoutEffect(() => {
+    // This GSAP animation will work perfectly over the new background
     gsap.fromTo(
-      ".moderator-forgot-pass-card", 
+      ".moderator-forgot-pass-card",
       { opacity: 0, y: 50 },
       { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
     );
@@ -35,8 +36,10 @@ function ModeratorForgotPass() {
     try {
       const response = await axiosInstance.post('/api/moderator/forgot-password', { email });
       setSuccessMessage(response.data.message);
-      setEmail(''); 
+      setEmail('');
     } catch (err) {
+      // This part correctly handles the error message from your backend.
+      // If the backend says "Email not found", this will display it.
       setError(err?.response?.data?.message || "Failed to send reset link. Please try again.");
       console.error("Forgot Password Error:", err);
     } finally {
@@ -46,6 +49,20 @@ function ModeratorForgotPass() {
 
   return (
     <div className="moderator-forgot-pass-page">
+      {/* --- Animated Triangle Background --- */}
+      <div className="background-triangles">
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+      </div>
+
       <div className="moderator-forgot-pass-card">
         <div className="moderator-forgot-pass-visual">
           <FaKey className="moderator-forgot-pass-icon" />

@@ -5,7 +5,9 @@ import {
 } from '@mui/material';
 import {
   FaPaw, FaLaptop, FaMobileAlt, FaDog, FaCat, FaUpload, FaTag, FaAlignLeft,
-  FaShapes, FaCalendarAlt, FaBuilding, FaBarcode, FaSyncAlt, FaSignature
+  FaShapes, FaCalendarAlt, FaBuilding, FaBarcode, FaSyncAlt, FaSignature,
+  // 1. Imported new icons
+  FaShoppingBag, FaWallet, FaPalette
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/AddItems.css';
@@ -44,7 +46,6 @@ function AddItems() {
         return;
       }
     }
-
     setFormData({ ...formData, [name]: value });
     if (formErrors[name]) {
       setFormErrors({ ...formErrors, [name]: '' });
@@ -72,63 +73,53 @@ function AddItems() {
       const selectedDate = new Date(formData.purchaseDate);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      if (selectedDate > today) {
-        errors.purchaseDate = "This date cannot be in the future.";
-      }
+      if (selectedDate > today) errors.purchaseDate = "This date cannot be in the future.";
     }
-
     if (!formData.description.trim()) errors.description = "Additional details are required.";
     
+    // 4. Updated validation logic to include accessories
     if (mainCategory === 'pets') {
       if (!formData.petName.trim()) errors.petName = "Pet's name is required.";
-      else if (!nameRegex.test(formData.petName)) errors.petName = "Name can only contain letters and spaces.";
-
+      else if (!nameRegex.test(formData.petName)) errors.petName = "Name can only contain letters.";
       if (!formData.itemName.trim()) errors.itemName = "Breed is required.";
-      else if (!nameRegex.test(formData.itemName)) errors.itemName = "Breed can only contain letters and spaces.";
-
+      else if (!nameRegex.test(formData.itemName)) errors.itemName = "Breed can only contain letters.";
       if (!formData.color.trim()) errors.color = "Color/Markings are required.";
     } else if (mainCategory === 'electronics') {
       if (!formData.itemName.trim()) errors.itemName = "Model name is required.";
       if (!formData.brand.trim()) errors.brand = "Brand is required.";
       if (!formData.serialNumber.trim()) errors.serialNumber = "Serial number is required.";
       if (!formData.color.trim()) errors.color = "Color is required."; 
+    } else if (mainCategory === 'accessories') {
+      if (!formData.itemName.trim()) errors.itemName = "Item name is required (e.g., 'Leather Wallet').";
+      if (!formData.brand.trim()) errors.brand = "Brand is required.";
+      if (!formData.color.trim()) errors.color = "Color is required.";
     }
-
     return errors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null); setSuccess(null);
-
     const validationErrors = validateForm();
-    if (!itemImage) {
-      validationErrors.image = "Please upload an image for the item.";
-    }
-
+    if (!itemImage) validationErrors.image = "Please upload an image for the item.";
     setFormErrors(validationErrors);
-
     if (Object.keys(validationErrors).length > 0) {
       if (validationErrors.image) setError(validationErrors.image);
       return;
     }
-
     setLoading(true);
     const data = new FormData();
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-
     if (!userInfo || !userInfo._id) {
       setError("Could not find user information. Please log in again.");
       setLoading(false);
       return;
     }
-
     data.append('ownerId', userInfo._id);
     data.append('mainCategory', mainCategory);
     data.append('subCategory', subCategory);
     Object.keys(formData).forEach(key => data.append(key, formData[key]));
     data.append('itemImage', itemImage);
-
     try {
       await axiosInstance.post('/api/items/add', data, {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -147,33 +138,42 @@ function AddItems() {
     }
   };
 
+  // 3. Updated renderDynamicFields to handle all three categories
   const renderDynamicFields = () => {
     if (!subCategory) return null;
     const isPet = mainCategory === 'pets';
-
-    const fields = isPet ? (
-      <>
-        <TextField fullWidth required label="Pet's Name" name="petName" value={formData.petName} onChange={handleChange} placeholder="e.g., Buddy, Lucy" InputProps={{ startAdornment: <InputAdornment position="start"><FaSignature /></InputAdornment> }} error={!!formErrors.petName} helperText={formErrors.petName} />
-        <TextField fullWidth required label="Breed" name="itemName" value={formData.itemName} onChange={handleChange} placeholder="e.g., Golden Retriever, Siamese" InputProps={{ startAdornment: <InputAdornment position="start"><FaTag /></InputAdornment> }} error={!!formErrors.itemName} helperText={formErrors.itemName} />
-        <TextField fullWidth required label="Color / Markings" name="color" value={formData.color} onChange={handleChange} placeholder="e.g., Black with white spot" InputProps={{ startAdornment: <InputAdornment position="start"><FaPaw /></InputAdornment> }} error={!!formErrors.color} helperText={formErrors.color} />
-      </>
-    ) : (
-      <>
-        <TextField fullWidth required label="Model Name" name="itemName" value={formData.itemName} onChange={handleChange} placeholder="e.g., iPhone 14 Pro, Dell XPS 15" InputProps={{ startAdornment: <InputAdornment position="start"><FaTag /></InputAdornment> }} error={!!formErrors.itemName} helperText={formErrors.itemName} />
-        <TextField fullWidth required label="Brand" name="brand" value={formData.brand} onChange={handleChange} placeholder="e.g., Apple, Samsung" InputProps={{ startAdornment: <InputAdornment position="start"><FaBuilding /></InputAdornment> }} error={!!formErrors.brand} helperText={formErrors.brand} />
-        <TextField fullWidth required label="Serial Number" name="serialNumber" value={formData.serialNumber} onChange={handleChange} InputProps={{ startAdornment: <InputAdornment position="start"><FaBarcode /></InputAdornment> }} error={!!formErrors.serialNumber} helperText={formErrors.serialNumber} />
-        <TextField fullWidth required label="Color" name="color" value={formData.color} onChange={handleChange} placeholder="e.g., Space Gray, Midnight Black" InputProps={{ startAdornment: <InputAdornment position="start"><FaShapes /></InputAdornment> }} error={!!formErrors.color} helperText={formErrors.color} />
-      </>
-    );
 
     return (
       <Box className="dynamic-fields-wrapper">
         <Typography variant="overline" className="dynamic-fields-header">
           {isPet ? `Tell us about your ${subCategory}` : `Details for your ${subCategory}`}
         </Typography>
-        {fields}
+
+        {mainCategory === 'pets' && (
+          <>
+            <TextField fullWidth required label="Pet's Name" name="petName" value={formData.petName} onChange={handleChange} placeholder="e.g., Buddy, Lucy" InputProps={{ startAdornment: <InputAdornment position="start"><FaSignature /></InputAdornment> }} error={!!formErrors.petName} helperText={formErrors.petName} />
+            <TextField fullWidth required label="Breed" name="itemName" value={formData.itemName} onChange={handleChange} placeholder="e.g., Golden Retriever" InputProps={{ startAdornment: <InputAdornment position="start"><FaTag /></InputAdornment> }} error={!!formErrors.itemName} helperText={formErrors.itemName} />
+            <TextField fullWidth required label="Color / Markings" name="color" value={formData.color} onChange={handleChange} placeholder="e.g., Black with white spot" InputProps={{ startAdornment: <InputAdornment position="start"><FaPalette /></InputAdornment> }} error={!!formErrors.color} helperText={formErrors.color} />
+          </>
+        )}
+        {mainCategory === 'electronics' && (
+          <>
+            <TextField fullWidth required label="Model Name" name="itemName" value={formData.itemName} onChange={handleChange} placeholder="e.g., iPhone 14 Pro" InputProps={{ startAdornment: <InputAdornment position="start"><FaTag /></InputAdornment> }} error={!!formErrors.itemName} helperText={formErrors.itemName} />
+            <TextField fullWidth required label="Brand" name="brand" value={formData.brand} onChange={handleChange} placeholder="e.g., Apple, Samsung" InputProps={{ startAdornment: <InputAdornment position="start"><FaBuilding /></InputAdornment> }} error={!!formErrors.brand} helperText={formErrors.brand} />
+            <TextField fullWidth required label="Serial Number" name="serialNumber" value={formData.serialNumber} onChange={handleChange} InputProps={{ startAdornment: <InputAdornment position="start"><FaBarcode /></InputAdornment> }} error={!!formErrors.serialNumber} helperText={formErrors.serialNumber} />
+            <TextField fullWidth required label="Color" name="color" value={formData.color} onChange={handleChange} placeholder="e.g., Space Gray" InputProps={{ startAdornment: <InputAdornment position="start"><FaPalette /></InputAdornment> }} error={!!formErrors.color} helperText={formErrors.color} />
+          </>
+        )}
+        {mainCategory === 'accessories' && (
+          <>
+            <TextField fullWidth required label="Item Name" name="itemName" value={formData.itemName} onChange={handleChange} placeholder="e.g., Leather Bifold Wallet" InputProps={{ startAdornment: <InputAdornment position="start"><FaTag /></InputAdornment> }} error={!!formErrors.itemName} helperText={formErrors.itemName} />
+            <TextField fullWidth required label="Brand" name="brand" value={formData.brand} onChange={handleChange} placeholder="e.g., Fossil, Gucci" InputProps={{ startAdornment: <InputAdornment position="start"><FaBuilding /></InputAdornment> }} error={!!formErrors.brand} helperText={formErrors.brand} />
+            <TextField fullWidth required label="Color" name="color" value={formData.color} onChange={handleChange} placeholder="e.g., Tan Brown, Black" InputProps={{ startAdornment: <InputAdornment position="start"><FaPalette /></InputAdornment> }} error={!!formErrors.color} helperText={formErrors.color} />
+          </>
+        )}
+
         <TextField fullWidth label={isPet ? "Acquired On / Date of Birth" : "Date of Purchase"} name="purchaseDate" type="date" value={formData.purchaseDate} onChange={handleChange} InputLabelProps={{ shrink: true }} inputProps={{ max: getTodayDateString() }} InputProps={{ startAdornment: <InputAdornment position="start"><FaCalendarAlt /></InputAdornment> }} error={!!formErrors.purchaseDate} helperText={formErrors.purchaseDate} />
-        <TextField fullWidth required label="Additional Details" name="description" value={formData.description} onChange={handleChange} multiline rows={4} placeholder={isPet ? "Collar details, temperament, microchip number..." : "Any damage, custom stickers, distinguishing marks..."} InputProps={{ startAdornment: <InputAdornment position="start" sx={{ alignItems: 'flex-start', mt: '1rem' }}><FaAlignLeft /></InputAdornment> }} error={!!formErrors.description} helperText={formErrors.description} />
+        <TextField fullWidth required label="Additional Details" name="description" value={formData.description} onChange={handleChange} multiline rows={4} placeholder={isPet ? "Collar, microchip..." : "Any damage, distinguishing marks..."} InputProps={{ startAdornment: <InputAdornment position="start" sx={{ alignItems: 'flex-start', mt: '1rem' }}><FaAlignLeft /></InputAdornment> }} error={!!formErrors.description} helperText={formErrors.description} />
       </Box>
     );
   };
@@ -185,7 +185,6 @@ function AddItems() {
           <Typography variant="h4" component="h1" className="add-item-header">Register a New Item</Typography>
           <Typography variant="body1" color="text.secondary">Secure your valuables by adding them to your digital inventory.</Typography>
         </Box>
-
         <Box component="form" className="add-item-content" onSubmit={handleSubmit} noValidate>
           <Box className="image-uploader-section">
             <input type="file" ref={fileInputRef} onChange={handleImageChange} accept="image/png, image/jpeg, image/webp" style={{ display: 'none' }} />
@@ -194,46 +193,51 @@ function AddItems() {
                 (<Box className="upload-placeholder"> <FaShapes className="upload-icon" /> <Typography variant="h6">Upload Photo</Typography> <Typography variant="body2" color="text.secondary">Click to select an image</Typography> </Box>)}
             </Box>
           </Box>
-
           <Box className="item-form-section">
             <Box className="form-step-group">
               <Typography variant="overline" className="step-header">Step 1: Choose a Category</Typography>
               <FormControl fullWidth required>
                 <InputLabel id="main-category-label">Item Type</InputLabel>
                 <Select labelId="main-category-label" label="Item Type" name="mainCategory" value={mainCategory} onChange={handleMainCategoryChange}>
-                  <MenuItem value="electronics"><FaLaptop style={{ marginRight: '12px', fontSize: '1.2em' }} />Electronics</MenuItem>
-                  <MenuItem value="pets"><FaPaw style={{ marginRight: '12px', fontSize: '1.2em' }} />Pet</MenuItem>
+                  <MenuItem value="electronics"><FaLaptop style={{ marginRight: '12px' }} />Electronics</MenuItem>
+                  <MenuItem value="pets"><FaPaw style={{ marginRight: '12px' }} />Pet</MenuItem>
+                  {/* 2. Added new main category */}
+                  <MenuItem value="accessories"><FaShoppingBag style={{ marginRight: '12px' }} />Accessories</MenuItem>
                 </Select>
               </FormControl>
-
               {mainCategory === 'electronics' && (
                 <FormControl fullWidth required>
                   <InputLabel id="electronics-type-label">Specific Type</InputLabel>
                   <Select labelId="electronics-type-label" label="Specific Type" name="subCategory" value={subCategory} onChange={handleSubCategoryChange}>
-                    <MenuItem value="phone"><FaMobileAlt style={{ marginRight: '12px', fontSize: '1.2em' }} />Phone</MenuItem>
-                    <MenuItem value="laptop"><FaLaptop style={{ marginRight: '12px', fontSize: '1.2em' }} />Laptop</MenuItem>
+                    <MenuItem value="phone"><FaMobileAlt style={{ marginRight: '12px' }} />Phone</MenuItem>
+                    <MenuItem value="laptop"><FaLaptop style={{ marginRight: '12px' }} />Laptop</MenuItem>
                   </Select>
                 </FormControl>
               )}
-
               {mainCategory === 'pets' && (
                 <FormControl fullWidth required>
                   <InputLabel id="pet-type-label">Specific Type</InputLabel>
                   <Select labelId="pet-type-label" label="Specific Type" name="subCategory" value={subCategory} onChange={handleSubCategoryChange}>
-                    <MenuItem value="dog"><FaDog style={{ marginRight: '12px', fontSize: '1.2em' }} />Dog</MenuItem>
-                    <MenuItem value="cat"><FaCat style={{ marginRight: '12px', fontSize: '1.2em' }} />Cat</MenuItem>
+                    <MenuItem value="dog"><FaDog style={{ marginRight: '12px' }} />Dog</MenuItem>
+                    <MenuItem value="cat"><FaCat style={{ marginRight: '12px' }} />Cat</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
+              {mainCategory === 'accessories' && (
+                <FormControl fullWidth required>
+                  <InputLabel id="accessory-type-label">Specific Type</InputLabel>
+                  <Select labelId="accessory-type-label" label="Specific Type" name="subCategory" value={subCategory} onChange={handleSubCategoryChange}>
+                    <MenuItem value="wallet"><FaWallet style={{ marginRight: '12px' }} />Wallet</MenuItem>
+                    <MenuItem value="hand bag"><FaShoppingBag style={{ marginRight: '12px' }} />Hand Bag</MenuItem>
                   </Select>
                 </FormControl>
               )}
             </Box>
-
             {renderDynamicFields()}
-
             <Box sx={{ mt: 2 }}>
               {error && <Alert severity="error" variant="filled">{error}</Alert>}
               {success && <Alert severity="success" variant="filled">{success}</Alert>}
             </Box>
-
             <Button type="submit" variant="contained" className="submit-item-button" disabled={loading || !subCategory} startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <FaUpload />}>
               {loading ? 'Registering...' : 'Add to My Inventory'}
             </Button>

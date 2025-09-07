@@ -160,7 +160,7 @@ const forgotModeratorPassword = async (req, res) => {
     try {
         moderator = await Moderator.findOne({ email: req.body.email });
         if (!moderator) {
-            return res.status(200).json({ message: 'If an account with that email exists, a token has been sent.' });
+            return res.status(404).json({ message: 'Email address not found in our database.' });
         }
 
         const resetToken = moderator.createPasswordResetToken();

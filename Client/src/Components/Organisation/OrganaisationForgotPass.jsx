@@ -12,6 +12,7 @@ function OrganisationForgotPassword() {
   const [successMessage, setSuccessMessage] = useState(null);
 
   useLayoutEffect(() => {
+    // This GSAP animation will work perfectly over the new background
     gsap.fromTo(
       ".org-forgot-pass-card",
       { opacity: 0, y: 50 },
@@ -34,7 +35,7 @@ function OrganisationForgotPassword() {
     try {
       const response = await axiosInstance.post('/api/organaisation/forgot-password', { email });
       setSuccessMessage(response.data.message);
-      setEmail(''); 
+      setEmail('');
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to send reset link. Please try again.");
       console.error("Forgot Password Error:", err);
@@ -46,6 +47,22 @@ function OrganisationForgotPassword() {
   return (
     <>
       <div className="org-forgot-pass-page">
+        {/* --- ADDED: Animated Constellation Background --- */}
+        <div className="background-constellation">
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+        </div>
+
         <div className="org-forgot-pass-card">
           <div className="org-forgot-pass-visual">
             <FaKey className="org-forgot-pass-icon" />

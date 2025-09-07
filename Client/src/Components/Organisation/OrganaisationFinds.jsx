@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, CircularProgress, Alert, Paper, Chip, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { Link } from 'react-router-dom';
 import {
-  FaPaw, FaLaptop, FaMobileAlt, FaDog, FaCat, FaEdit, FaExclamationTriangle, FaPlus, FaTrash, FaHandshake,
+  FaPaw, FaLaptop, FaMobileAlt, FaDog, FaCat, FaExclamationTriangle, FaPlus, FaHandshake,
   FaMapMarkerAlt, FaCalendarAlt,
   FaShoppingBag, FaWallet
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
-import '../../Styles/ViewItems.css';
+import '../../Styles/ViewItems.css'; // Using the same styles as UserFounds
 
 const getIconForSubCategory = (subCategory) => {
   const icons = {
@@ -21,7 +21,7 @@ const getIconForSubCategory = (subCategory) => {
   return icons[subCategory] || <FaPaw />;
 };
 
-function UserFounds() {
+function OrganaisationFinds() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -29,33 +29,34 @@ function UserFounds() {
 
   const [modalState, setModalState] = useState({
     open: false,
-    actionType: null,
     itemId: null,
     itemName: '',
   });
 
   useEffect(() => {
-    const fetchUserFoundItems = async () => {
+    const fetchOrgFoundItems = async () => {
       try {
         setLoading(true);
-        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        if (!userInfo || !userInfo._id) throw new Error("Authentication error. Please log in again.");
-        const response = await axiosInstance.get(`/api/items/found/user/${userInfo._id}`);
+        const orgInfo = JSON.parse(localStorage.getItem('organisationInfo'));
+        if (!orgInfo || !orgInfo.data || !orgInfo.data._id) {
+          throw new Error("Organization details not found. Please log in again.");
+        }
+        const response = await axiosInstance.get(`/api/items/found/user/${orgInfo.data._id}`);
         setItems(response.data.data);
         setError(null);
       } catch (err) {
         console.error("Fetch found items error:", err);
-        setError(err.response?.data?.message || "Failed to fetch your found item reports.");
+        setError(err.response?.data?.message || "Failed to fetch your organization's found item reports.");
       } finally {
         setLoading(false);
       }
     };
-    fetchUserFoundItems();
+    fetchOrgFoundItems();
   }, []);
 
   // --- THIS IS THE CHANGE ---
   // Updated function to create a more descriptive name for the dialog
-  const handleOpenModal = (actionType, item) => {
+  const handleOpenModal = (item) => {
     let dialogItemName = '';
 
     if (item.mainCategory === 'pets') {
@@ -69,7 +70,6 @@ function UserFounds() {
 
     setModalState({
       open: true,
-      actionType,
       itemId: item._id,
       itemName: dialogItemName,
     });
@@ -77,15 +77,11 @@ function UserFounds() {
   // -------------------------
 
   const handleCloseModal = () => {
-    setModalState({ open: false, actionType: null, itemId: null, itemName: '' });
+    setModalState({ open: false, itemId: null, itemName: '' });
   };
 
   const handleConfirmAction = () => {
-    if (modalState.actionType === 'markReturned') {
-      handleMarkReturned(modalState.itemId);
-    } else if (modalState.actionType === 'delete') {
-      handleDelete(modalState.itemId);
-    }
+    handleMarkReturned(modalState.itemId);
     handleCloseModal();
   };
 
@@ -106,18 +102,6 @@ function UserFounds() {
     }
   };
 
-  const handleDelete = async (itemId) => {
-    const originalItems = [...items];
-    setItems(currentItems => currentItems.filter(item => item._id !== itemId));
-    try {
-      await axiosInstance.delete(`/api/items/delete/${itemId}`);
-    } catch (err) {
-      console.error("Failed to delete item report:", err);
-      setItems(originalItems);
-      alert(err.response?.data?.message || "Failed to delete the report. Please try again.");
-    }
-  };
-
   const getStatusChipColor = (status) => {
     switch (status) {
       case 'found': return 'success';
@@ -132,7 +116,7 @@ function UserFounds() {
       return (
         <Box className="status-container">
           <CircularProgress size={50} sx={{ color: '#19a47a' }} />
-          <Typography variant="h6" color="text.secondary" sx={{ mt: 2 }}>Loading Your Reports...</Typography>
+          <Typography variant="h6" color="text.secondary" sx={{ mt: 2 }}>Loading Organization Reports...</Typography>
         </Box>
       );
     }
@@ -145,9 +129,9 @@ function UserFounds() {
       return (
         <Box className="status-container no-items">
           <FaPaw className="no-items-icon" />
-          <Typography variant="h5" gutterBottom>You haven't reported any found items yet.</Typography>
-          <Typography color="text.secondary">Report an item you've found to help it get back to its owner.</Typography>
-          <Button component={Link} to="/report-found-item" variant="contained" className="add-first-item-btn" startIcon={<FaPlus />}>
+          <Typography variant="h5" gutterBottom>Your organization hasn't reported any found items yet.</Typography>
+          <Typography color="text.secondary">Report an item brought to your organization to help it get back to its owner.</Typography>
+          <Button component={Link} to="/organisation/founts" variant="contained" className="add-first-item-btn" startIcon={<FaPlus />}>
             Report a Found Item
           </Button>
         </Box>
@@ -162,7 +146,7 @@ function UserFounds() {
           if (item.mainCategory === 'pets') {
             subtitleContent = `Breed: ${item.itemName}`;
           } else if (item.mainCategory === 'accessories') {
-            subtitleContent = <Typography component="span" variant="body2" sx={{ fontSize: "20px", fontWeight: '700', color: 'text.primary' }}>{item.brand}</Typography>;
+            subtitleContent = <Typography component="span" variant="body2" sx={{ fontWeight: '700',fontSize:"20px", color: 'text.primary' }}>{item.brand}</Typography>;
           } else {
             subtitleContent = `Brand: ${item.brand}`;
           }
@@ -183,9 +167,8 @@ function UserFounds() {
                 <Chip label={item.status} size="small" color={getStatusChipColor(item.status)} className="status-chip" />
               </Box>
               <Box className="card-actions">
-                <Button size="small" variant="outlined" color="error" startIcon={<FaTrash />} onClick={() => handleOpenModal('delete', item)} disabled={isArchived}>Delete</Button>
-                <Button size="small" variant="contained" color="primary" startIcon={<FaHandshake />} onClick={() => handleOpenModal('markReturned', item)} disabled={updatingItemId === item._id || isArchived}>
-                  {updatingItemId === item._id ? 'Updating...' : 'Returned'}
+                <Button size="small" variant="contained" color="primary" startIcon={<FaHandshake />} onClick={() => handleOpenModal(item)} disabled={updatingItemId === item._id || isArchived} sx={{ flexGrow: 1 }}>
+                  {updatingItemId === item._id ? 'Updating...' : 'Mark as Returned'}
                 </Button>
               </Box>
             </Paper>
@@ -198,27 +181,27 @@ function UserFounds() {
   return (
     <Box className="view-items-container">
       <Box className="page-header-container">
-        <Typography variant="h4" component="h1" className="view-items-header">My Found Item Reports</Typography>
-        <Typography variant="subtitle1" className="page-subtitle">This page shows all the items you have reported as found.</Typography>
+        <Typography variant="h4" component="h1" className="view-items-header">Organization Found Item Reports</Typography>
+        <Typography variant="subtitle1" className="page-subtitle">This page shows all items your organization has reported as found.</Typography>
       </Box>
       {renderContent()}
+
       <Dialog open={modalState.open} onClose={handleCloseModal} >
         <DialogTitle id="confirmation-dialog-title" sx={{ display: 'flex', alignItems: 'center', gap: 1.5, fontWeight: 700, fontSize: '1.25rem', color: 'var(--clean-text-primary)' }}>
-          <FaExclamationTriangle style={{ color: modalState.actionType === 'delete' ? '#d32f2f' : '#1976d2' }} size="24px" />
-          {modalState.actionType === 'delete' ? 'Confirm Deletion' : 'Confirm Return'}
+          <FaExclamationTriangle style={{ color: '#1976d2' }} size="24px" />
+          Confirm Return
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="confirmation-dialog-description" sx={{ color: 'var(--clean-text-secondary)', lineHeight: 1.6 }}>
-            Are you sure you want to {modalState.actionType === 'delete' ? 'permanently delete this report' : 'mark as returned to owner'} for the item "{modalState.itemName}"?
-            {modalState.actionType === 'delete' && (
-              <Box component="span" sx={{ display: 'block', mt: 1.5, fontWeight: '600', color: '#d32f2f' }}>This action cannot be undone.</Box>
-            )}
+            Are you sure you want to mark the item "{modalState.itemName}" as returned to its owner?
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ p: '0 24px 20px', gap: '8px' }}>
-          <Button onClick={handleCloseModal} variant="outlined" sx={{ borderColor: 'var(--clean-border-color)', color: 'var(--clean-text-secondary)' }}>Cancel</Button>
-          <Button onClick={handleConfirmAction} variant="contained" color={modalState.actionType === 'delete' ? 'error' : 'primary'} autoFocus>
-            {modalState.actionType === 'delete' ? 'Yes, Delete' : 'Yes, It Was Returned'}
+          <Button onClick={handleCloseModal} variant="outlined" sx={{ borderColor: 'var(--clean-border-color)', color: 'var(--clean-text-secondary)' }}>
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmAction} variant="contained" color="primary" autoFocus>
+            Yes, It Was Returned
           </Button>
         </DialogActions>
       </Dialog>
@@ -226,4 +209,4 @@ function UserFounds() {
   );
 }
 
-export default UserFounds;
+export default OrganaisationFinds;

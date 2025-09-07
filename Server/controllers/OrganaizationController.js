@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 const sendEmail = require('../utils/email');
 const crypto = require('crypto');
 const { getPasswordResetHTML } = require('../utils/emailTemplates');
-
+const fs = require('fs');
+const path = require('path');
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: '30d',
@@ -21,6 +22,7 @@ const registerOrganisation = async (req, res) => {
         website,
         address,
         password,
+        phone
     } = req.body;
 
     try {
@@ -46,6 +48,7 @@ const registerOrganisation = async (req, res) => {
             contactPerson,
             registrationId, 
             email,
+            phone,
             website,        
             address,
             password,
@@ -85,11 +88,8 @@ const loginOrganisation = async (req, res) => {
                 return res.status(403).json({ message: 'Your account has been deactivated. Please contact the administrator.' });
             }
             res.status(200).json({
-                _id: organisation._id,
-                organisationName: organisation.organisationName,
-                email: organisation.email,
-                organisationLogo: organisation.organisationLogo,
                 token: generateToken(organisation._id),
+                data:organisation
             });
         } else {
             return res.status(401).json({ message: 'Invalid email or password.' });
@@ -225,7 +225,108 @@ const deactivateOrganisation = async (req, res) => {
         res.status(500).json({ message: 'Server error while deactivating organisation.' });
     }
 };
+const getOrganisationProfile = async (req, res) => {
+    try {
+        const organisation = await Organisation.findById(req.params.id).select('-password');
 
+        if (!organisation) {
+            return res.status(404).json({ message: 'Organisation not found.' });
+        }
+
+        res.status(200).json({ success: true, data: organisation });
+
+    } catch (error) {
+        console.error('Error fetching organisation profile:', error);
+        if (error.name === 'CastError') {
+            return res.status(400).json({ message: `Invalid Organisation ID format: ${req.params.id}` });
+        }
+        res.status(500).json({ message: 'Server error.' });
+    }
+};
+
+const updateOrganisationProfile = async (req, res) => {
+    try {
+        const organisation = await Organisation.findById(req.params.id);
+
+        if (!organisation) {
+            return res.status(404).json({ message: 'Organisation not found' });
+        }
+
+        // --- Update text fields ---
+        // This approach is better because it allows setting a field to an empty string ""
+        if (req.body.organisationName !== undefined) {
+            organisation.organisationName = req.body.organisationName;
+        }
+        if (req.body.organisationType !== undefined) {
+            organisation.organisationType = req.body.organisationType;
+        }
+        if (req.body.contactPerson !== undefined) {
+            organisation.contactPerson = req.body.contactPerson;
+        }
+        if (req.body.registrationId !== undefined) {
+            organisation.registrationId = req.body.registrationId;
+        }
+        if (req.body.email !== undefined) {
+            organisation.email = req.body.email;
+        }
+        // --- ADDED PHONE NUMBER UPDATE LOGIC ---
+        if (req.body.phone !== undefined) {
+            organisation.phone = req.body.phone;
+        }
+        // ----------------------------------------
+        if (req.body.website !== undefined) {
+            organisation.website = req.body.website;
+        }
+        if (req.body.address !== undefined) {
+            organisation.address = req.body.address;
+        }
+
+        // --- Handle Logo Update ---
+        if (req.file) {
+            const oldLogoPath = organisation.organisationLogo;
+
+            // Set the new logo path
+            organisation.organisationLogo = '/' + req.file.path.replace(/\\/g, "/");
+
+            // Delete the old logo if it exists
+            if (oldLogoPath) {
+                // Construct the full path to the old file
+                const fullOldPath = path.join(__dirname, '..', oldLogoPath);
+                
+                // Use fs.unlink to delete the file
+                fs.unlink(fullOldPath, (err) => {
+                    if (err && err.code !== 'ENOENT') { // ENOENT means file not found, which is fine
+                        console.error(`Failed to delete old logo: ${fullOldPath}`, err);
+                    } else {
+                        console.log(`Successfully deleted old logo or it was already gone: ${fullOldPath}`);
+                    }
+                });
+            }
+        }
+
+        const updatedOrganisation = await organisation.save();
+
+        res.status(200).json({
+            success: true,
+            message: 'Profile updated successfully.',
+            data: updatedOrganisation,
+        });
+
+    } catch (error) {
+        console.error('Update Organisation Profile Error:', error);
+        
+        // Handle potential duplicate key errors (e.g., if email is changed to an existing one)
+        if (error.code === 11000) {
+            return res.status(400).json({ message: 'Email or Registration ID is already in use by another organisation.' });
+        }
+        // Handle Mongoose validation errors
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ message: error.message });
+        }
+        
+        res.status(500).json({ message: 'Server error while updating profile.' });
+    }
+};
 module.exports = {
     registerOrganisation,
     loginOrganisation,
@@ -233,5 +334,7 @@ module.exports = {
     resetPassword,
     deactivateOrganisation,
     activateOrganisation,
-    getAllOrganisations
+    getAllOrganisations,
+    getOrganisationProfile,
+    updateOrganisationProfile
 };

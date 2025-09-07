@@ -34,6 +34,11 @@ import FoundItem from './Components/User/FoundItem';
 import UserFounds from './Components/User/UserFounds';
 import UserLostItems from './Components/User/UserLostItems';
 import AdminViewAllLost from './Components/Admin/AdminViewAllLost';
+import OrganaisationDashBoard from './Components/Organisation/OrganaisationDashBoard'
+import OrganaisationSidemenu from './Components/Organisation/OrganaisationSidemenu';
+import OrganaisationFounds from './Components/Organisation/OrganaisationFounds';
+import OrganaisationFinds from './Components/Organisation/OrganaisationFinds';
+import OrganisationEdit from './Components/Organisation/OrganaisationEdit';
 function App() {
   return (
     <Router>
@@ -50,12 +55,12 @@ function App() {
         <Route path="/Organisation/register" element={[<LandingNav />, <OrganisationRegistration />]} />
         <Route path="/Organisation/Forgot-Password" element={[<LandingNav />, <OrganisationForgotPass />]} />
         <Route path="/User/Forgot-Password" element={[<LandingNav />, <UserForgotPass />]} />
-        <Route path="/reset-password/:token" element={[<LandingNav />, <ResetPassword />]} />
-        <Route path="/organisation/reset-password/:token" element={[<LandingNav/>,<OrganisationResetPassword />]} />
+        <Route path="/reset-password/:token" element={[ <ResetPassword />]} />
+        <Route path="/organisation/reset-password/:token" element={[<OrganisationResetPassword />]} />
         <Route path="/admin/dashBoard" element={[<AdminSidemenu/>,<AdminDashboard />]} />
         <Route path="/admin/AddModerators" element={[<AdminSidemenu/>,<AddModerators />]} />
         <Route path="/moderator/Forgot-Password" element={[<LandingNav />, <ModeratorForgotPass />]} />
-        <Route path="/moderator/reset-password/:token" element={[<LandingNav/>,<ModeratorResetPass />]} />
+        <Route path="/moderator/reset-password/:token" element={[<ModeratorResetPass />]} />
         <Route path="/admin/manage-moderators" element={[<AdminSidemenu/>,<ManageModerators />]} />
         <Route path="/admin/manage-organisation" element={[<AdminSidemenu/>,<ManageOrganaisation />]} />
         <Route path="/admin/view-users" element={[<AdminSidemenu/>,<ViewUsers />]} />
@@ -69,6 +74,11 @@ function App() {
         <Route path="/user/my-found-items" element={[<UserNav/>,<UserSideMenu/>,<UserFounds />]} />
         <Route path="/user/lost-items-others" element={[<UserNav/>,<UserSideMenu/>,<UserLostItems />]} />
         <Route path="/admin/view-all-lost" element={[<AdminSidemenu/>,<AdminViewAllLost />]} />
+        <Route path="/organisation/DashBoard" element={[<OrganaisationSidemenu/>,<OrganaisationDashBoard />]} />
+        <Route path="/organisation/founts" element={[<OrganaisationSidemenu/>,<OrganaisationFounds />]} />
+        <Route path="/organisation/my-found-items" element={[<OrganaisationSidemenu/>,<OrganaisationFinds />]} />
+        <Route path="/organisation/lost-items-others" element={[<OrganaisationSidemenu/>,< UserLostItems/>]} />
+        <Route path="/organisation/profile" element={[<OrganaisationSidemenu/>,< OrganisationEdit/>]} />
 
       </Routes>
     </Router>

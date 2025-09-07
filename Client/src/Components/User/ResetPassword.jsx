@@ -55,6 +55,8 @@ function ResetPassword() {
       });
 
       setSuccessMessage(response.data.message || "Password updated successfully! Redirecting...");
+      
+     
 
     } catch (err) {
       const message = err.response?.data?.message || "Failed to reset password. The link may be invalid or expired.";
@@ -68,6 +70,19 @@ function ResetPassword() {
   return (
     <>
       <div className="user-forgot-pass-page">
+        <div className="background-bubbles">
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+        </div>
+
         <div className="user-forgot-pass-card">
           <div className="user-forgot-pass-visual">
             <FaKey className="user-forgot-pass-icon" />
@@ -107,7 +122,7 @@ function ResetPassword() {
                 <button
                   type="submit"
                   className="user-forgot-pass-button"
-                  disabled={loading}
+                  disabled={loading || successMessage} 
                 >
                   {loading ? 'Updating...' : 'Update Password'}
                 </button>

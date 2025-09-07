@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { FaKey, FaEnvelope, FaArrowLeft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -13,6 +13,7 @@ function ForgotPassword() {
   const [successMessage, setSuccessMessage] = useState(null);
 
   useLayoutEffect(() => {
+    // This GSAP animation remains and will work perfectly with the new background
     gsap.fromTo(
       ".user-forgot-pass-card",
       { opacity: 0, y: 50 },
@@ -35,7 +36,7 @@ function ForgotPassword() {
     try {
       const response = await axiosInstance.post('/api/users/forgot-password', { email });
       setSuccessMessage(response.data.message);
-      setEmail(''); 
+      setEmail('');
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to send reset link. Please try again.");
       console.error("Forgot Password Error:", err);
@@ -47,6 +48,20 @@ function ForgotPassword() {
   return (
     <>
       <div className="user-forgot-pass-page">
+        {/* --- ADDED: Animated Background Bubbles --- */}
+        <div className="background-bubbles">
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+        </div>
+
         <div className="user-forgot-pass-card">
           <div className="user-forgot-pass-visual">
             <FaKey className="user-forgot-pass-icon" />

@@ -116,14 +116,17 @@ function AdminDashboard() {
           axiosInstance.get('/api/users'),
           axiosInstance.get('/api/moderator'),
           axiosInstance.get('/api/organaisation'),
-          axiosInstance.get('/api/contact'), 
+          axiosInstance.get('/api/contact'),
         ]);
         const allItems = itemsRes.data.data;
         const allUsers = usersRes.data.data;
+        console.log(allItems);
 
         const newStats = {
-          users: allUsers.length, items: allItems.length,
-          moderators: modsRes.data.data.length, organizations: orgsRes.data.data.length,
+          users: allUsers.length,
+          items: allItems.filter(item => item.status === 'registered' || item.status === 'lost').length,
+          moderators: modsRes.data.data.length,
+          organizations: orgsRes.data.data.length,
         };
         setStats(newStats);
 

@@ -1,17 +1,80 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Lato:wght@400;700&display=swap');
+
 :root {
+  /* Assuming these are defined elsewhere, but adding them for clarity */
   --user-primary-color: #20c997;
   --user-primary-dark: #19a47a;
+  --light-color: #ffffff;
+  --dark-color: #343a40;
+  --text-light: #6c757d;
+  --border-color: #ced4da;
+  --bg-light-gray: #f8f9fa;
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Lato', sans-serif;
 }
 
+/* --- MODIFIED: UPGRADED BACKGROUND AND ADDED POSITIONING --- */
 .user-login-page {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: gainsboro;
+  /* A more pleasant background that complements the theme */
+  background: linear-gradient(to bottom right, #0fffb7, #20c997);
   padding: 2rem;
+  position: relative;
+  overflow: hidden;
 }
+
+/* --- NEW SECTION: ANIMATED BUBBLE BACKGROUND --- */
+@keyframes rise {
+  0% {
+    bottom: -100px;
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(100px);
+  }
+  100% {
+    bottom: 1080px;
+    transform: translateX(-200px);
+  }
+}
+
+.background-bubbles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -100px;
+  width: 40px;
+  height: 40px;
+  /* Use the primary color with transparency */
+  background-color: #19a47a;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: rise 25s infinite ease-in;
+}
+
+/* Customize each bubble for a random, natural effect */
+.bubble:nth-child(1) { left: 10%; animation-duration: 25s; width: 40px; height: 40px; }
+.bubble:nth-child(2) { left: 20%; animation-duration: 15s; animation-delay: 2s; width: 60px; height: 60px; }
+.bubble:nth-child(3) { left: 25%; animation-duration: 30s; animation-delay: 4s; width: 25px; height: 25px; }
+.bubble:nth-child(4) { left: 40%; animation-duration: 40s; animation-delay: 0s; width: 80px; height: 80px; }
+.bubble:nth-child(5) { left: 50%; animation-duration: 22s; animation-delay: 0s; width: 35px; height: 35px; }
+.bubble:nth-child(6) { left: 65%; animation-duration: 18s; animation-delay: 1s; width: 50px; height: 50px; }
+.bubble:nth-child(7) { left: 75%; animation-duration: 35s; animation-delay: 3s; width: 100px; height: 100px; }
+.bubble:nth-child(8) { left: 80%; animation-duration: 28s; animation-delay: 5s; width: 20px; height: 20px; }
+.bubble:nth-child(9) { left: 90%; animation-duration: 19s; animation-delay: 2s; width: 45px; height: 45px; }
+.bubble:nth-child(10) { left: 55%; animation-duration: 33s; animation-delay: 7s; width: 70px; height: 70px; }
+/* --- END OF NEW SECTION --- */
+
 
 .user-login-error-message {
   width: 100%;
@@ -25,6 +88,7 @@
   color: #721c24;
   border: 1px solid #f5c6cb;
 }
+
 .user-login-card {
   display: grid;
   grid-template-columns: 1fr 1.5fr;
@@ -33,7 +97,10 @@
   background-color: var(--light-color);
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  overflow: hidden; 
+  overflow: hidden;
+  /* --- MODIFIED: Ensure card is above the background --- */
+  position: relative;
+  z-index: 1;
 }
 
 .user-login-visual {
@@ -91,7 +158,7 @@
 
 .user-login-form-group {
   position: relative;
-  margin-bottom: 1.5rem; 
+  margin-bottom: 1.5rem;
 }
 
 .user-login-form .user-login-form-group:last-of-type {
@@ -110,7 +177,7 @@
 
 .user-login-form-group input {
   width: 100%;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   padding: 1rem 1rem 1rem 3.25rem;
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -151,7 +218,7 @@
 }
 
 .user-login-links {
-  margin-top: 1.5rem; 
+  margin-top: 1.5rem;
   text-align: center;
   display: flex;
   flex-direction: column;

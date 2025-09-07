@@ -9,9 +9,8 @@ import heroBackground from '../../assets/Hand2.jpg';
 import phoneImage from '../../assets/Traveller.jpg';
 import petsImage from '../../assets/Pets.jpg';
 import creativeTech from '../../assets/TakeItEasy.jpg';
-// import avatar1 from '../../assets/Avatar1.jpg';
-// import avatar2 from '../../assets/Avatar2.jpg';
-// import avatar3 from '../../assets/Avatar3.jpg';
+import wallet from '../../assets/wallet.jpg'; // The new image for wallets/handbags
+
 import LandingNav from './LandingNav';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -21,6 +20,7 @@ function LandingPage() {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
+      // Parallax for Hero Background
       gsap.to(".landing-hero-section", {
         backgroundPosition: `50% 100%`,
         ease: "none",
@@ -32,6 +32,7 @@ function LandingPage() {
         },
       });
 
+      // Hero Text Animation
       const heroTimeline = gsap.timeline({ delay: 0.2 });
       heroTimeline
         .from(".landing-hero-h1-word span", {
@@ -41,7 +42,7 @@ function LandingPage() {
           stagger: 0.08,
           ease: 'expo.out'
         })
-        .from([".landing-hero-subtitle", ".landing-cta-button","landing-cta-button-footer"], {
+        .from([".landing-hero-subtitle", ".landing-cta-button"], {
           opacity: 0,
           y: 30,
           duration: 1,
@@ -49,7 +50,7 @@ function LandingPage() {
           ease: 'expo.out'
         }, "-=1"); 
 
-
+      // General Section Title/Subtitle Animation
       const sections = gsap.utils.toArray('.landing-section');
       sections.forEach(section => {
         const title = section.querySelector('.landing-section-title');
@@ -76,6 +77,7 @@ function LandingPage() {
         }
       });
       
+      // Card Grid Animations
       gsap.from(".landing-info-card", {
         scrollTrigger: { trigger: ".landing-info-grid", start: "top 85%", once: true },
         opacity: 0,
@@ -95,22 +97,14 @@ function LandingPage() {
         stagger: 0.15
       });
 
-      gsap.from(".landing-testimonial-card", {
-        scrollTrigger: { trigger: ".landing-testimonial-grid", start: "top 85%", once: true },
-        opacity: 0,
-        y: 60,
-        duration: 1.2,
-        ease: 'expo.out',
-        stagger: 0.15
-      });
-
-
+      // Feature Section Animations (This will automatically include the new wallet section)
       const features = gsap.utils.toArray('.landing-feature-item');
       features.forEach(feature => {
         const imageWrapper = feature.querySelector('.landing-feature-image');
         const image = feature.querySelector('.landing-feature-image img');
         const content = feature.querySelectorAll('.landing-feature-content > *');
 
+        // Parallax for feature images
         gsap.to(image, {
           yPercent: -10,
           ease: "none",
@@ -145,7 +139,7 @@ function LandingPage() {
           }, "-=1.2");
       });
 
-
+      // Final CTA Animation
       gsap.from(".landing-final-cta-section .landing-container > *", {
         scrollTrigger: { trigger: ".landing-final-cta-section", start: "top 80%", once: true },
         opacity: 0,
@@ -162,17 +156,19 @@ function LandingPage() {
 
   return (
     <div>
+      {/* Assuming LandingNav is a separate component you want to keep */}
+      {/* <LandingNav /> */}
       <div className="landing-page" ref={main}>
         <section className="landing-hero-section" style={{ backgroundImage: `url(${heroBackground})` }}>
           <div className="landing-hero-overlay"></div>
           <div className="landing-container">
             <div className="landing-hero-content">
               <h1>
-                <div className="landing-hero-h1-word"><span>Lost Pets & Tech,</span></div>
+                <div className="landing-hero-h1-word"><span>Lost Items & Pets,</span></div>
                 <div className="landing-hero-h1-word"><span>Reunited by</span></div>
                 <div className="landing-hero-h1-word"><span className="landing-brand-name">Findy.</span></div>
               </h1>
-              <p className="landing-hero-subtitle">The community platform for reuniting you with your lost pets, phones, and laptops. Your neighbors are ready to help.</p>
+              <p className="landing-hero-subtitle">The community platform for reuniting you with your lost pets, phones, wallets, and more. Your neighbors are ready to help.</p>
               <Link to="/User/register" className="landing-cta-button">Join the Community</Link>
             </div>
           </div>
@@ -181,7 +177,7 @@ function LandingPage() {
         <section className="landing-why-us-section landing-section">
           <div className="landing-container">
             <h2 className="landing-section-title">Why Choose Findy?</h2>
-            <p className="landing-section-subtitle">A faster, safer, and more effective way to find your lost companions and devices.</p>
+            <p className="landing-section-subtitle">A faster, safer, and more effective way to find your lost companions and valuables.</p>
             <div className="landing-info-grid">
               <div className="landing-info-card">
                 <div className="landing-info-icon-wrapper"><FaUsers /></div>
@@ -196,7 +192,7 @@ function LandingPage() {
               <div className="landing-info-card">
                 <div className="landing-info-icon-wrapper"><FaLightbulb /></div>
                 <h3>Simple & Focused</h3>
-                <p>Our streamlined process is designed specifically for finding lost pets and electronics, making it incredibly easy.</p>
+                <p>Our streamlined process is designed specifically for finding lost pets, electronics, and personal items, making it incredibly easy.</p>
               </div>
             </div>
           </div>
@@ -205,19 +201,19 @@ function LandingPage() {
         <section className="landing-how-it-works-section landing-section landing-alt-bg">
           <div className="landing-container">
             <h2 className="landing-section-title">A Simple Path to Reunion</h2>
-            <p className="landing-section-subtitle">Our three-step process is designed to bring lost pets and devices together with their owners with ease and security.</p>
+            <p className="landing-section-subtitle">Our three-step process is designed to bring lost items together with their owners with ease and security.</p>
             <div className="landing-how-it-works-grid">
               <div className="landing-step-card">
                 <div className="landing-step-number">1</div>
                 <FaSearch className="landing-step-icon" />
                 <h3>Describe What's Missing</h3>
-                <p>Lost your pet or device? Post a detailed, anonymous report. The more detail, the higher the chance of a match.</p>
+                <p>Lost your pet, wallet, or device? Post a detailed, anonymous report. The more detail, the higher the chance of a match.</p>
               </div>
               <div className="landing-step-card">
                 <div className="landing-step-number">2</div>
                 <FaCloudUploadAlt className="landing-step-icon" />
                 <h3>Report a Find</h3>
-                <p>Found a lost pet or a phone? Become a hero. Upload a photo and mark the location to help the owner.</p>
+                <p>Found a lost pet or a handbag? Become a hero. Upload a photo and mark the location to help the owner.</p>
               </div>
               <div className="landing-step-card">
                 <div className="landing-step-number">3</div>
@@ -251,28 +247,41 @@ function LandingPage() {
               </div>
               <div className="landing-feature-content">
                 <h3>The Forgetful Creative</h3>
-                <p>Left your laptop at a coffee shop or your Smart phone on the train? Your valuable work isn't gone forever. Connect with finders in your area.</p>
+                <p>Left your laptop at a coffee shop? Your valuable work isn't gone forever. Connect with finders in your area and get back to creating.</p>
                 <Link to="/login/user" className="landing-feature-link">Find your lost electronics</Link>
               </div>
             </div>
 
+            {/* NEW SECTION FOR WALLETS AND HANDBAGS */}
             <div className="landing-feature-item">
+              <div className="landing-feature-image">
+                <img src={wallet} alt="A wallet and personal items on a table" />
+              </div>
+              <div className="landing-feature-content">
+                <h3>The Busy Professional</h3>
+                <p>A lost wallet or handbag can bring your day to a halt. Securely connect with the person who found it and retrieve your essentials without worry.</p>
+                <Link to="/login/user" className="landing-feature-link">Report a lost wallet or bag</Link>
+              </div>
+            </div>
+
+            <div className="landing-feature-item landing-layout-reversed">
               <div className="landing-feature-image">
                 <img src={phoneImage} alt="A person looking at their phone on the go" />
               </div>
               <div className="landing-feature-content">
                 <h3>The Disconnected Commuter</h3>
-                <p>Losing your phone feels like losing a part of yourself. Our platform helps you quickly alert people in the area to get your digital life back on track.</p>
+                <p>Losing your phone feels like losing a part of yourself. Our platform helps you quickly alert people on your route to get your digital life back on track.</p>
                 <Link to="/login/user" className="landing-feature-link">Search for a lost phone</Link>
               </div>
             </div>
+
           </div>
         </section>
 
         <section className="landing-final-cta-section landing-section">
           <div className="landing-container">
             <h2>Rediscover What's Lost.</h2>
-            <p>Whether you've lost a device or found a pet, you can make a difference. Sign up today and help bring things home.</p>
+            <p>Whether you've lost a wallet, found a pet, or spotted a forgotten laptop, you can make a difference. Sign up today and help bring things home.</p>
             <Link to="/User/register" className="landing-cta-button-footer">Create Your Free Account</Link>
           </div>
         </section>

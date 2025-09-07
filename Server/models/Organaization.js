@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const crypto = require('crypto'); 
+const crypto = require('crypto');
 
 const Schema = mongoose.Schema;
 
@@ -18,18 +18,30 @@ const organisationSchema = new Schema({
         type: String,
         required: [true, 'Contact person name is required'],
     },
-    registrationId: { 
+    registrationId: {
         type: String,
         unique: true,
-
     },
     email: {
         type: String,
         required: [true, 'Organisation email is required'],
         unique: true,
-        lowercase: true, 
+        lowercase: true,
     },
-    website: { 
+    // --- ADDED PHONE FIELD ---
+    phone: {
+        type: String,
+        validate: {
+            validator: function(v) {
+                // This allows the field to be optional (null or empty string).
+                // If a value is provided, it must be a 10-digit string.
+                return !v || /^\d{10}$/.test(v);
+            },
+            message: props => `${props.value} is not a valid 10-digit phone number!`
+        }
+    },
+    // -------------------------
+    website: {
         type: String,
     },
     address: {
@@ -40,20 +52,20 @@ const organisationSchema = new Schema({
         type: String,
         required: [true, 'Password is required'],
         minlength: 6,
-        select: false, 
+        select: false,
     },
     isActive: {
-    type: Boolean,
-    default: true 
-},
-    organisationLogo: { 
+        type: Boolean,
+        default: true
+    },
+    organisationLogo: {
         type: String,
     },
     passwordResetToken: String,
     passwordResetExpires: Date,
 
 }, {
-    timestamps: true 
+    timestamps: true
 });
 
 organisationSchema.pre('save', async function(next) {

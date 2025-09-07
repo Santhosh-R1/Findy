@@ -14,12 +14,12 @@ const itemSchema = new mongoose.Schema(
     },
     mainCategory: {
       type: String,
-      enum: ['electronics', 'pets'], 
+      enum: ['electronics', 'pets', 'accessories'], 
       required: [true, "Main category is required."],
     },
     subCategory: {
       type: String,
-      enum: ['phone', 'laptop', 'dog', 'cat'],
+      enum: ['phone', 'laptop', 'dog', 'cat', 'wallet', 'hand bag'],
       required: [true, "Sub-category is required."],
     },
     status: {
@@ -29,7 +29,6 @@ const itemSchema = new mongoose.Schema(
     },
     itemName: {
       type: String,
-      required: [true, "Item name or breed is required."],
       trim: true,
     },
     itemImage: {

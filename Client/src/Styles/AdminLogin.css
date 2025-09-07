@@ -1,15 +1,111 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Lato:wght@400;700&display=swap');
 
+/* --- MODIFIED --- */
 .admin-login-page {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: gainsboro;
+  /* Changed background to match the theme */
+  background-color: #0a2540; 
   padding: 2rem;
+  /* Added for positioning the shapes */
+  position: relative;
+  overflow: hidden; 
 }
+
+/* --- NEW SECTION: ANIMATED BACKGROUND --- */
+@keyframes animateShapes {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+    border-radius: 0;
+  }
+  100% {
+    transform: translateY(-1000px) rotate(720deg);
+    opacity: 0;
+    border-radius: 50%;
+  }
+}
+
+.background-shapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.background-shapes span {
+  position: absolute;
+  display: block;
+  list-style: none;
+  width: 20px;
+  height: 20px;
+  /* Use a subtle color from your theme */
+  background: rgba(255, 255, 255, 0.1); 
+  animation: animateShapes 25s linear infinite;
+  bottom: -150px;
+}
+
+/* Customize each shape for a random effect */
+.background-shapes span:nth-child(1) {
+  left: 25%;
+  width: 80px;
+  height: 80px;
+  animation-delay: 0s;
+}
+.background-shapes span:nth-child(2) {
+  left: 10%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 2s;
+  animation-duration: 12s;
+}
+.background-shapes span:nth-child(3) {
+  left: 70%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 4s;
+}
+.background-shapes span:nth-child(4) {
+  left: 40%;
+  width: 60px;
+  height: 60px;
+  animation-delay: 0s;
+  animation-duration: 18s;
+}
+.background-shapes span:nth-child(5) {
+  left: 65%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 0s;
+}
+.background-shapes span:nth-child(6) {
+  left: 75%;
+  width: 110px;
+  height: 110px;
+  animation-delay: 3s;
+}
+.background-shapes span:nth-child(7) {
+  left: 35%;
+  width: 150px;
+  height: 150px;
+  animation-delay: 7s;
+}
+.background-shapes span:nth-child(8) {
+  left: 50%;
+  width: 25px;
+  height: 25px;
+  animation-delay: 15s;
+  animation-duration: 45s;
+}
+/* --- END OF NEW SECTION --- */
+
+
 .admin-login-error-message {
-  color: #a94442; 
+  color: #a94442;
   background-color: #f2dede;
   border: 1px solid #ebccd1;
   border-radius: 4px;
@@ -24,15 +120,18 @@
   grid-template-columns: 1fr 1.5fr;
   max-width: 900px;
   width: 100%;
-  background-color: var(--light-color);
+  background-color: white; /* Changed from var(--light-color) for clarity */
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   overflow: hidden;
+  /* --- MODIFIED: Ensure card is above the background --- */
+  position: relative;
+  z-index: 1;
 }
 
 .admin-login-visual {
-  background:#0a2540;
-  color: var(--light-color);
+  background: #0a2540;
+  color: white; /* Changed from var for clarity */
   padding: 3rem;
   display: flex;
   flex-direction: column;
@@ -43,13 +142,13 @@
 
 .admin-login-icon {
   font-size: 5rem;
-  color: var(--primary-color);
+  color: #007bff; /* Primary color */
   margin-bottom: 1.5rem;
   filter: drop-shadow(0 0 15px rgba(0, 123, 255, 0.4));
 }
 
 .admin-login-visual h2 {
-  font-family: var(--font-heading);
+  font-family: 'Poppins', sans-serif;
   font-size: 2rem;
   margin: 0 0 0.5rem 0;
 }
@@ -68,14 +167,14 @@
 }
 
 .admin-login-form-section h2 {
-  font-family: var(--font-heading);
+  font-family: 'Poppins', sans-serif;
   font-size: 2.2rem;
   color: #0a2540;
   margin: 0;
 }
 
 .admin-login-subtitle {
-  color: var(--text-light);
+  color: #6c757d; /* text-light color */
   margin: 0.5rem 0 2rem 0;
 }
 
@@ -95,44 +194,44 @@
 .admin-login-input-icon {
   position: absolute;
   top: 50%;
-  left: 16px; 
+  left: 16px;
   transform: translateY(-50%);
-  color: var(--text-light);
+  color: #6c757d; /* text-light color */
   font-size: 1.1rem;
   pointer-events: none;
 }
 
 .admin-login-form-group input {
   width: 100%;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   padding: 1rem 1rem 1rem 3.25rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid #ced4da; /* border-color */
   border-radius: 8px;
-  font-family: var(--font-body);
+  font-family: 'Lato', sans-serif;
   font-size: 1rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  background-color: var(--bg-light-gray);
+  background-color: #f8f9fa; /* bg-light-gray */
 }
 
 .admin-login-form-group input:focus {
   outline: none;
-  border-color: var(--primary-color);
+  border-color: #007bff; /* primary-color */
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
 }
 
 .admin-login-form-group input:focus ~ .admin-login-input-icon {
-  color: var(--primary-color);
+  color: #007bff; /* primary-color */
 }
 
 .admin-login-button {
   width: 100%;
   border: none;
   cursor: pointer;
-  background-color: var(--primary-color);
-  color: var(--light-color);
+  background-color: #007bff; /* primary-color */
+  color: white;
   padding: 1rem;
   border-radius: 8px;
-  font-family: var(--font-heading);
+  font-family: 'Poppins', sans-serif;
   font-weight: 600;
   font-size: 1.1rem;
   transition: background-color 0.3s ease, transform 0.3s ease;
@@ -140,15 +239,21 @@
 }
 
 .admin-login-button:hover {
-  background-color: var(--primary-dark);
+  background-color: #0056b3; /* primary-dark */
   transform: translateY(-3px);
 }
 
+.admin-login-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .admin-login-forgot-password {
-  margin-top: 1.5rem; 
+  margin-top: 1.5rem;
   text-align: center;
-  display: block; 
-  color: var(--primary-color);
+  display: block;
+  color: #007bff; /* primary-color */
   text-decoration: none;
   font-weight: 700;
   font-size: 0.9rem;

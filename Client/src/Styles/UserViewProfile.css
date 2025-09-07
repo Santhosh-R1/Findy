@@ -67,9 +67,9 @@
   opacity: 1;
 }
 
-.user-profile-name {
+.user-profile-name-edit {
   font-weight: 700 !important;
-  color: #212529;
+  color: #212529 !important;
 }
 .user-profile-email {
   margin-top: 0.25rem !important;

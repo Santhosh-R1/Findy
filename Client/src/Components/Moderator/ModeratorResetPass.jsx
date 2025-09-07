@@ -4,7 +4,7 @@ import { FaKey, FaLock, FaArrowLeft } from 'react-icons/fa';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import axiosInstance from '../../api/baseUrl';
-import '../../Styles/ModeratorResetPass.css'; 
+import '../../Styles/ModeratorResetPass.css';
 
 function ModeratorResetPass() {
   const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ function ModeratorResetPass() {
 
   useLayoutEffect(() => {
     gsap.fromTo(
-      ".moderator-reset-pass-card", 
+      ".moderator-reset-pass-card",
       { opacity: 0, y: 50 },
       { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
     );
@@ -55,7 +55,8 @@ function ModeratorResetPass() {
       });
 
       setSuccessMessage(response.data.message || "Password updated successfully!");
-     
+
+    
 
     } catch (err) {
       const message = err.response?.data?.message || "Failed to reset password. The link may be invalid or expired.";
@@ -67,7 +68,20 @@ function ModeratorResetPass() {
   };
 
   return (
-    <div className="moderator-reset-pass-page">
+    <div className="moderator-forgot-pass-page">
+      <div className="background-triangles">
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+          <div className="triangle"></div>
+      </div>
+
       <div className="moderator-reset-pass-card">
         <div className="moderator-reset-pass-visual">
           <FaKey className="moderator-reset-pass-icon" />
@@ -107,7 +121,7 @@ function ModeratorResetPass() {
               <button
                 type="submit"
                 className="moderator-reset-pass-button"
-                disabled={loading}
+                disabled={loading || successMessage} 
               >
                 {loading ? 'Updating...' : 'Update Password'}
               </button>
