@@ -7,8 +7,9 @@ import {
   FaListUl,
   FaUserCircle,
   FaSignOutAlt,
-  FaQuestionCircle, 
-  FaSearchPlus     
+  FaQuestionCircle, // Correct icon for Help Desk
+  FaSearchPlus,
+  FaBoxOpen // A slightly more thematic icon for "View My Items"
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/UserSideMenu.css';
@@ -19,7 +20,7 @@ function UserSideMenu() {
   const [loading, setLoading] = useState(true);
 
   const loadUserDataFromAPI = useCallback(async () => {
-    setLoading(true); 
+    setLoading(true);
     try {
       const storedUserInfo = localStorage.getItem('userInfo');
       if (storedUserInfo) {
@@ -57,7 +58,7 @@ function UserSideMenu() {
 
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
-    localStorage.removeItem('userToken'); 
+    localStorage.removeItem('userToken');
     setUser(null);
     navigate('/login/user');
   };
@@ -103,8 +104,10 @@ function UserSideMenu() {
         <ul>
           <li><NavLink to="/user/dashboard"><FaTachometerAlt className="user-sidemenu-icon" /><span>Dashboard</span></NavLink></li>
           <li><NavLink to="/user/add-item"><FaPlusCircle className="user-sidemenu-icon" /><span>Add Item</span></NavLink></li>
-          <li><NavLink to="/user/view-items"><FaListUl className="user-sidemenu-icon" /><span>View My Items</span></NavLink></li>
-          {/* <li><NavLink to="/user/lost-items"><FaQuestionCircle className="user-sidemenu-icon" /><span>Lost Items</span></NavLink></li> */}
+          {/* Using FaBoxOpen is slightly more descriptive for viewing physical items */}
+          <li><NavLink to="/user/view-items"><FaBoxOpen className="user-sidemenu-icon" /><span>View My Items</span></NavLink></li>
+          {/* CORRECTED ICON: FaQuestionCircle is perfect for a Help Desk */}
+          <li><NavLink to="/user/HelpDesk"><FaQuestionCircle className="user-sidemenu-icon" /><span>Help Desk</span></NavLink></li>
           <li><NavLink to="/user/found-items"><FaSearchPlus className="user-sidemenu-icon" /><span>Found Items</span></NavLink></li>
           <li><NavLink to="/user/profile"><FaUserCircle className="user-sidemenu-icon" /><span>My Profile</span></NavLink></li>
         </ul>

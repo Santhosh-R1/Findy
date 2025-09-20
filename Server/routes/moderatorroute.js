@@ -9,6 +9,7 @@ router.patch('/reset-password/:token', moderatorController.resetModeratorPasswor
 router.post('/register',uploadMiddleware.uploadProfileImage,moderatorController.addModerator);
 router.get('/', moderatorController.getAllModerators);
 router.patch('/:id/activate',moderatorController.activateModerator);
+router.get("/get-by-id/:id", moderatorController.getModeratorProfile);
 
 router.patch('/:id/deactivate', moderatorController.deactivateModerator);
 

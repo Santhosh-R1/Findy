@@ -39,14 +39,21 @@ import OrganaisationSidemenu from './Components/Organisation/OrganaisationSideme
 import OrganaisationFounds from './Components/Organisation/OrganaisationFounds';
 import OrganaisationFinds from './Components/Organisation/OrganaisationFinds';
 import OrganisationEdit from './Components/Organisation/OrganaisationEdit';
+import ModeratorDashBoard from './Components/Moderator/ModeratorDashBoard';
+import ModeratorSidemenu from './Components/Moderator/ModeratorSidemenu';
+import ModeratorLost from './Components/Moderator/ModeratorLost';
+import ModeratorsFound from './Components/Moderator/ModeratorsFound';
+import MatchReviewPage from './Components/User/MatchReviewPage';
+import ManageClaim from './Components/Moderator/ManageClaim';
+import UserHelpDesk from './Components/User/HelpDesk';
 function App() {
   return (
     <Router>
 
       <Routes>
-        <Route path="/" element={[<LandingNav/>,<LandingPage />]} />
-        <Route path="/about" element={[<LandingNav/>,<About />]} />
-        <Route path="/contact" element={[<LandingNav/>,<Contact />]} />
+        <Route path="/" element={[<LandingNav />, <LandingPage />]} />
+        <Route path="/about" element={[<LandingNav />, <About />]} />
+        <Route path="/contact" element={[<LandingNav />, <Contact />]} />
         <Route path="/login/admin" element={[<LandingNav />, <AdminLogin />]} />
         <Route path="/login/user" element={[<LandingNav />, <UserLogin />]} />
         <Route path="/login/organisation" element={[<LandingNav />, <OrganisationLogin />]} />
@@ -55,30 +62,12 @@ function App() {
         <Route path="/Organisation/register" element={[<LandingNav />, <OrganisationRegistration />]} />
         <Route path="/Organisation/Forgot-Password" element={[<LandingNav />, <OrganisationForgotPass />]} />
         <Route path="/User/Forgot-Password" element={[<LandingNav />, <UserForgotPass />]} />
-        <Route path="/reset-password/:token" element={[ <ResetPassword />]} />
+        <Route path="/reset-password/:token" element={[<ResetPassword />]} />
         <Route path="/organisation/reset-password/:token" element={[<OrganisationResetPassword />]} />
-        <Route path="/admin/dashBoard" element={[<AdminSidemenu/>,<AdminDashboard />]} />
-        <Route path="/admin/AddModerators" element={[<AdminSidemenu/>,<AddModerators />]} />
+        
         <Route path="/moderator/Forgot-Password" element={[<LandingNav />, <ModeratorForgotPass />]} />
         <Route path="/moderator/reset-password/:token" element={[<ModeratorResetPass />]} />
-        <Route path="/admin/manage-moderators" element={[<AdminSidemenu/>,<ManageModerators />]} />
-        <Route path="/admin/manage-organisation" element={[<AdminSidemenu/>,<ManageOrganaisation />]} />
-        <Route path="/admin/view-users" element={[<AdminSidemenu/>,<ViewUsers />]} />
-        <Route path="/user/dashboard" element={[<UserNav/>,<UserSideMenu/>,<UserDashBoard />]} />
-        <Route path="/user/add-item" element={[<UserNav/>,<UserSideMenu/>,<AddItems />]} />
-        <Route path="/user/view-items" element={[<UserNav/>,<UserSideMenu/>,<ViewItems />]} />
-        <Route path="/user/edit-item/:itemId" element={[<UserNav/>,<UserSideMenu/>,<EditItem />]} />
-        <Route path="/user/profile" element={[<UserNav/>,<UserSideMenu/>,<UserViewProfile />]} />
-        {/* <Route path="/user/lost-items" element={[<UserNav/>,<UserSideMenu/>,<LostItem />]} /> */}
-        <Route path="/user/found-items" element={[<UserNav/>,<UserSideMenu/>,<FoundItem />]} />
-        <Route path="/user/my-found-items" element={[<UserNav/>,<UserSideMenu/>,<UserFounds />]} />
-        <Route path="/user/lost-items-others" element={[<UserNav/>,<UserSideMenu/>,<UserLostItems />]} />
-        <Route path="/admin/view-all-lost" element={[<AdminSidemenu/>,<AdminViewAllLost />]} />
-        <Route path="/organisation/DashBoard" element={[<OrganaisationSidemenu/>,<OrganaisationDashBoard />]} />
-        <Route path="/organisation/founts" element={[<OrganaisationSidemenu/>,<OrganaisationFounds />]} />
-        <Route path="/organisation/my-found-items" element={[<OrganaisationSidemenu/>,<OrganaisationFinds />]} />
-        <Route path="/organisation/lost-items-others" element={[<OrganaisationSidemenu/>,< UserLostItems/>]} />
-        <Route path="/organisation/profile" element={[<OrganaisationSidemenu/>,< OrganisationEdit/>]} />
+       
 
       </Routes>
     </Router>

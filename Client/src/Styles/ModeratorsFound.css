@@ -1,0 +1,402 @@
+/* src/styles/ModeratorsFound.css */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  /* --- NEW: Themed color palette --- */
+  --mod-primary-color: #fd7e14; /* Orange */
+  --mod-primary-dark: #e66a00;  /* Darker Orange for hover */
+  --mod-dark-bg: #343a40;       /* Dark Gray */
+  --mod-light-color: #ffffff;
+  
+  /* --- General UI colors --- */
+  --mod-bg-color: #f8f9fa;
+  --mod-border-color: #dee2e6;
+  --mod-text-primary: #212529;
+  --mod-text-secondary: #6c757d;
+  --mod-shadow-md: 0 4px 12px -4px rgba(0, 0, 0, 0.08);
+  --sidebar-width-desktop: 260px;
+  --sidebar-width-mobile: 80px;
+}
+
+/* --- NEW: Keyframes for Modal Animation --- */
+@keyframes fadeInScaleUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+/* --- Main Page Layout --- */
+.mod-found-page {
+  margin-left: var(--sidebar-width-desktop);
+  width: calc(100% - var(--sidebar-width-desktop));
+  padding: 2.5rem;
+  background-color: var(--mod-bg-color);
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.mod-found-page-header-container {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--mod-border-color);
+}
+
+.mod-found-page-header {
+  font-weight: 700 !important;
+  color: var(--mod-text-primary);
+}
+
+.mod-found-page-subtitle {
+  color: var(--mod-text-secondary);
+  margin-top: 0.25rem !important;
+}
+
+.mod-found-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+/* --- Empty/Status States --- */
+.mod-found-status-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1rem;
+  margin-top: 2rem;
+  background-color: #fff;
+  border: 1px dashed var(--mod-border-color);
+  border-radius: 16px;
+}
+
+.mod-found-no-items-icon {
+  font-size: 3rem;
+  color: var(--mod-text-secondary);
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+/* --- Found Item Card Styling --- */
+.mod-found-item-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px !important;
+  border: 1px solid var(--mod-border-color) !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  background-color: #fff;
+  height: 100%;
+}
+
+.mod-found-item-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--mod-shadow-md) !important;
+  border-color: var(--mod-primary-color) !important; /* THEMED */
+}
+
+.mod-found-card-image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.mod-found-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.mod-found-item-card:hover .mod-found-card-image {
+  transform: scale(1.05);
+}
+
+.mod-found-category-chip {
+  position: absolute !important;
+  top: 12px;
+  right: 12px;
+  background-color: rgba(253, 126, 20, 0.9) !important; /* THEMED */
+  color: #fff !important;
+  backdrop-filter: blur(4px);
+  text-transform: capitalize;
+  font-weight: 600 !important;
+}
+
+.mod-found-card-content {
+  padding: 1.25rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mod-found-finder-info-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.mod-found-finder-name, .mod-found-finder-email {
+  font-weight: 600 !important;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mod-found-finder-email {
+  color: var(--mod-text-secondary);
+  font-weight: 400 !important;
+}
+
+.mod-found-item-title {
+  font-weight: 600 !important;
+  color: var(--mod-text-primary);
+  margin-bottom: 0.5rem !important;
+}
+
+.mod-found-item-description {
+  flex-grow: 1;
+  margin-bottom: 1rem !important;
+  line-height: 1.6;
+}
+
+.mod-found-item-details-grid {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.mod-found-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--mod-text-secondary);
+}
+
+.mod-found-detail-item svg {
+  color: var(--mod-primary-color); /* THEMED */
+}
+
+.mod-found-card-actions {
+  padding: 0 1.25rem 1.25rem;
+}
+
+.mod-found-manage-item-btn {
+  background-color: var(--mod-primary-color) !important; /* THEMED */
+  font-weight: 600 !important;
+  text-transform: none !important;
+  padding: 10px 10px !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.mod-found-manage-item-btn:hover {
+  background-color: var(--mod-primary-dark) !important; /* THEMED */
+  transform: scale(1.02);
+}
+
+/* --- DIALOG STYLES (CLASSIC REDESIGN) --- */
+.mod-found-dialog-paper {
+  border-radius: 12px !important;
+  max-height: 90vh; /* Set a max height */
+  overflow: hidden; /* Prevent double scrollbars */
+  animation: fadeInScaleUp 0.3s ease-out forwards; /* NEW: Animation */
+}
+
+.mod-found-dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700 !important;
+  background-color: var(--mod-dark-bg); /* THEMED */
+  color: var(--mod-light-color); /* THEMED */
+  padding: 16px 24px !important;
+}
+.mod-found-dialog-title svg {
+  color: var(--mod-primary-color); /* THEMED */
+}
+
+.mod-found-dialog-content {
+  padding: 0 !important;
+  background-color: #f9fafb;
+}
+
+.mod-found-dialog-column-left,
+.mod-found-dialog-column-right {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 24px;
+}
+
+.mod-found-dialog-column-left {
+  border-right: 1px solid var(--mod-border-color);
+  background-color: var(--mod-light-color);
+  overflow-y: auto;
+}
+
+.mod-found-dialog-column-right {
+  overflow: hidden;
+}
+
+.mod-found-dialog-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--mod-border-color);
+}
+
+.mod-found-info-paper {
+  padding: 1rem;
+  border-radius: 12px !important;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mod-found-info-line {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.mod-found-info-line strong { display: flex; align-items: center; gap: 0.75rem; }
+.mod-found-info-value { word-break: break-all; }
+
+/* --- AI MATCHING TOOL STYLES --- */
+.mod-found-match-tool {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.mod-found-dialog-scroll-section {
+  overflow-y: auto;
+  padding-right: 12px;
+  margin-right: -12px;
+}
+
+.mod-found-match-actions {
+  padding-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.mod-found-match-results-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 0.5rem;
+  margin: -0.5rem;
+  background-color: var(--mod-bg-color);
+  border-radius: 8px;
+  border: 1px solid var(--mod-border-color);
+}
+
+.mod-found-match-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--mod-text-secondary);
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+.mod-found-match-placeholder svg { font-size: 2rem; opacity: 0.6; }
+
+.mod-found-match-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem !important;
+  margin-bottom: 0.75rem !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--mod-border-color) !important;
+  position: relative;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: var(--mod-light-color);
+}
+.mod-found-match-item:last-child { margin-bottom: 0 !important; }
+
+.mod-found-match-item:hover {
+  border-color: var(--mod-primary-color) !important; /* THEMED */
+  box-shadow: 0 2px 8px -2px rgba(253, 126, 20, 0.2);
+}
+.mod-found-match-notify-action {
+  grid-column: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mod-found-notify-error-msg {
+  display: block;
+  text-align: center;
+  margin-top: 4px !important;
+  max-width: 120px; 
+}
+
+.mod-found-match-score {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    text-align: center;
+}
+/* THEMED: Style MUI primary color chip to be orange */
+.mod-found-match-score .MuiChip-colorPrimary {
+    background-color: var(--mod-primary-color) !important;
+}
+
+.mod-found-match-image {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--mod-border-color);
+  grid-column: 1 / 2;
+}
+
+.mod-found-match-details {
+  grid-column: 2 / 3;
+}
+
+.mod-found-notify-btn {
+  text-transform: none !important;
+  font-weight: 600 !important;
+}
+
+.mod-found-dialog-actions {
+  padding: 16px 24px !important;
+  border-top: 1px solid var(--mod-border-color);
+  background-color: var(--mod-bg-color); /* Updated background */
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 900px) {
+  .mod-found-page {
+    margin-left: var(--sidebar-width-mobile);
+    width: calc(100% - var(--sidebar-width-mobile));
+    padding: 1.5rem;
+  }
+}

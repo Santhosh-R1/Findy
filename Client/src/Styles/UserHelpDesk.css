@@ -1,0 +1,197 @@
+/* src/Styles/UserHelpDesk.css */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  --sidebar-width: 260px;
+  --primary-color: #1976d2; /* MUI default blue */
+  --primary-dark: #1565c0;
+  --bg-color: #f8f9fa;
+  --border-color: #dee2e6;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --shadow-hover: 0 8px 24px -4px rgba(25, 118, 210, 0.2);
+}
+
+/* --- Main Page Layout with Sidebar Offset --- */
+.user-help-desk-page-wrapper {
+  background-color: var(--bg-color);
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* On medium screens and up, account for the sidebar */
+@media (min-width: 900px) {
+  .user-help-desk-page-wrapper {
+    width: calc(100% - var(--sidebar-width));
+    margin-left: var(--sidebar-width);
+    padding: 2.5rem;
+  }
+}
+
+/* --- Header --- */
+.user-help-desk-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.user-help-desk-header-title {
+  font-weight: 700 !important;
+}
+.user-help-desk-header-subtitle {
+  color: var(--text-secondary);
+}
+
+/* --- Status/Empty States --- */
+.user-help-desk-status-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1rem;
+  margin-top: 2rem;
+}
+.user-help-desk-no-items {
+  background-color: #fff;
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+}
+.user-help-desk-no-items-icon {
+  font-size: 3.5rem !important;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  opacity: 0.6;
+}
+
+/* --- Match Card Styling --- */
+.user-help-desk-match-card {
+  border-radius: 16px !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+  overflow: hidden;
+}
+.user-help-desk-match-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover) !important;
+}
+
+/* Card Header */
+.user-help-desk-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+.user-help-desk-card-title {
+  font-weight: 600 !important;
+}
+
+/* Card Body & Item Layout */
+.user-help-desk-card-body {
+  display: grid;
+  align-items: center;
+  padding: 1.5rem;
+  gap: 1.5rem;
+  /* Desktop: 3 columns for perfect alignment. 1fr | auto | 1fr */
+  grid-template-columns: 1fr auto 1fr;
+}
+.user-help-desk-item-container {
+  display: flex;
+}
+.user-help-desk-item-display {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.user-help-desk-item-avatar {
+  width: 80px !important;
+  height: 80px !important;
+  border: 1px solid var(--border-color);
+}
+.user-help-desk-item-tag {
+  margin-bottom: 0.25rem !important;
+  font-weight: 600 !important;
+}
+.user-help-desk-item-name {
+  font-weight: 600 !important;
+  font-size: 1.1rem !important;
+  color: var(--text-primary);
+}
+
+/* --- The Visual Connector between Items --- */
+.user-help-desk-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.user-help-desk-connector-line {
+  flex-grow: 1;
+  border-bottom: 1px dashed var(--border-color);
+}
+.user-help-desk-connector-icon {
+  color: var(--text-secondary);
+}
+
+/* Card Actions */
+.user-help-desk-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: 1rem 1.5rem;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+}
+.user-help-desk-review-btn, .user-help-desk-chat-btn {
+  text-transform: none !important;
+  font-weight: 600 !important;
+}
+.user-help-desk-review-btn {
+  background-color: var(--primary-color) !important;
+}
+.user-help-desk-review-btn:hover {
+  background-color: var(--primary-dark) !important;
+}
+.user-help-desk-chat-btn {
+  border-color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
+}
+.user-help-desk-chat-btn:hover {
+  background-color: rgba(25, 118, 210, 0.05) !important;
+}
+
+/* --- Responsive & Alignment Fixes --- */
+@media (max-width: 899px) {
+  /* Stack card items vertically on mobile */
+  .user-help-desk-card-body {
+    grid-template-columns: 1fr;
+  }
+
+  .user-help-desk-item-container {
+    justify-content: center;
+  }
+
+  .user-help-desk-item-display {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  /* Rotate connector and hide lines on mobile */
+  .user-help-desk-connector-line {
+    display: none;
+  }
+  .user-help-desk-connector-icon {
+    transform: rotate(90deg);
+    font-size: 2rem !important;
+  }
+}
+
+@media (min-width: 900px) {
+  /* *** NEW RULE TO ALIGN THE RIGHT-SIDE ITEM *** */
+  /* This pushes the "Found Item" to the right edge of its grid cell */
+  .found-item-container {
+    justify-content: flex-end;
+  }
+}

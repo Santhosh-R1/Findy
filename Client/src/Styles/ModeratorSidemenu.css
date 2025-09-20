@@ -1,0 +1,179 @@
+/*
+ *  File: /src/Styles/ModeratorSidemenu.css
+ *  Complete styles for the Moderator Sidemenu component,
+ *  featuring a dynamic profile section and a responsive layout.
+ */
+
+/* Import fonts if you use them globally, otherwise they are inherited */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Lato:wght@400;700&display=swap');
+
+:root {
+  /* Colors from your ModeratorLogin.css theme */
+  --mod-primary-color: #fd7e14; /* Orange */
+  --mod-dark-bg: #343a40;       /* Dark Gray */
+  
+  /* Shared colors for text and elements */
+  --light-color: #ffffff;
+  --text-light-translucent: rgba(255, 255, 255, 0.7);
+
+  /* Fonts */
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Lato', sans-serif;
+}
+
+/* --- Main Sidebar Container --- */
+.moderators-sidemenu {
+  width: 260px;
+  height: 100vh;
+  background-color: var(--mod-dark-bg);
+  color: var(--light-color);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 4px 0px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  font-family: var(--font-body);
+}
+
+/* --- Profile Section --- */
+.moderators-profile-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.moderators-profile-section {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;    
+  gap: 12px;              
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+/* Style for the skeleton loader state */
+.moderators-profile-section.skeleton {
+  align-items: center; 
+  gap: 12px;
+}
+
+.moderators-profile-link:hover .moderators-profile-section {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.moderators-profile-name {
+  color: var(--light-color) !important;
+  font-weight: 600 !important; 
+  font-family: var(--font-heading) !important;
+  text-align: center;
+  max-width: 90%; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Fallback header if user data is not available */
+.moderators-sidemenu-header-placeholder {
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--mod-primary-color);
+}
+
+/* --- Navigation Links --- */
+.moderators-sidemenu-nav {
+  flex-grow: 1; /* Allows this section to fill remaining space */
+  overflow-y: auto; /* Adds scroll if there are too many links */
+}
+
+.moderators-sidemenu-nav ul {
+  list-style: none;
+  padding: 1rem 0;
+  margin: 0;
+}
+
+.moderators-sidemenu-nav a,
+.moderators-sidemenu-logout button {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  color: var(--text-light-translucent);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.moderators-sidemenu-icon {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+  width: 20px;
+  text-align: center;
+}
+
+/* --- Hover and Active States --- */
+.moderators-sidemenu-nav a:hover,
+.moderators-sidemenu-logout button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--light-color);
+}
+
+.moderators-sidemenu-nav a.active {
+  background-color: var(--mod-primary-color); /* Orange highlight for active link */
+  color: var(--light-color);
+  font-weight: 700;
+  border-left-color: var(--light-color); /* White accent border */
+}
+
+/* --- Logout Button --- */
+.moderators-sidemenu-logout {
+  padding: 1rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.moderators-sidemenu-logout button {
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit; 
+  text-align: left;
+}
+
+/* --- Responsive Design for Mobile --- */
+@media (max-width: 768px) {
+  .moderators-sidemenu {
+    width: 80px; /* Collapse the sidebar */
+  }
+  
+  .moderators-profile-section {
+    padding: 1rem 0; /* Adjust padding for smaller size */
+  }
+
+  /* Hide all text labels */
+  .moderators-profile-name,
+  .moderators-sidemenu-header-placeholder h3,
+  .moderators-sidemenu-nav a span,
+  .moderators-sidemenu-logout button span {
+    display: none;
+  }
+
+  /* Center the icons */
+  .moderators-sidemenu-nav a,
+  .moderators-sidemenu-logout button {
+    justify-content: center;
+    padding: 1rem 0;
+  }
+  
+  .moderators-sidemenu-icon {
+    margin-right: 0;
+    font-size: 1.5rem; /* Make icons slightly larger */
+  }
+}

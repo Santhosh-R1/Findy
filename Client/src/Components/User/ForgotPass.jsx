@@ -1,12 +1,13 @@
 import React, { useState, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { FaKey, FaEnvelope, FaArrowLeft } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/UserForgotPass.css';
 
 function ForgotPassword() {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -36,6 +37,9 @@ function ForgotPassword() {
     try {
       const response = await axiosInstance.post('/api/users/forgot-password', { email });
       setSuccessMessage(response.data.message);
+      setTimeout(() => {
+        navigate('/login/user');
+      }, 3000);
       setEmail('');
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to send reset link. Please try again.");

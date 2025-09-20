@@ -1,18 +1,18 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { FaKey, FaEnvelope, FaArrowLeft } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../Styles/OrganaisationForgotPass.css';
 import axiosInstance from '../../api/baseUrl';
 
 function OrganisationForgotPassword() {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
   useLayoutEffect(() => {
-    // This GSAP animation will work perfectly over the new background
     gsap.fromTo(
       ".org-forgot-pass-card",
       { opacity: 0, y: 50 },
@@ -35,6 +35,9 @@ function OrganisationForgotPassword() {
     try {
       const response = await axiosInstance.post('/api/organaisation/forgot-password', { email });
       setSuccessMessage(response.data.message);
+      setTimeout(() => {
+        navigate('/login/organisation');
+      }, 3000);
       setEmail('');
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to send reset link. Please try again.");
@@ -47,7 +50,6 @@ function OrganisationForgotPassword() {
   return (
     <>
       <div className="org-forgot-pass-page">
-        {/* --- ADDED: Animated Constellation Background --- */}
         <div className="background-constellation">
           <div className="star"></div>
           <div className="star"></div>

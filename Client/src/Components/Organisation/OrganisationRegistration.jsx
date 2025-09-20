@@ -9,7 +9,6 @@ import {
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/OrganisationRegistration.css';
 
-// Define the organisation types array for reusability and cleaner code
 const organisationTypes = [
   { value: 'cafe', label: 'Café / Restaurant' },
   { value: 'retail', label: 'Retail Store' },
@@ -40,6 +39,7 @@ function OrganisationRegistration() {
 
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState('');
+  const [success, setSuccess] = useState(''); // State for success message
   const [errors, setErrors] = useState({});
 
   useLayoutEffect(() => {
@@ -98,6 +98,7 @@ function OrganisationRegistration() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError('');
+    setSuccess('');
 
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
@@ -105,10 +106,9 @@ function OrganisationRegistration() {
       return;
     }
     setErrors({});
-
     setLoading(true);
+
     const submissionData = new FormData();
-    // Append all form data to the submission object
     Object.keys(formData).forEach(key => {
       if (key !== 'confirmPassword') {
         submissionData.append(key, formData[key]);
@@ -119,8 +119,10 @@ function OrganisationRegistration() {
       await axiosInstance.post('/api/organaisation/register', submissionData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      alert("Registration successful! You will be redirected to the login page.");
-      navigate('/login/organisation');
+      setSuccess("Registration successful! You will be redirected to the login page.");
+      setTimeout(() => {
+        navigate('/login/organisation');
+      }, 2000);
 
     } catch (err) {
       const message = err.response?.data?.message || "An unexpected error occurred. Please try again.";
@@ -145,7 +147,9 @@ function OrganisationRegistration() {
         <div className="org-registration-form-section">
           <h2>Organization Registration</h2>
           <p className="org-registration-subtitle">Join our network to help the community.</p>
+
           {serverError && <p className="org-registration-error-message">{serverError}</p>}
+          {success && <p className="org-registration-success-message">{success}</p>}
 
           <form onSubmit={handleSubmit} className="org-registration-form" noValidate>
             <div className="org-registration-form-group org-registration-logo-upload-group">

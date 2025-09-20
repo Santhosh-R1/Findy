@@ -224,7 +224,24 @@ const resetModeratorPassword = async (req, res) => {
         res.status(500).json({ message: 'Error resetting password. Please try again.' });
     }
 };
+const getModeratorProfile = async (req, res) => {
+    try {
+        const moderator = await Moderator.findById(req.params.id).select('-password');
 
+        if (!moderator) {
+            return res.status(404).json({ message: 'Organisation not found.' });
+        }
+
+        res.status(200).json({ success: true, data: moderator });
+
+    } catch (error) {
+        console.error('Error fetching moderator profile:', error);
+        if (error.name === 'CastError') {
+            return res.status(400).json({ message: `Invalid moderator ID format: ${req.params.id}` });
+        }
+        res.status(500).json({ message: 'Server error.' });
+    }
+};
 module.exports = {
     addModerator,
     loginModerator,
@@ -232,5 +249,6 @@ module.exports = {
     activateModerator,  
     deactivateModerator,
     forgotModeratorPassword,
-    resetModeratorPassword
+    resetModeratorPassword,
+    getModeratorProfile
 };

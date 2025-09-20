@@ -1,0 +1,150 @@
+/* --- Overall Dialog Structure --- */
+.user-chat-dialog-paper {
+  height: 80vh; /* Make the modal tall */
+  max-height: 700px;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+  display: flex;
+  flex-direction: column; /* Crucial for layout */
+  overflow: hidden; /* Hide anything that spills out */
+}
+
+/* --- Dialog Header --- */
+.user-chat-dialog-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600 !important;
+  color: #333;
+  background-color: #f7f9fc;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 12px 24px !important;
+}
+
+.user-chat-dialog-title .MuiIconButton-root {
+  color: #888;
+}
+
+/* --- Main Content & Messages Area --- */
+.user-chat-dialog-content {
+  padding: 16px !important;
+  background-color: #ffffff;
+  overflow-y: auto;
+  flex-grow: 1; /* This makes the content area fill the available space */
+}
+
+/* Custom Scrollbar Styling (for a modern look) */
+.user-chat-dialog-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.user-chat-dialog-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.user-chat-dialog-content::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+  border: 2px solid #ffffff;
+}
+
+.user-chat-messages-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Space between message bubbles */
+}
+
+/* --- Individual Message Styling --- */
+.user-chat-message {
+  display: flex;
+  align-items: flex-end; /* Aligns avatar with the bottom of the bubble */
+  gap: 10px;
+  max-width: 75%;
+}
+
+/* Sent Messages (Current User) */
+.user-chat-message.sent {
+  align-self: flex-end; /* Pushes the whole message block to the right */
+  flex-direction: row-reverse; /* Puts the avatar on the right */
+}
+
+.user-chat-message.sent .user-chat-bubble {
+  background-color: #007bff; /* A primary brand color */
+  color: white;
+  border-radius: 20px 20px 4px 20px; /* Creates the "tail" effect */
+}
+
+/* Received Messages (Other User) */
+.user-chat-message.received {
+  align-self: flex-start; /* Pushes the whole message block to the left */
+}
+
+.user-chat-message.received .user-chat-bubble {
+  background-color: #e9ecef; /* A light, neutral gray */
+  color: #343a40;
+  border-radius: 20px 20px 20px 4px; /* "Tail" effect on the opposite side */
+}
+
+.user-chat-avatar {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+.user-chat-bubble {
+  padding: 12px 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.user-chat-timestamp {
+  display: block;
+  font-size: 0.75rem !important;
+  margin-top: 5px;
+  text-align: right;
+  opacity: 0.8;
+}
+
+.user-chat-message.sent .user-chat-timestamp {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.user-chat-message.received .user-chat-timestamp {
+  color: #6c757d;
+}
+
+/* --- Input Area & Send Button --- */
+.user-chat-dialog-actions {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px !important;
+  background-color: #f7f9fc;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Styling the TextField within DialogActions */
+.user-chat-dialog-actions .MuiTextField-root .MuiOutlinedInput-root {
+  border-radius: 20px;
+  background-color: #e9ecef;
+}
+
+.user-chat-dialog-actions .MuiTextField-root .MuiOutlinedInput-notchedOutline {
+  border: none; /* Remove the default border for a cleaner look */
+}
+
+/* Send Button */
+.user-send-btn {
+  min-width: 48px !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important; /* Make it a circle */
+  margin-left: 10px !important;
+  box-shadow: none !important;
+  transition: background-color 0.2s ease-in-out !important;
+}
+
+.user-send-btn:hover {
+  background-color: #0056b3 !important; /* Darker blue on hover */
+}
+
+.user-send-btn .MuiSvgIcon-root, .user-send-btn svg {
+    font-size: 20px;
+}

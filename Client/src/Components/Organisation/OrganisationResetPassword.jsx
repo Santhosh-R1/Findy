@@ -49,7 +49,7 @@ function OrganisationResetPassword() {
 
     setLoading(true);
     try {
-      const response = await axiosInstance.post(`/api/organaisation/reset-password/${token}`, {
+      const response = await axiosInstance.patch(`/api/organaisation/reset-password/${token}`, {
         password: formData.password,
         confirmPassword: formData.confirmPassword,
       });

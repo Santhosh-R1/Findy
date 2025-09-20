@@ -44,7 +44,7 @@ function ModeratorLogin() {
       const response = await axiosInstance.post('/api/moderator/login', formData);
       localStorage.setItem('moderatorToken', response.data.token);
       localStorage.setItem('moderatorInfo', JSON.stringify(response.data));
-      navigate('/dashboard/moderator');
+      navigate('/moderator/DashBoard');
     } catch (err) {
       if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message);
@@ -60,7 +60,6 @@ function ModeratorLogin() {
     <>
       <LandingNav />
       <div className="moderator-login-page" ref={main}>
-        {/* Animated Triangle Background */}
         <div className="background-triangles">
             <div className="triangle"></div>
             <div className="triangle"></div>
@@ -75,7 +74,6 @@ function ModeratorLogin() {
         </div>
 
         <div className="moderator-login-card">
-          {/* Card content remains the same */}
           <div className="moderator-login-visual">
             <FaBalanceScale className="moderator-login-icon" />
             <h2>Moderator Hub</h2>
