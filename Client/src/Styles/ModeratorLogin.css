@@ -1,17 +1,157 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Lato:wght@400;700&display=swap');
 
 :root {
-  --mod-primary-color: #fd7e14; /* A watchful, warm orange */
+  --mod-primary-color: #fd7e14;
   --mod-primary-dark: #e86a02;
+  --light-color: #ffffff;
+  --dark-color: #343a40;
+  --text-light: #6c757d;
+  --border-color: #ced4da;
+  --bg-light-gray: #f8f9fa;
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Lato', sans-serif;
 }
 
+/* --- MODIFIED: UPGRADED BACKGROUND AND POSITIONING --- */
 .moderator-login-page {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: gainsboro;
+  /* A dark background to make the orange triangles stand out */
+  background-color: #1a1a1d;
   padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- NEW SECTION: ANIMATED TRIANGLE BACKGROUND --- */
+@keyframes animateTriangles {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.7;
+  }
+  100% {
+    /* Move up and off the screen while rotating and fading */
+    transform: translateY(-120vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.background-triangles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.triangle {
+  position: absolute;
+  /* This is the CSS trick: no width/height, use borders to create the shape */
+  width: 0;
+  height: 0;
+  bottom: -150px; /* Start below the screen */
+  animation: animateTriangles linear infinite;
+  opacity: 0;
+}
+
+/* Customize each triangle for a random, dynamic effect */
+.triangle:nth-child(1) {
+  left: 10%;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 40px solid var(--mod-primary-color);
+  animation-duration: 15s;
+  animation-delay: -2s;
+}
+.triangle:nth-child(2) {
+  left: 20%;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-bottom: 60px solid var(--mod-primary-dark);
+  animation-duration: 12s;
+  animation-delay: -5s;
+}
+.triangle:nth-child(3) {
+  left: 35%;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid var(--mod-primary-color);
+  animation-duration: 20s;
+  animation-delay: 0s;
+}
+.triangle:nth-child(4) {
+  left: 50%;
+  border-left: 40px solid transparent;
+  border-right: 40px solid transparent;
+  border-bottom: 80px solid var(--mod-primary-dark);
+  animation-duration: 18s;
+  animation-delay: -7s;
+}
+.triangle:nth-child(5) {
+  left: 65%;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-bottom: 50px solid var(--mod-primary-color);
+  animation-duration: 10s;
+  animation-delay: -1s;
+}
+.triangle:nth-child(6) {
+  left: 80%;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 30px solid var(--mod-primary-dark);
+  animation-duration: 22s;
+  animation-delay: -9s;
+}
+.triangle:nth-child(7) {
+  left: 90%;
+  border-left: 35px solid transparent;
+  border-right: 35px solid transparent;
+  border-bottom: 70px solid var(--mod-primary-color);
+  animation-duration: 16s;
+  animation-delay: -4s;
+}
+.triangle:nth-child(8) {
+  left: 5%;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 40px solid var(--mod-primary-dark);
+  animation-duration: 19s;
+  animation-delay: -11s;
+}
+.triangle:nth-child(9) {
+  left: 45%;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 24px solid var(--mod-primary-color);
+  animation-duration: 25s;
+  animation-delay: -3s;
+}
+.triangle:nth-child(10) {
+  left: 75%;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-bottom: 60px solid var(--mod-primary-dark);
+  animation-duration: 14s;
+  animation-delay: -6s;
+}
+/* --- END OF NEW SECTION --- */
+
+
+.moderator-login-error-message {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
 }
 
 .moderator-login-card {
@@ -22,10 +162,11 @@
   background-color: var(--light-color);
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  overflow: hidden; 
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
-/* --- Left Visual Section --- */
 .moderator-login-visual {
   background: linear-gradient(135deg, var(--mod-primary-color), var(--mod-primary-dark));
   color: var(--light-color);
@@ -56,7 +197,6 @@
   line-height: 1.6;
 }
 
-/* --- Right Form Section --- */
 .moderator-login-form-section {
   padding: 3rem;
   display: flex;
@@ -76,7 +216,6 @@
   margin: 0.5rem 0 2rem 0;
 }
 
-/* Form Styles */
 .moderator-login-form {
   width: 100%;
 }
@@ -102,7 +241,7 @@
 
 .moderator-login-form-group input {
   width: 100%;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   padding: 1rem 1rem 1rem 3.25rem;
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -156,8 +295,6 @@
   text-decoration: underline;
 }
 
-
-/* --- RESPONSIVE DESIGN --- */
 @media (max-width: 800px) {
   .moderator-login-card {
     grid-template-columns: 1fr;

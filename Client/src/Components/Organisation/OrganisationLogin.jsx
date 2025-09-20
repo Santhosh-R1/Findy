@@ -2,14 +2,13 @@ import React, { useState, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { FaBuilding, FaEnvelope, FaLock } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import '../../Styles/OrganisationLogin.css';
 import LandingNav from '../Common/LandingNav';
 import axiosInstance from '../../api/baseUrl';
 
 function OrganisationLogin() {
   const main = useRef();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -19,9 +18,9 @@ function OrganisationLogin() {
   const [error, setError] = useState(null);
 
   useLayoutEffect(() => {
+    // GSAP animations remain the same as they target the login card itself
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.3 });
-
       tl.from(".organisation-login-card", {
         opacity: 0,
         scale: 0.9,
@@ -41,7 +40,7 @@ function OrganisationLogin() {
         ease: 'power3.out'
       }, "-=0.8")
       .from([
-        ".organisation-login-form-section h2", 
+        ".organisation-login-form-section h2",
         ".organisation-login-form-group",
         ".organisation-login-links"
       ], {
@@ -51,7 +50,6 @@ function OrganisationLogin() {
         duration: 0.8,
         ease: 'power3.out'
       }, "-=0.9");
-
     }, main);
     return () => ctx.revert();
   }, []);
@@ -65,18 +63,15 @@ function OrganisationLogin() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
     try {
       const response = await axiosInstance.post('/api/organaisation/login', formData);
       console.log('Login successful:', response.data);
       localStorage.setItem('organisationInfo', JSON.stringify(response.data));
-      navigate('/organisation/dashboard');
-
+      navigate('/organisation/DashBoard');
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 'Invalid email or password. Please try again.';
+      const errorMessage = err.response?.data?.message || "An unexpected error occurred. Please try again.";
       setError(errorMessage);
       console.error('Login error:', err.response || err);
-      
     } finally {
       setLoading(false);
     }
@@ -86,49 +81,61 @@ function OrganisationLogin() {
     <>
       <LandingNav />
       <div className="organisation-login-page" ref={main}>
+        {/* Animated Constellation Background */}
+        <div className="background-constellation">
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+        </div>
+
         <div className="organisation-login-card">
-          
+          {/* ... rest of your card content ... */}
           <div className="organisation-login-visual">
             <FaBuilding className="organisation-login-icon" />
             <h2>Organization Portal</h2>
             <p>Access your dashboard to manage members, settings, and services.</p>
           </div>
-
           <div className="organisation-login-form-section">
             <h2>Organization Sign In</h2>
             <p className="organisation-login-subtitle">Enter your official credentials to access the portal.</p>
-            
             {error && <p className="organisation-login-error-message">{error}</p>}
-            
             <form onSubmit={handleSubmit} className="organisation-login-form">
               <div className="organisation-login-form-group">
                 <FaEnvelope className="organisation-login-input-icon" />
-                <input 
-                  type="email" 
-                  id="email" 
-                  name="email" 
-                  placeholder="Official Email Address" 
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Official Email Address"
                   value={formData.email}
                   onChange={handleChange}
-                  required 
+                  required
                 />
               </div>
               <div className="organisation-login-form-group">
                 <FaLock className="organisation-login-input-icon" />
-                <input 
-                  type="password" 
-                  id="password" 
-                  name="password" 
-                  placeholder="Password" 
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
-                  required 
+                  required
                 />
               </div>
-
               <div className="organisation-login-form-group">
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="organisation-login-button"
                   disabled={loading}
                 >
@@ -136,7 +143,6 @@ function OrganisationLogin() {
                 </button>
               </div>
             </form>
-            
             <div className="organisation-login-links">
               <Link to="/Organisation/Forgot-Password" className="organisation-login-forgot-password">
                 Forgot Password?

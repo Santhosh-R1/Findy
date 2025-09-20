@@ -1,14 +1,27 @@
 :root {
+  /* Assuming these are defined elsewhere */
   --org-primary-color: #6f42c1;
   --org-primary-dark: #5a349b;
+  --light-color: #ffffff;
+  --dark-color: #343a40;
+  --text-light: #6c757d;
+  --border-color: #ced4da;
+  --bg-light-gray: #f8f9fa;
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Lato', sans-serif;
 }
 
+/* --- MODIFIED: Upgraded background and added positioning --- */
 .org-forgot-pass-page {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   padding: 3rem 1.5rem;
+  /* Dark purple gradient from the login page */
+  background: #19102e linear-gradient(135deg, #1e113b, #3e2071);
+  position: relative;
+  overflow: hidden;
 }
 
 .org-forgot-pass-card {
@@ -20,6 +33,9 @@
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   overflow: hidden;
+  /* --- ADDED: Ensure card is on top of the animation --- */
+  position: relative;
+  z-index: 1;
 }
 
 .org-forgot-pass-visual {
@@ -56,7 +72,7 @@
   font-size: 2.2rem;
   color: var(--dark-color);
   text-align: center;
-  margin-bottom: 1.5rem; 
+  margin-bottom: 1.5rem;
 }
 
 .org-forgot-pass-subtitle {
@@ -81,9 +97,9 @@
 }
 
 .org-forgot-pass-success-message {
-  color: #3c2a5c; 
-  background-color: #e9e4f0; 
-  border: 1px solid #dcd3e9; 
+  color: #3c2a5c;
+  background-color: #e9e4f0;
+  border: 1px solid #dcd3e9;
 }
 
 .org-forgot-pass-form-group {
@@ -138,9 +154,14 @@
   box-shadow: 0 10px 20px rgba(111, 66, 193, 0.25);
 }
 
-.org-forgot-pass-button:hover {
+.org-forgot-pass-button:hover:not(:disabled) {
   background-color: var(--org-primary-dark);
   transform: translateY(-3px);
+}
+
+.org-forgot-pass-button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
 }
 
 .org-forgot-pass-back-link {
@@ -163,7 +184,6 @@
   text-decoration: underline;
 }
 
-
 @media (max-width: 900px) {
   .org-forgot-pass-card {
     grid-template-columns: 1fr;
@@ -176,3 +196,43 @@
     padding: 2.5rem 2rem;
   }
 }
+
+/* --- NEW SECTION: ANIMATED CONSTELLATION BACKGROUND --- */
+@keyframes drift {
+  from {
+    transform: rotate(0deg) translateX(10px) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(10px) rotate(-360deg);
+  }
+}
+
+.background-constellation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.4);
+  animation: drift linear infinite;
+}
+
+.star:nth-child(1) { top: 20%; left: 20%; width: 2px; height: 2px; animation-duration: 15s; }
+.star:nth-child(2) { top: 45%; left: 70%; width: 3px; height: 3px; animation-duration: 20s; animation-delay: -5s; }
+.star:nth-child(3) { top: 80%; left: 10%; width: 1px; height: 1px; animation-duration: 25s; }
+.star:nth-child(4) { top: 60%; left: 90%; width: 2px; height: 2px; animation-duration: 18s; animation-delay: -10s; }
+.star:nth-child(5) { top: 10%; left: 50%; width: 1px; height: 1px; animation-duration: 30s; }
+.star:nth-child(6) { top: 90%; left: 40%; width: 3px; height: 3px; animation-duration: 12s; animation-delay: -3s; }
+.star:nth-child(7) { top: 5%; left: 85%; width: 2px; height: 2px; animation-duration: 22s; }
+.star:nth-child(8) { top: 30%; left: 30%; width: 1px; height: 1px; animation-duration: 17s; animation-delay: -8s; }
+.star:nth-child(9) { top: 75%; left: 75%; width: 3px; height: 3px; animation-duration: 28s; }
+.star:nth-child(10) { top: 50%; left: 5%; width: 2px; height: 2px; animation-duration: 14s; animation-delay: -6s; }
+.star:nth-child(11) { top: 95%; left: 95%; width: 1px; height: 1px; animation-duration: 26s; }
+.star:nth-child(12) { top: 35%; left: 60%; width: 2px; height: 2px; animation-duration: 19s; animation-delay: -2s; }

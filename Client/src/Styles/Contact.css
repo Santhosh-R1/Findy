@@ -8,6 +8,36 @@
   margin: 0 auto; 
   padding: 0 2rem; 
 }
+
+.contact-form-status {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: center;
+  border: 1px solid transparent;
+  box-sizing: border-box; 
+}
+
+.contact-form-status.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+}
+
+.contact-form-status.success {
+  background-color: #d4edda;
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
+.contact-cta-button:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+  transform: translateY(0);
+}
 .contact-hero-section {
   height: 60vh;
   min-height: 400px;

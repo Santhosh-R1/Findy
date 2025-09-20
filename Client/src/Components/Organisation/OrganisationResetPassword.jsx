@@ -49,15 +49,14 @@ function OrganisationResetPassword() {
 
     setLoading(true);
     try {
-      const response = await axiosInstance.post(`/api/organaisation/reset-password/${token}`, {
+      const response = await axiosInstance.patch(`/api/organaisation/reset-password/${token}`, {
         password: formData.password,
         confirmPassword: formData.confirmPassword,
       });
 
-      setSuccessMessage(response.data.message || "Password updated successfully! Redirecting...");
-      setTimeout(() => {
-        navigate('/login/organisation');
-      }, 3000);
+      setSuccessMessage(response.data.message || "Password updated successfully!");
+
+    
 
     } catch (err) {
       const message = err.response?.data?.message || "Failed to reset password. The link may be invalid or expired.";
@@ -71,6 +70,21 @@ function OrganisationResetPassword() {
   return (
     <>
       <div className="org-forgot-pass-page">
+        <div className="background-constellation">
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+        </div>
+
         <div className="org-forgot-pass-card">
           <div className="org-forgot-pass-visual">
             <FaKey className="org-forgot-pass-icon" />
@@ -110,7 +124,7 @@ function OrganisationResetPassword() {
                 <button
                   type="submit"
                   className="org-forgot-pass-button"
-                  disabled={loading}
+                  disabled={loading || successMessage} 
                 >
                   {loading ? 'Updating...' : 'Update Password'}
                 </button>

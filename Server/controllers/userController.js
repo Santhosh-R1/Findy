@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const sendEmail = require('../utils/email');
 const crypto = require('crypto')
 const { getPasswordResetHTML } = require('../utils/emailTemplates');
+const fs = require("fs")
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: '30d',
@@ -110,7 +111,7 @@ const forgotPassword = async (req, res) => {
         const htmlContent = getPasswordResetHTML(user.firstName, frontendURL, appName);
         const plainTextMessage = `Hi ${user.firstName},\n\nPlease use the following link to reset your password (link is valid for 10 minutes):\n${frontendURL}\n\nIf you did not request this, please ignore this email.\n\nThanks,\nThe ${appName} Team`;
 
-        await sendEmail({
+        await sendEmail.sendEmail({
             email: user.email,
             subject: `[${appName}] Your Password Reset Link`,
             message: plainTextMessage, 
@@ -171,9 +172,91 @@ const resetPassword = async (req, res) => {
         res.status(500).json({ message: 'Error resetting password. Please try again.' });
     }
 };
+
+const getAllUsers = async (req, res) => {
+    try {
+        const Users = await User.find({}).select('-password');
+        res.status(200).json({
+            count: Users.length,
+            data: Users
+        });
+    } catch (error) {
+        console.error('Get All Moderators Error:', error);
+        res.status(500).json({ message: 'Server error while fetching moderators.' });
+    }
+};
+const getUserProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId).select('-password');
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        res.status(200).json({ success: true, data: user });
+
+    } catch (error) {
+        console.error('Error fetching user profile:', error);
+        if (error.name === 'CastError') {
+            return res.status(400).json({ message: `Invalid User ID format: ${req.params.userId}` });
+        }
+        res.status(500).json({ message: 'Server error.' });
+    }
+};
+const updateUserProfile = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        user.firstName = req.body.firstName || user.firstName;
+        user.lastName = req.body.lastName || user.lastName;
+        user.email = req.body.email || user.email;
+        user.phone = req.body.phone || user.phone;
+        user.address = req.body.address || user.address;
+        user.gender = req.body.gender || user.gender;
+
+        if (req.file) {
+            if (user.profileImage) {
+                const oldImagePath = `.${user.profileImage}`;
+                fs.unlink(oldImagePath, (err) => {
+                    if (err) console.error("Error deleting old profile image:", err);
+                });
+            }
+            user.profileImage = '/' + req.file.path.replace(/\\/g, "/");
+        }
+
+        const updatedUser = await user.save();
+
+        res.status(200).json({
+            message: 'Profile updated successfully!',
+            data: {
+                _id: updatedUser._id,
+                firstName: updatedUser.firstName,
+                lastName: updatedUser.lastName,
+                email: updatedUser.email,
+                profileImage: updatedUser.profileImage,
+            },
+        });
+
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        if (error.code === 11000) {
+            const field = Object.keys(error.keyValue)[0];
+            return res.status(400).json({ message: `An account with that ${field} already exists.` });
+        }
+        res.status(500).json({ message: 'Server error while updating profile.' });
+    }
+};
 module.exports = {
     registerUser,
     loginUser,
     resetPassword,
-    forgotPassword
+    forgotPassword,
+    getAllUsers,
+    getUserProfile,
+    updateUserProfile
 };

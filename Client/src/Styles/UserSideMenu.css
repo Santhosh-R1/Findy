@@ -1,0 +1,145 @@
+:root {
+  --user-primary-color: #20c997;
+  --dark-color: #0a2540;
+  --light-color: #ffffff;
+  --text-light-translucent: rgba(255, 255, 255, 0.7);
+}
+.user-profile-section.skeleton {
+  align-items: center; 
+  gap: 12px;
+}
+.user-sidemenu {
+  width: 260px;
+  height: 100vh;
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 4px 0px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+
+.user-profile-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.user-profile-section {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;    
+  gap: 12px;              
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.user-profile-link:hover .user-profile-section {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.user-profile-name {
+  color: var(--light-color) !important;
+  font-weight: 600 !important; 
+  text-align: center;
+  max-width: 90%; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-sidemenu-header-placeholder {
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--user-primary-color);
+}
+
+.user-sidemenu-nav {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.user-sidemenu-nav ul {
+  list-style: none;
+  padding: 1rem 0;
+  margin: 0;
+}
+
+.user-sidemenu-nav a,
+.user-sidemenu-logout button {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  color: var(--text-light-translucent);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.user-sidemenu-logout button {
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+
+.user-sidemenu-icon {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+  width: 20px;
+  text-align: center;
+}
+
+.user-sidemenu-nav a:hover,
+.user-sidemenu-logout button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--light-color);
+}
+
+.user-sidemenu-nav a.active {
+  background-color: var(--user-primary-color);
+  color: var(--light-color);
+  font-weight: 700;
+  border-left-color: var(--light-color);
+}
+
+.user-sidemenu-logout {
+  padding: 1rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .user-sidemenu {
+    width: 80px; 
+  }
+  .user-profile-section {
+    padding: 1rem 0;
+  }
+  .user-profile-name,
+  .user-sidemenu-header-placeholder h3,
+  .user-sidemenu-nav a span,
+  .user-sidemenu-logout button span {
+    display: none;
+  }
+  .user-sidemenu-nav a,
+  .user-sidemenu-logout button {
+    justify-content: center;
+    padding: 1rem 0;
+  }
+  .user-sidemenu-icon {
+    margin-right: 0;
+  }
+}

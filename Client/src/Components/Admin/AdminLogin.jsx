@@ -2,9 +2,10 @@ import React, { useState, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { FaUserShield, FaEnvelope, FaLock } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import axiosInstance from '../../api/baseUrl'; 
+import axiosInstance from '../../api/baseUrl';
 
 import '../../Styles/AdminLogin.css';
+
 function AdminLogin() {
   const main = useRef();
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ function AdminLogin() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setError(null); 
+    setError(null);
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -40,11 +41,10 @@ function AdminLogin() {
 
     try {
       const response = await axiosInstance.post('/api/admin/login', formData);
-            if (response.data && response.data.token) {
+      if (response.data && response.data.token) {
         localStorage.setItem('adminToken', response.data.token);
-        navigate('/admin/dashboard'); 
+        navigate('/admin/dashboard');
       }
-
     } catch (err) {
       const message = err.response?.data?.message || "An unexpected error occurred. Please try again.";
       setError(message);
@@ -57,8 +57,19 @@ function AdminLogin() {
   return (
     <>
       <div className="admin-login-page" ref={main}>
+        {/* Animated Background Shapes */}
+        <div className="background-shapes">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
         <div className="admin-login-card">
-          
           <div className="admin-login-visual">
             <FaUserShield className="admin-login-icon" />
             <h2>Admin Panel</h2>
@@ -68,7 +79,7 @@ function AdminLogin() {
             <h2>Welcome, Administrator</h2>
             <p className="admin-login-subtitle">Please enter your credentials to proceed.</p>
             {error && <p className="admin-login-error-message">{error}</p>}
-            
+
             <form onSubmit={handleSubmit} className="admin-login-form">
               <div className="admin-login-form-group">
                 <FaEnvelope className="admin-login-input-icon" />
@@ -94,7 +105,7 @@ function AdminLogin() {
                   required
                 />
               </div>
-              
+
               <div className="admin-login-form-group">
                 <button
                   type="submit"
@@ -105,7 +116,6 @@ function AdminLogin() {
                 </button>
               </div>
             </form>
-
           </div>
         </div>
       </div>

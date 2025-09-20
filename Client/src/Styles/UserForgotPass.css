@@ -1,14 +1,27 @@
 :root {
-  --user-primary-color: #20c997; 
+  /* Assuming these are defined elsewhere */
+  --user-primary-color: #20c997;
   --user-primary-dark: #19a47a;
+  --light-color: #ffffff;
+  --dark-color: #343a40;
+  --text-light: #6c757d;
+  --border-color: #ced4da;
+  --bg-light-gray: #f8f9fa;
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Lato', sans-serif;
 }
 
+/* --- MODIFIED: Upgraded background and added positioning --- */
 .user-forgot-pass-page {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   padding: 3rem 1.5rem;
+  /* New gradient background from UserLogin */
+  background: linear-gradient(to bottom right, #0fffb7, #20c997);
+  position: relative;
+  overflow: hidden;
 }
 
 .user-forgot-pass-card {
@@ -20,6 +33,8 @@
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 .user-forgot-pass-visual {
@@ -116,7 +131,7 @@
 .user-forgot-pass-form-group input:focus {
   outline: none;
   border-color: var(--user-primary-color);
-  box-shadow: 0 0 0 3px rgba(32, 201, 151, 0.25); 
+  box-shadow: 0 0 0 3px rgba(32, 201, 151, 0.25);
 }
 
 .user-forgot-pass-form-group input:focus ~ .user-forgot-pass-input-icon {
@@ -135,7 +150,7 @@
   font-weight: 600;
   font-size: 1.1rem;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 20px rgba(32, 201, 151, 0.25); 
+  box-shadow: 0 10px 20px rgba(32, 201, 151, 0.25);
 }
 
 .user-forgot-pass-button:hover {
@@ -175,3 +190,50 @@
     padding: 2.5rem 2rem;
   }
 }
+
+/* --- NEW SECTION: ANIMATED BUBBLE BACKGROUND (FROM USER LOGIN) --- */
+@keyframes rise {
+  0% {
+    bottom: -100px;
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(100px);
+  }
+  100% {
+    bottom: 1080px;
+    transform: translateX(-200px);
+  }
+}
+
+.background-bubbles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -100px;
+  width: 40px;
+  height: 40px;
+  /* The color uses the existing --user-primary-color variable */
+  background-color: #19a47a;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: rise 25s infinite ease-in;
+}
+
+.bubble:nth-child(1) { left: 10%; animation-duration: 25s; width: 40px; height: 40px; }
+.bubble:nth-child(2) { left: 20%; animation-duration: 15s; animation-delay: 2s; width: 60px; height: 60px; }
+.bubble:nth-child(3) { left: 25%; animation-duration: 30s; animation-delay: 4s; width: 25px; height: 25px; }
+.bubble:nth-child(4) { left: 40%; animation-duration: 40s; animation-delay: 0s; width: 80px; height: 80px; }
+.bubble:nth-child(5) { left: 50%; animation-duration: 22s; animation-delay: 0s; width: 35px; height: 35px; }
+.bubble:nth-child(6) { left: 65%; animation-duration: 18s; animation-delay: 1s; width: 50px; height: 50px; }
+.bubble:nth-child(7) { left: 75%; animation-duration: 35s; animation-delay: 3s; width: 100px; height: 100px; }
+.bubble:nth-child(8) { left: 80%; animation-duration: 28s; animation-delay: 5s; width: 20px; height: 20px; }
+.bubble:nth-child(9) { left: 90%; animation-duration: 19s; animation-delay: 2s; width: 45px; height: 45px; }
+.bubble:nth-child(10) { left: 55%; animation-duration: 33s; animation-delay: 7s; width: 70px; height: 70px; }

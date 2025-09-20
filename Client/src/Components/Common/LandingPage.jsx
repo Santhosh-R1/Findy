@@ -3,14 +3,14 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import { FaSearch, FaCloudUploadAlt, FaHeart, FaUsers, FaShieldAlt, FaLightbulb } from 'react-icons/fa';
+
 import '../../Styles/LandingPage.css';
 import heroBackground from '../../assets/Hand2.jpg';
 import phoneImage from '../../assets/Traveller.jpg';
 import petsImage from '../../assets/Pets.jpg';
 import creativeTech from '../../assets/TakeItEasy.jpg';
-import avatar1 from '../../assets/Avatar1.jpg';
-import avatar2 from '../../assets/Avatar2.jpg';
-import avatar3 from '../../assets/Avatar3.jpg';
+import wallet from '../../assets/wallet.jpg'; // The new image for wallets/handbags
+
 import LandingNav from './LandingNav';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -20,87 +20,164 @@ function LandingPage() {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
+      // Parallax for Hero Background
       gsap.to(".landing-hero-section", {
         backgroundPosition: `50% 100%`,
         ease: "none",
-        scrollTrigger: { trigger: ".landing-hero-section", start: "top top", end: "bottom top", scrub: true },
+        scrollTrigger: {
+          trigger: ".landing-hero-section",
+          start: "top top",
+          end: "bottom top",
+          scrub: true 
+        },
       });
 
-      const heroTimeline = gsap.timeline({ delay: 0.1 });
+      // Hero Text Animation
+      const heroTimeline = gsap.timeline({ delay: 0.2 });
       heroTimeline
         .from(".landing-hero-h1-word span", {
-          y: '110%', skewY: 5, duration: 1.2, stagger: 0.08, ease: 'expo.out'
+          y: '110%',
+          skewY: 5,
+          duration: 1.2,
+          stagger: 0.08,
+          ease: 'expo.out'
         })
         .from([".landing-hero-subtitle", ".landing-cta-button"], {
-          opacity: 0, y: 30, duration: 1, stagger: 0.15, ease: 'expo.out'
-        }, "-=1");
+          opacity: 0,
+          y: 30,
+          duration: 1,
+          stagger: 0.15,
+          ease: 'expo.out'
+        }, "-=1"); 
 
-      const animateOnScroll = (selector, animProps, trigger = null) => {
-        gsap.from(selector, {
-          scrollTrigger: { trigger: trigger || selector, start: "top 85%", once: true },
-          duration: 1.2, ease: 'expo.out', ...animProps,
-        });
-      };
-
+      // General Section Title/Subtitle Animation
       const sections = gsap.utils.toArray('.landing-section');
       sections.forEach(section => {
         const title = section.querySelector('.landing-section-title');
         const subtitle = section.querySelector('.landing-section-subtitle');
-        if (title) animateOnScroll(title, { opacity: 0, y: 50 });
-        if (subtitle) animateOnScroll(subtitle, { opacity: 0, y: 40, delay: 0.1 });
+        
+        if (title) {
+          gsap.from(title, {
+            scrollTrigger: { trigger: title, start: "top 90%", once: true },
+            opacity: 0,
+            y: 50,
+            duration: 1.2,
+            ease: 'expo.out',
+          });
+        }
+        if (subtitle) {
+          gsap.from(subtitle, {
+            scrollTrigger: { trigger: subtitle, start: "top 90%", once: true },
+            opacity: 0,
+            y: 40,
+            duration: 1.2,
+            ease: 'expo.out',
+            delay: 0.1
+          });
+        }
+      });
+      
+      // Card Grid Animations
+      gsap.from(".landing-info-card", {
+        scrollTrigger: { trigger: ".landing-info-grid", start: "top 85%", once: true },
+        opacity: 0,
+        y: 60,
+        duration: 1.2,
+        ease: 'expo.out',
+        stagger: 0.15
       });
 
-      animateOnScroll(".landing-info-card", { opacity: 0, y: 60, stagger: 0.15 }, ".landing-info-grid");
-      animateOnScroll(".landing-step-card", { opacity: 0, y: 80, scale: 0.95, stagger: 0.15 }, ".landing-how-it-works-grid");
-      animateOnScroll(".landing-testimonial-card", { opacity: 0, y: 60, stagger: 0.15 }, ".landing-testimonial-grid");
-      animateOnScroll(".landing-final-cta-section .landing-container > *", { opacity: 0, y: 50, stagger: 0.1 }, ".landing-final-cta-section");
+      gsap.from(".landing-step-card", {
+        scrollTrigger: { trigger: ".landing-how-it-works-grid", start: "top 85%", once: true },
+        opacity: 0,
+        y: 80,
+        scale: 0.95,
+        duration: 1.2,
+        ease: 'expo.out',
+        stagger: 0.15
+      });
 
+      // Feature Section Animations (This will automatically include the new wallet section)
       const features = gsap.utils.toArray('.landing-feature-item');
       features.forEach(feature => {
         const imageWrapper = feature.querySelector('.landing-feature-image');
         const image = feature.querySelector('.landing-feature-image img');
         const content = feature.querySelectorAll('.landing-feature-content > *');
 
+        // Parallax for feature images
         gsap.to(image, {
-          yPercent: -10, ease: "none",
-          scrollTrigger: { trigger: feature, start: "top bottom", end: "bottom top", scrub: true },
+          yPercent: -10,
+          ease: "none",
+          scrollTrigger: {
+            trigger: feature,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true
+          },
         });
 
-        const tl = gsap.timeline({ scrollTrigger: { trigger: feature, start: "top 80%", once: true } });
-        tl.from(imageWrapper, {
-          clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)',
-          duration: 1.5, ease: 'expo.out'
-        })
-          .from(content, { opacity: 0, y: 50, duration: 1, stagger: 0.1, ease: 'power3.out' }, "-=1.2");
+        const featureTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: feature,
+            start: "top 80%",
+            once: true
+          }
+        });
+
+        featureTimeline
+          .from(imageWrapper, {
+            clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', 
+            duration: 1.5,
+            ease: 'expo.out'
+          })
+          .from(content, {
+            opacity: 0,
+            y: 50,
+            duration: 1.2,
+            stagger: 0.1,
+            ease: 'power3.out'
+          }, "-=1.2");
       });
-    }, main);
+
+      // Final CTA Animation
+      gsap.from(".landing-final-cta-section .landing-container > *", {
+        scrollTrigger: { trigger: ".landing-final-cta-section", start: "top 80%", once: true },
+        opacity: 0,
+        y: 50,
+        duration: 1.2,
+        ease: 'expo.out',
+        stagger: 0.1
+      });
+
+    }, main); 
 
     return () => ctx.revert();
   }, []);
 
   return (
     <div>
-      <LandingNav />
+      {/* Assuming LandingNav is a separate component you want to keep */}
+      {/* <LandingNav /> */}
       <div className="landing-page" ref={main}>
         <section className="landing-hero-section" style={{ backgroundImage: `url(${heroBackground})` }}>
           <div className="landing-hero-overlay"></div>
           <div className="landing-container">
             <div className="landing-hero-content">
               <h1>
-                <div className="landing-hero-h1-word"><span>Lost Pets & Tech,</span></div>
+                <div className="landing-hero-h1-word"><span>Lost Items & Pets,</span></div>
                 <div className="landing-hero-h1-word"><span>Reunited by</span></div>
                 <div className="landing-hero-h1-word"><span className="landing-brand-name">Findy.</span></div>
               </h1>
-              <p className="landing-hero-subtitle">The community platform for reuniting you with your lost pets, phones, and laptops. Your neighbors are ready to help.</p>
-              <Link to="/register" className="landing-cta-button">Join the Community</Link>
+              <p className="landing-hero-subtitle">The community platform for reuniting you with your lost pets, phones, wallets, and more. Your neighbors are ready to help.</p>
+              <Link to="/User/register" className="landing-cta-button">Join the Community</Link>
             </div>
           </div>
         </section>
 
         <section className="landing-why-us-section landing-section">
           <div className="landing-container">
-            <div className="landing-section-title">Why Choose Findy?</div>
-            <div className="landing-section-subtitle">A faster, safer, and more effective way to find your lost companions and devices.</div>
+            <h2 className="landing-section-title">Why Choose Findy?</h2>
+            <p className="landing-section-subtitle">A faster, safer, and more effective way to find your lost companions and valuables.</p>
             <div className="landing-info-grid">
               <div className="landing-info-card">
                 <div className="landing-info-icon-wrapper"><FaUsers /></div>
@@ -115,28 +192,28 @@ function LandingPage() {
               <div className="landing-info-card">
                 <div className="landing-info-icon-wrapper"><FaLightbulb /></div>
                 <h3>Simple & Focused</h3>
-                <p>Our streamlined process is designed specifically for finding lost pets and electronics, making it incredibly easy.</p>
+                <p>Our streamlined process is designed specifically for finding lost pets, electronics, and personal items, making it incredibly easy.</p>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="landing-how-it-works-section landing-section">
+        <section className="landing-how-it-works-section landing-section landing-alt-bg">
           <div className="landing-container">
             <h2 className="landing-section-title">A Simple Path to Reunion</h2>
-            <p className="landing-section-subtitle">Our three-step process is designed to bring lost pets and devices together with their owners with ease and security.</p>
+            <p className="landing-section-subtitle">Our three-step process is designed to bring lost items together with their owners with ease and security.</p>
             <div className="landing-how-it-works-grid">
               <div className="landing-step-card">
                 <div className="landing-step-number">1</div>
                 <FaSearch className="landing-step-icon" />
                 <h3>Describe What's Missing</h3>
-                <p>Lost your pet or device? Post a detailed, anonymous report. The more detail, the higher the chance of a match.</p>
+                <p>Lost your pet, wallet, or device? Post a detailed, anonymous report. The more detail, the higher the chance of a match.</p>
               </div>
               <div className="landing-step-card">
                 <div className="landing-step-number">2</div>
                 <FaCloudUploadAlt className="landing-step-icon" />
                 <h3>Report a Find</h3>
-                <p>Found a lost pet or a phone? Become a hero. Upload a photo and mark the location to help the owner.</p>
+                <p>Found a lost pet or a handbag? Become a hero. Upload a photo and mark the location to help the owner.</p>
               </div>
               <div className="landing-step-card">
                 <div className="landing-step-number">3</div>
@@ -148,7 +225,7 @@ function LandingPage() {
           </div>
         </section>
 
-        <section className="landing-features-section landing-section landing-alt-bg">
+        <section className="landing-features-section landing-section">
           <div className="landing-container">
             <h2 className="landing-section-title">For Every Situation</h2>
             <p className="landing-section-subtitle">Life is unpredictable. Findy is designed for the things that matter most in our modern lives.</p>
@@ -160,7 +237,7 @@ function LandingPage() {
               <div className="landing-feature-content">
                 <h3>The Worried Pet Owner</h3>
                 <p>Our dedicated pet section uses location-based alerts to quickly notify neighbors. Share photos and unique traits to bring your furry friend home safely.</p>
-                <Link to="/report" className="landing-feature-link">Report a lost pet</Link>
+                <Link to="/login/user" className="landing-feature-link">Report a lost pet</Link>
               </div>
             </div>
 
@@ -170,53 +247,42 @@ function LandingPage() {
               </div>
               <div className="landing-feature-content">
                 <h3>The Forgetful Creative</h3>
-                <p>Left your laptop at a coffee shop or your tablet on the train? Your valuable work isn't gone forever. Connect with finders in your area.</p>
-                <Link to="/search" className="landing-feature-link">Find your lost electronics</Link>
+                <p>Left your laptop at a coffee shop? Your valuable work isn't gone forever. Connect with finders in your area and get back to creating.</p>
+                <Link to="/login/user" className="landing-feature-link">Find your lost electronics</Link>
               </div>
             </div>
 
+            {/* NEW SECTION FOR WALLETS AND HANDBAGS */}
             <div className="landing-feature-item">
+              <div className="landing-feature-image">
+                <img src={wallet} alt="A wallet and personal items on a table" />
+              </div>
+              <div className="landing-feature-content">
+                <h3>The Busy Professional</h3>
+                <p>A lost wallet or handbag can bring your day to a halt. Securely connect with the person who found it and retrieve your essentials without worry.</p>
+                <Link to="/login/user" className="landing-feature-link">Report a lost wallet or bag</Link>
+              </div>
+            </div>
+
+            <div className="landing-feature-item landing-layout-reversed">
               <div className="landing-feature-image">
                 <img src={phoneImage} alt="A person looking at their phone on the go" />
               </div>
               <div className="landing-feature-content">
                 <h3>The Disconnected Commuter</h3>
-                <p>Losing your phone feels like losing a part of yourself. Our platform helps you quickly alert people in the area to get your digital life back on track.</p>
-                <Link to="/search" className="landing-feature-link">Search for a lost phone</Link>
+                <p>Losing your phone feels like losing a part of yourself. Our platform helps you quickly alert people on your route to get your digital life back on track.</p>
+                <Link to="/login/user" className="landing-feature-link">Search for a lost phone</Link>
               </div>
             </div>
-          </div>
-        </section>
 
-        <section className="landing-testimonial-section landing-section">
-          <div className="landing-container">
-            <h2 className="landing-section-title">Community Voices</h2>
-            <p className="landing-section-subtitle">Hear from real people who have experienced the magic of a Findy reunion.</p>
-            <div className="landing-testimonial-grid">
-              <div className="landing-testimonial-card">
-                <img src={avatar1} alt="Sarah K." className="landing-testimonial-avatar" />
-                <p className="landing-testimonial-text">"I left my work tablet on the plane. I was panicking! Someone from the cleaning crew posted it on Findy, and I had it back before my connecting flight. Unbelievable!"</p>
-                <span className="landing-testimonial-author">- Sarah K., San Francisco</span>
-              </div>
-              <div className="landing-testimonial-card">
-                <img src={avatar2} alt="Mike T." className="landing-testimonial-avatar" />
-                <p className="landing-testimonial-text">"Our dog, Buster, dug a hole under the fence. We were frantic. A neighbor two streets over saw our alert on Findy and contacted us immediately. A total lifesaver."</p>
-                <span className="landing-testimonial-author">- Mike T., Austin</span>
-              </div>
-              <div className="landing-testimonial-card">
-                <img src={avatar3} alt="Chen L." className="landing-testimonial-avatar" />
-                <p className="landing-testimonial-text">"I found a phone on the train. Instead of turning it in to a huge transit authority, I posted it on Findy. The owner messaged me within an hour. So much more efficient!"</p>
-                <span className="landing-testimonial-author">- Chen L., Chicago</span>
-              </div>
-            </div>
           </div>
         </section>
 
         <section className="landing-final-cta-section landing-section">
           <div className="landing-container">
             <h2>Rediscover What's Lost.</h2>
-            <p>Whether you've lost a device or found a pet, you can make a difference. Sign up today and help bring things home.</p>
-            <Link to="/register" className="landing-cta-button">Create Your Free Account</Link>
+            <p>Whether you've lost a wallet, found a pet, or spotted a forgotten laptop, you can make a difference. Sign up today and help bring things home.</p>
+            <Link to="/User/register" className="landing-cta-button-footer">Create Your Free Account</Link>
           </div>
         </section>
 

@@ -60,10 +60,10 @@ function LandingNav() {
   };
 
   return (
-    <AppBar position="fixed" className={`landingNav-app-bar ${isScrolled ? 'scrolled' : ''}`}>
+    <AppBar position="fixed" className={`common-landingNav-app-bar ${isScrolled ? 'scrolled' : ''}`}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Link to="/" className="landingNav-logo-link">
+          <Link to="/" className="common-landingNav-logo-link">
             <SearchIcon sx={{ display: 'flex', mr: 1, color: 'var(--primary-color)' }} />
             <Typography
               variant="h6"
@@ -87,7 +87,7 @@ function LandingNav() {
                   key={page.name}
                   component={Link}
                   to={page.path}
-                  className="landingNav-nav-link-button"
+                  className="common-landingNav-nav-link-button"
                 >
                   {page.name}
                 </Button>
@@ -99,7 +99,7 @@ function LandingNav() {
                 aria-controls="login-menu"
                 aria-haspopup="true"
                 onClick={handleOpenLoginMenu}
-                className="landingNav-nav-link-button landingNav-login-button"
+                className="common-landingNav-nav-link-button common-landingNav-login-button"
                 endIcon={<ArrowDropDownIcon />}
               >
                 Login
@@ -114,7 +114,7 @@ function LandingNav() {
                 }}
                 sx={{
                   '& .MuiPaper-root': {
-                    backgroundColor: 'var(--dark-color)',
+                    backgroundColor: '#0a2540',
                     color: 'white',
                     borderRadius: '8px',
                     marginTop: '8px',

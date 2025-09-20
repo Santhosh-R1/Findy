@@ -1,4 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Lato:wght@400;700&display=swap");
+
+:root {
+  --primary-color: #007bff; 
+  --primary-dark: #0056b3;
+  --dark-color: #0a2540;
+  --light-color: #ffffff;
+  --text-color: #333;
+  --text-light: #5f6f81;
+  --bg-light-gray: #f7f9fc;
+  --border-color: #e6ebf1;
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Lato', sans-serif;
+}
+
+.about-page {
+  overflow-x: hidden;
+}
+
 .about-section {
   padding: 120px 0;
 }
@@ -13,7 +31,7 @@
 .about-section-title {
   font-family: var(--font-heading);
   font-size: 2.8rem;
-  color: var(--dark-color);
+  color: #0a2540;
   text-align: center;
   margin-bottom: 1.5rem;
 }
@@ -58,7 +76,7 @@
 }
 .about-hero-content h1 span {
   display: block;
-  overflow: hidden;
+  overflow: hidden; 
 }
 .about-hero-content p {
   font-size: 1.25rem;
@@ -129,7 +147,7 @@
 .about-ecosystem-card h3 {
   font-family: var(--font-heading);
   font-size: 1.5rem;
-  color: var(--dark-color);
+  color: #0a2540;
   margin-bottom: 1rem;
 }
 .about-ecosystem-card p {
@@ -168,7 +186,7 @@
 .about-value-card h3 {
   font-family: var(--font-heading);
   font-size: 1.4rem;
-  color: var(--dark-color);
+  color: #0a2540;
   margin-bottom: 0.8rem;
 }
 .about-value-card p {
@@ -182,6 +200,9 @@
   position: relative;
   color: var(--light-color);
   text-align: center;
+}
+.about-join-us-section .about-hero-overlay {
+    background: rgba(10, 37, 64, 0.7); 
 }
 .about-join-us-section .about-container > * {
   position: relative;
@@ -216,7 +237,6 @@
   transform: translateY(-3px);
 }
 
-/* --- RESPONSIVE DESIGN --- */
 @media (max-width: 992px) {
   .about-section {
     padding: 80px 0;
@@ -233,7 +253,7 @@
   }
   .about-mission-container {
     flex-direction: column;
-    gap: 2rem;
+    gap: 2.5rem;
   }
   .about-mission-container .about-section-title {
     text-align: center;

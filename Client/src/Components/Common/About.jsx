@@ -3,11 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import { FaBullseye, FaUsers, FaHeart } from 'react-icons/fa';
-
-// Import the specific stylesheet for this page
 import '../../Styles/About.css';
-
-// Import your images
 import heroBackground from '../../assets/Hand2.jpg';
 import missionImage from '../../assets/Find.jpg';
 import ecosystemImage from '../../assets/MembersSupport.jpg';
@@ -21,9 +17,10 @@ function About() {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // --- HERO ANIMATION ---
+
       gsap.to(".about-hero-section", {
-        backgroundPosition: `50% 80%`, ease: "none",
+        backgroundPosition: `50% 80%`,
+        ease: "none",
         scrollTrigger: { trigger: ".about-hero-section", start: "top top", end: "bottom top", scrub: true },
       });
 
@@ -32,37 +29,61 @@ function About() {
         .from(".about-hero-content h1 span", { y: '110%', skewY: 7, duration: 1.5, stagger: 0.1, ease: 'expo.out' })
         .from(".about-hero-content p", { opacity: 0, y: 20, duration: 1, ease: 'expo.out' }, "-=1.2");
 
-      // --- REUSABLE ANIMATION FUNCTION ---
-      const animateOnScroll = (selector, animProps, trigger = null) => {
-        gsap.from(selector, {
-          scrollTrigger: { trigger: trigger || selector, start: "top 85%", once: true },
-          duration: 1.2, ease: 'expo.out', ...animProps,
+      
+      const generalTitles = gsap.utils.toArray('.about-section .about-section-title:not(.about-mission-content .about-section-title)');
+      generalTitles.forEach(title => {
+        gsap.from(title, {
+          scrollTrigger: { trigger: title, start: "top 90%", once: true },
+          opacity: 0, y: 50, duration: 1.2, ease: 'expo.out',
         });
-      };
-
-      // Animate all section titles and subtitles
-      const sections = gsap.utils.toArray('.about-section');
-      sections.forEach(section => {
-        const title = section.querySelector('.about-section-title');
-        const subtitle = section.querySelector('.about-section-subtitle');
-        if (title) animateOnScroll(title, { opacity: 0, y: 50 });
-        if (subtitle) animateOnScroll(subtitle, { opacity: 0, y: 40, delay: 0.1 });
       });
 
-      // --- SPECIFIC SECTION ANIMATIONS ---
-      animateOnScroll(".about-origin-story-content > *", { opacity: 0, y: 40, stagger: 0.15 }, ".about-origin-story-content");
+      const subtitles = gsap.utils.toArray('.about-section-subtitle');
+      subtitles.forEach(subtitle => {
+        gsap.from(subtitle, {
+          scrollTrigger: { trigger: subtitle, start: "top 90%", once: true },
+          opacity: 0, y: 40, duration: 1.2, ease: 'expo.out', delay: 0.1,
+        });
+      });
 
-      const animateImageAndContent = (triggerSelector, imageSelector, contentSelector) => {
-        const tl = gsap.timeline({ scrollTrigger: { trigger: triggerSelector, start: 'top 75%', once: true } });
-        tl.from(imageSelector, { clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', duration: 1.5, ease: 'expo.out' })
-          .from(contentSelector, { opacity: 0, y: 40, stagger: 0.15, duration: 1, ease: 'power3.out' }, '-=1.2');
-      };
 
-      animateImageAndContent('.about-mission-section', '.about-mission-image', '.about-mission-content > *');
-      
-      animateOnScroll(".about-ecosystem-card", { opacity: 0, y: 60, stagger: 0.15 }, ".about-ecosystem-grid");
-      animateOnScroll(".about-value-card", { opacity: 0, y: 60, stagger: 0.15 }, ".about-values-grid");
-      animateOnScroll(".about-join-us-section .about-container > *", { opacity: 0, y: 50, stagger: 0.1 }, ".about-join-us-section");
+      gsap.from(".about-origin-story-content > *", {
+        scrollTrigger: { trigger: ".about-origin-story-content", start: "top 85%", once: true },
+        opacity: 0, y: 40, duration: 1.2, ease: 'expo.out', stagger: 0.15
+      });
+
+      const missionTimeline = gsap.timeline({
+        scrollTrigger: { trigger: '.about-mission-section', start: 'top 75%', once: true }
+      });
+      missionTimeline
+        .from('.about-mission-image', {
+          clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)',
+          duration: 1.5,
+          ease: 'expo.out'
+        })
+        .from('.about-mission-content > *', { 
+          opacity: 0, y: 40, stagger: 0.15, duration: 1.2, ease: 'power3.out'
+        }, '-=1.2');
+
+      gsap.from(".about-ecosystem-image-wrapper", {
+        scrollTrigger: { trigger: ".about-ecosystem-image-wrapper", start: "top 85%", once: true },
+        opacity: 0, y: 50, scale: 0.95, duration: 1.5, ease: 'expo.out',
+      });
+      gsap.from(".about-ecosystem-card", {
+        scrollTrigger: { trigger: ".about-ecosystem-grid", start: "top 85%", once: true },
+        opacity: 0, y: 60, duration: 1.2, ease: 'expo.out', stagger: 0.15
+      });
+
+      gsap.from(".about-value-card", {
+        scrollTrigger: { trigger: ".about-values-grid", start: "top 85%", once: true },
+        opacity: 0, y: 60, duration: 1.2, ease: 'expo.out', stagger: 0.15
+      });
+
+      gsap.from(".about-join-us-section .about-container > *", {
+        scrollTrigger: { trigger: ".about-join-us-section", start: "top 80%", once: true },
+        opacity: 0, y: 50, duration: 1.2, ease: 'expo.out', stagger: 0.1
+      });
+
     }, main);
 
     return () => ctx.revert();

@@ -5,18 +5,18 @@ import {
   FaMars, FaVenus, FaGenderless, FaCamera, FaPencilAlt
 } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-
 import axiosInstance from '../../api/baseUrl';
-
 import '../../Styles/UserRegistration.css';
-import LandingNav from '../Common/LandingNav';
+
 function UserRegistration() {
   const main = useRef();
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [serverError, setServerError] = useState(''); 
   const [success, setSuccess] = useState('');
+  const [errors, setErrors] = useState({}); 
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -41,9 +41,36 @@ function UserRegistration() {
     return () => ctx.revert();
   }, []);
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!/^[a-zA-Z]+$/.test(formData.firstName)) newErrors.firstName = 'First name must contain only letters.';
+    if (!/^[a-zA-Z]+$/.test(formData.lastName)) newErrors.lastName = 'Last name must contain only letters.';
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) newErrors.email = 'Please enter a valid email address.';
+    if (!/^\d{10}$/.test(formData.phone)) newErrors.phone = 'Phone number must be exactly 10 digits.';
+    if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters long.';
+    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match.';
+    if (!formData.gender) newErrors.gender = 'Please select a gender.';
+    if (!formData.address.trim()) newErrors.address = 'Address is required.';
+    
+    return newErrors;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    let processedValue = value;
+
+    if (name === 'firstName' || name === 'lastName') {
+      processedValue = value.replace(/[^a-zA-Z]/g, '');
+    } else if (name === 'phone') {
+      processedValue = value.replace(/\D/g, '').slice(0, 10);
+    }
+
+    setFormData(prev => ({ ...prev, [name]: processedValue }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: null }));
+    }
   };
 
   const handleImageChange = (e) => {
@@ -55,6 +82,9 @@ function UserRegistration() {
 
   const handleGenderChange = (selectedGender) => {
     setFormData(prev => ({ ...prev, gender: selectedGender }));
+    if (errors.gender) {
+      setErrors(prev => ({ ...prev, gender: null }));
+    }
   };
 
   const handleUploadClick = () => {
@@ -63,17 +93,15 @@ function UserRegistration() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setServerError('');
     setSuccess('');
-
-    if (!formData.gender) {
-      setError("Please select a gender.");
+    
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
       return;
     }
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
+    setErrors({});
 
     const registrationData = new FormData();
     for (const key in formData) {
@@ -86,25 +114,15 @@ function UserRegistration() {
 
     try {
       const response = await axiosInstance.post('/api/users/register', registrationData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       setSuccess('Registration successful! Redirecting to login...');
-      console.log('Server Response:', response.data);
-
-      setTimeout(() => {
-        navigate('/login/user');
-      }, 2000);
+      setTimeout(() => navigate('/login/user'), 2000);
 
     } catch (err) {
-      if (err.response && err.response.data && err.response.data.message) {
-        setError(err.response.data.message);
-      } else {
-        setError('Registration failed. Please try again later.');
-      }
-      console.error('Registration Error:', err);
+      const errorMessage = err.response?.data?.message || 'Registration failed. Please try again.';
+      setServerError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -128,33 +146,19 @@ function UserRegistration() {
             <h2>Get Started</h2>
             <p className="registration-subtitle">Signing up is quick and easy.</p>
 
-            <form onSubmit={handleSubmit} className="registration-form">
-              {error && <p className="registration-error-message">{error}</p>}
+            <form onSubmit={handleSubmit} className="registration-form" noValidate>
+              {serverError && <p className="registration-error-message">{serverError}</p>}
               {success && <p className="registration-success-message">{success}</p>}
 
               <div className="registration-form-group profile-photo-group">
-                <input
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  name="profileImage"
-                  ref={fileInputRef}
-                  onChange={handleImageChange}
-                  style={{ display: 'none' }}
-                />
-                <div
-                  className={`profile-photo-uploader ${profileImagePreview ? 'has-image' : ''}`}
-                  onClick={handleUploadClick}
-                  style={{ backgroundImage: `url(${profileImagePreview})` }}
-                >
+                <input type="file" accept="image/png, image/jpeg" name="profileImage" ref={fileInputRef} onChange={handleImageChange} style={{ display: 'none' }} />
+                <div className={`profile-photo-uploader ${profileImagePreview ? 'has-image' : ''}`} onClick={handleUploadClick} style={{ backgroundImage: `url(${profileImagePreview})` }}>
                   {!profileImagePreview && (
                     <div className="uploader-placeholder">
-                      <FaCamera />
-                      <span>Upload Photo</span>
+                      <FaCamera /><span>Upload Photo</span>
                     </div>
                   )}
-                  <div className="uploader-overlay">
-                    <FaPencilAlt />
-                  </div>
+                  <div className="uploader-overlay"><FaPencilAlt /></div>
                 </div>
               </div>
 
@@ -162,10 +166,12 @@ function UserRegistration() {
                 <div className="registration-form-group">
                   <FaUser className="registration-input-icon" />
                   <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} required />
+                  {errors.firstName && <p className="registration-validation-error">{errors.firstName}</p>}
                 </div>
                 <div className="registration-form-group">
                   <FaUser className="registration-input-icon" />
                   <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} required />
+                  {errors.lastName && <p className="registration-validation-error">{errors.lastName}</p>}
                 </div>
               </div>
 
@@ -173,40 +179,40 @@ function UserRegistration() {
                 <div className="registration-form-group">
                   <FaEnvelope className="registration-input-icon" />
                   <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} required />
+                  {errors.email && <p className="registration-validation-error">{errors.email}</p>}
                 </div>
                 <div className="registration-form-group">
                   <FaPhone className="registration-input-icon" />
-                  <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required />
+                  <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required maxLength="10" />
+                  {errors.phone && <p className="registration-validation-error">{errors.phone}</p>}
                 </div>
               </div>
 
               <div className="registration-form-group">
                 <FaHome className="registration-input-icon" />
                 <textarea name="address" placeholder="Home Address" rows="2" value={formData.address} onChange={handleChange} required></textarea>
+                {errors.address && <p className="registration-validation-error">{errors.address}</p>}
               </div>
 
               <div className="registration-form-group">
                 <div className="gender-options">
-                  <button type="button" onClick={() => handleGenderChange('male')} className={formData.gender === 'male' ? 'active' : ''}>
-                    <FaMars /> Male
-                  </button>
-                  <button type="button" onClick={() => handleGenderChange('female')} className={formData.gender === 'female' ? 'active' : ''}>
-                    <FaVenus /> Female
-                  </button>
-                  <button type="button" onClick={() => handleGenderChange('other')} className={formData.gender === 'other' ? 'active' : ''}>
-                    <FaGenderless /> Other
-                  </button>
+                  <button type="button" onClick={() => handleGenderChange('male')} className={formData.gender === 'male' ? 'active' : ''}><FaMars /> Male</button>
+                  <button type="button" onClick={() => handleGenderChange('female')} className={formData.gender === 'female' ? 'active' : ''}><FaVenus /> Female</button>
+                  <button type="button" onClick={() => handleGenderChange('other')} className={formData.gender === 'other' ? 'active' : ''}><FaGenderless /> Other</button>
                 </div>
+                {errors.gender && <p className="registration-validation-error center-text">{errors.gender}</p>}
               </div>
 
               <div className="registration-form-row">
                 <div className="registration-form-group">
                   <FaLock className="registration-input-icon" />
-                  <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+                  <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required minLength="8" />
+                  {errors.password && <p className="registration-validation-error">{errors.password}</p>}
                 </div>
                 <div className="registration-form-group">
                   <FaLock className="registration-input-icon" />
                   <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} required />
+                  {errors.confirmPassword && <p className="registration-validation-error">{errors.confirmPassword}</p>}
                 </div>
               </div>
 

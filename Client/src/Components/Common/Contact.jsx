@@ -1,15 +1,27 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useState, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FaEnvelope, FaPhoneAlt, FaTwitter, FaFacebook, FaInstagram } from 'react-icons/fa';
+import axios from 'axios'; 
 import '../../Styles/Contact.css';
 import heroBackground from '../../assets/HappyFace.jpg';
 import LandingNav from './LandingNav';
+import axiosInstance from '../../api/baseUrl';
 
 gsap.registerPlugin(ScrollTrigger);
 
 function Contact() {
   const main = useRef();
+  
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [formStatus, setFormStatus] = useState({ message: '', type: '' });
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -42,9 +54,29 @@ function Contact() {
     return () => ctx.revert();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Thank you for your message! We'll get back to you soon.");
+    setFormStatus({ message: '', type: '' }); 
+    setLoading(true);
+
+    try {
+      const response = await axiosInstance.post('/api/contact', formData);
+      
+      setFormStatus({ message: response.data.message || "Message sent successfully!", type: 'success' });
+            setFormData({ name: '', email: '', subject: '', message: '' });
+
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || 'Failed to send message. Please try again later.';
+      setFormStatus({ message: errorMessage, type: 'error' });
+      console.error('Contact Form Error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -68,14 +100,8 @@ function Contact() {
                 <h3>Contact Information</h3>
                 <p>Fill out the form to send us a message, or reach out to us directly using the details below. We typically respond within 24 hours.</p>
                 <ul>
-                  <li>
-                    <FaEnvelope className="contact-info-icon" />
-                    <span>support@findy.com</span>
-                  </li>
-                  <li>
-                    <FaPhoneAlt className="contact-info-icon" />
-                    <span>+1 (555) 123-4567</span>
-                  </li>
+                  <li><FaEnvelope className="contact-info-icon" /><span>support@findy.com</span></li>
+                  <li><FaPhoneAlt className="contact-info-icon" /><span>+1 (555) 123-4567</span></li>
                 </ul>
                 <div className="contact-social-links">
                   <a href="#twitter" aria-label="Twitter"><FaTwitter /></a>
@@ -87,23 +113,31 @@ function Contact() {
               <div className="contact-form">
                 <h3>Send Us a Message</h3>
                 <form onSubmit={handleSubmit}>
+                  {formStatus.message && (
+                    <div className={`contact-form-status ${formStatus.type}`}>
+                      {formStatus.message}
+                    </div>
+                  )}
+
                   <div className="contact-form-group">
                     <label htmlFor="name">Full Name</label>
-                    <input type="text" id="name" name="name" required />
+                    <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
                   </div>
                   <div className="contact-form-group">
                     <label htmlFor="email">Email Address</label>
-                    <input type="email" id="email" name="email" required />
+                    <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
                   </div>
                   <div className="contact-form-group">
                     <label htmlFor="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" required />
+                    <input type="text" id="subject" name="subject" value={formData.subject} onChange={handleChange} required />
                   </div>
                   <div className="contact-form-group">
                     <label htmlFor="message">Your Message</label>
-                    <textarea id="message" name="message" rows="6" required></textarea>
+                    <textarea id="message" name="message" rows="6" value={formData.message} onChange={handleChange} required></textarea>
                   </div>
-                  <button type="submit" className="contact-cta-button">Send Message</button>
+                  <button type="submit" className="contact-cta-button" disabled={loading}>
+                    {loading ? 'Sending...' : 'Send Message'}
+                  </button>
                 </form>
               </div>
             </div>

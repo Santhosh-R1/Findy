@@ -7,7 +7,7 @@ adminController.login = async (req, res) => {
     const { email, password } = req.body;
 
     const ADMIN_EMAIL = "admin@123.com";
-    const ADMIN_PASSWORD = "AdminPassword123";
+    const ADMIN_PASSWORD = "admin@123";
 
     if (!email || !password) {
       return res.status(400).json({ message: "Please provide email and password" });

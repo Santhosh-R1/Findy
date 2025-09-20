@@ -11,6 +11,10 @@ const PORT = process.env.PORT ;
 const userRoutes = require('./routes/userRoutes');
 const OrganisationRoutes = require('./routes/organaisationRoute'); 
 const adminRoutes = require('./routes/adminRoute');
+const contactRoute = require('./routes/contact');
+const moderatorRoutes = require('./routes/moderatorroute');
+const itemRoutes = require('./routes/itemroute');
+const chatRoutes = require('./routes/chatroute');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -21,7 +25,10 @@ const Database = require('./DataBase');
 app.use('/api/users', userRoutes);
 app.use('/api/organaisation', OrganisationRoutes);
 app.use('/api/admin', adminRoutes);
-
+app.use('/api/contact', contactRoute);
+app.use('/api/moderator', moderatorRoutes);
+app.use('/api/items', itemRoutes);
+app.use('/api/chat', chatRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

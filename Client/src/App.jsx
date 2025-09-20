@@ -14,15 +14,46 @@ import OrganisationForgotPass from './Components/Organisation/OrganaisationForgo
 import UserForgotPass from './Components/User/ForgotPass';
 import ResetPassword from './Components/User/ResetPassword';
 import OrganisationResetPassword from './Components/Organisation/OrganisationResetPassword';
-
+import AdminDashboard from './Components/Admin/AdminDashboard';
+import AdminSidemenu from './Components/Admin/AdminSidemenu';
+import AddModerators from './Components/Admin/AddModerarors';
+import ModeratorForgotPass from './Components/Moderator/ModeratorForgotPass';
+import ModeratorResetPass from './Components/Moderator/ModeratorResetPass';
+import ManageModerators from './Components/Admin/ManageModerators';
+import ManageOrganaisation from './Components/Admin/ManageOrganaisation';
+import ViewUsers from './Components/Admin/ViewUsers';
+import UserSideMenu from './Components/User/UserSideMenu';
+import UserDashBoard from './Components/User/UserDashBoard';
+import AddItems from './Components/User/AddItems';
+import ViewItems from './Components/User/ViewItems';
+import EditItem from './Components/User/EditItem';
+import UserViewProfile from './Components/User/UserViewProfile';
+import UserNav from './Components/User/UserNav';
+import LostItem from './Components/User/LostItem';
+import FoundItem from './Components/User/FoundItem';
+import UserFounds from './Components/User/UserFounds';
+import UserLostItems from './Components/User/UserLostItems';
+import AdminViewAllLost from './Components/Admin/AdminViewAllLost';
+import OrganaisationDashBoard from './Components/Organisation/OrganaisationDashBoard'
+import OrganaisationSidemenu from './Components/Organisation/OrganaisationSidemenu';
+import OrganaisationFounds from './Components/Organisation/OrganaisationFounds';
+import OrganaisationFinds from './Components/Organisation/OrganaisationFinds';
+import OrganisationEdit from './Components/Organisation/OrganaisationEdit';
+import ModeratorDashBoard from './Components/Moderator/ModeratorDashBoard';
+import ModeratorSidemenu from './Components/Moderator/ModeratorSidemenu';
+import ModeratorLost from './Components/Moderator/ModeratorLost';
+import ModeratorsFound from './Components/Moderator/ModeratorsFound';
+import MatchReviewPage from './Components/User/MatchReviewPage';
+import ManageClaim from './Components/Moderator/ManageClaim';
+import UserHelpDesk from './Components/User/HelpDesk';
 function App() {
   return (
     <Router>
 
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/" element={[<LandingNav />, <LandingPage />]} />
+        <Route path="/about" element={[<LandingNav />, <About />]} />
+        <Route path="/contact" element={[<LandingNav />, <Contact />]} />
         <Route path="/login/admin" element={[<LandingNav />, <AdminLogin />]} />
         <Route path="/login/user" element={[<LandingNav />, <UserLogin />]} />
         <Route path="/login/organisation" element={[<LandingNav />, <OrganisationLogin />]} />
@@ -31,11 +62,15 @@ function App() {
         <Route path="/Organisation/register" element={[<LandingNav />, <OrganisationRegistration />]} />
         <Route path="/Organisation/Forgot-Password" element={[<LandingNav />, <OrganisationForgotPass />]} />
         <Route path="/User/Forgot-Password" element={[<LandingNav />, <UserForgotPass />]} />
-        <Route path="/reset-password/:token" element={[<LandingNav />, <ResetPassword />]} />
-        <Route path="/organisation/reset-password/:token" element={[<LandingNav/>,<OrganisationResetPassword />]} />
+        <Route path="/reset-password/:token" element={[<ResetPassword />]} />
+        <Route path="/organisation/reset-password/:token" element={[<OrganisationResetPassword />]} />
+        
+        <Route path="/moderator/Forgot-Password" element={[<LandingNav />, <ModeratorForgotPass />]} />
+        <Route path="/moderator/reset-password/:token" element={[<ModeratorResetPass />]} />
+       
+
       </Routes>
     </Router>
   );
 }
-
 export default App;
