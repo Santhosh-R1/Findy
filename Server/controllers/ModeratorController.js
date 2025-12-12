@@ -242,6 +242,35 @@ const getModeratorProfile = async (req, res) => {
         res.status(500).json({ message: 'Server error.' });
     }
 };
+const updateModeratorProfile = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updateData = { ...req.body };
+        if (req.file) {
+            updateData.profileImage = '/' + req.file.path.replace(/\\/g, "/");
+        }
+
+        const updatedModerator = await Moderator.findByIdAndUpdate(
+            id,
+            updateData,
+            { new: true, runValidators: true }
+        ).select('-password'); 
+
+        if (!updatedModerator) {
+            return res.status(404).json({ message: "Moderator not found." });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Profile updated successfully.",
+            data: updatedModerator
+        });
+
+    } catch (error) {
+        console.error("Error updating moderator profile:", error);
+        res.status(500).json({ message: "Server error while updating profile." });
+    }
+};
 module.exports = {
     addModerator,
     loginModerator,
@@ -250,5 +279,6 @@ module.exports = {
     deactivateModerator,
     forgotModeratorPassword,
     resetModeratorPassword,
-    getModeratorProfile
+    getModeratorProfile,
+    updateModeratorProfile
 };

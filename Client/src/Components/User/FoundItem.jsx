@@ -8,7 +8,6 @@ import {
   FaPaw, FaLaptop, FaMobileAlt, FaDog, FaCat, FaUpload, FaTag, FaAlignLeft,
   FaShapes, FaCalendarAlt, FaBuilding, FaMapMarkerAlt, FaSyncAlt, FaSignature,
   FaListUl, FaSearch, FaPalette,
-  // 1. Imported new icons
   FaShoppingBag, FaWallet
 } from 'react-icons/fa';
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete';
@@ -53,7 +52,14 @@ function FoundItem() {
   
   const handleNavigateToMyItems = () => navigate('/user/my-found-items');
   const handleNavigateToMyLostItems = () => navigate('/user/lost-items-others');
-  const getTodayDateString = () => new Date().toISOString().split("T")[0];
+
+  const getTodayDateString = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   const handleMainCategoryChange = (e) => {
     setMainCategory(e.target.value);
@@ -96,13 +102,21 @@ function FoundItem() {
     const errors = {};
     const nameRegex = /^[A-Za-z\s]+$/;
 
-    if (!formData.foundDate) errors.foundDate = "Please specify when the item was found.";
-    else {
-      const selectedDate = new Date(formData.foundDate);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      if (selectedDate > today) errors.foundDate = "This date cannot be in the future.";
+    if (!formData.foundDate) {
+        errors.foundDate = "Please specify when the item was found.";
+    } else {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time part
+
+        const [year, month, day] = formData.foundDate.split('-').map(Number);
+        const selectedDate = new Date(year, month - 1, day);
+        selectedDate.setHours(0, 0, 0, 0);
+
+        if (selectedDate > today) {
+            errors.foundDate = "This date cannot be in the future.";
+        }
     }
+
     if (!location) {
       errors.location = "Location where the item was found is required.";
       setLocationError("Location where the item was found is required.");
@@ -110,7 +124,6 @@ function FoundItem() {
     if (!formData.description.trim()) errors.description = "Please provide some details about the item.";
     if (!formData.color.trim()) errors.color = "Color is required to help identify the item.";
 
-    // 4. Updated validation logic to handle all three categories correctly
     if (mainCategory === 'pets') {
       if (formData.petName && !nameRegex.test(formData.petName)) errors.petName = "Name can only contain letters.";
       if (formData.itemName && !nameRegex.test(formData.itemName)) errors.itemName = "Breed can only contain letters.";
@@ -172,7 +185,6 @@ function FoundItem() {
     }
   };
 
-  // 3. Refactored renderDynamicFields to handle all categories
   const renderDynamicFields = () => {
     if (!subCategory) return null;
 
@@ -218,7 +230,6 @@ function FoundItem() {
     <Box className="add-item-container">
       <Paper elevation={0} variant="outlined" className="add-item-paper">
         <Box sx={{ position: 'absolute', top: { xs: '1.5rem', md: '2.5rem' }, right: { xs: '1.5rem', md: '3rem' }, display: 'flex', flexDirection: { xs: 'column-reverse', sm: 'row' }, gap: 1 }}>
-          <Button variant="outlined" startIcon={<FaSearch />} onClick={handleNavigateToMyLostItems} sx={{ color: 'var(--clean-primary-dark)', borderColor: 'var(--clean-primary-dark)', '&:hover': { backgroundColor: 'rgba(25, 164, 122, 0.04)', borderColor: 'var(--clean-primary-color)' }}}>Lost Items</Button>
           <Button variant="outlined" startIcon={<FaListUl />} onClick={handleNavigateToMyItems} sx={{ color: 'var(--clean-primary-dark)', borderColor: 'var(--clean-primary-dark)', '&:hover': { backgroundColor: 'rgba(25, 164, 122, 0.04)', borderColor: 'var(--clean-primary-color)' }}}>My Found Items</Button>
         </Box>
         <Box className="paper-header">
@@ -241,7 +252,6 @@ function FoundItem() {
                 <Select labelId="main-category-label" label="Item Type" name="mainCategory" value={mainCategory} onChange={handleMainCategoryChange}>
                   <MenuItem value="electronics"><FaLaptop style={{ marginRight: '12px' }} />Electronics</MenuItem>
                   <MenuItem value="pets"><FaPaw style={{ marginRight: '12px' }} />Pet</MenuItem>
-                  {/* 2. Added new main category */}
                   <MenuItem value="accessories"><FaShoppingBag style={{ marginRight: '12px' }} />Accessories</MenuItem>
                 </Select>
               </FormControl>

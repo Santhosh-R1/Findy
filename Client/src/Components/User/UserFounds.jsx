@@ -53,17 +53,14 @@ function UserFounds() {
     fetchUserFoundItems();
   }, []);
 
-  // --- THIS IS THE CHANGE ---
-  // Updated function to create a more descriptive name for the dialog
   const handleOpenModal = (actionType, item) => {
     let dialogItemName = '';
 
     if (item.mainCategory === 'pets') {
       dialogItemName = item.petName || item.itemName;
     } else if (item.mainCategory === 'accessories') {
-      // Combine brand and item name for accessories
       dialogItemName = `${item.brand} ${item.itemName}`;
-    } else { // Default for electronics and others
+    } else { 
       dialogItemName = item.itemName;
     }
 
@@ -74,7 +71,6 @@ function UserFounds() {
       itemName: dialogItemName,
     });
   };
-  // -------------------------
 
   const handleCloseModal = () => {
     setModalState({ open: false, actionType: null, itemId: null, itemName: '' });
@@ -147,7 +143,7 @@ function UserFounds() {
           <FaPaw className="no-items-icon" />
           <Typography variant="h5" gutterBottom>You haven't reported any found items yet.</Typography>
           <Typography color="text.secondary">Report an item you've found to help it get back to its owner.</Typography>
-          <Button component={Link} to="/report-found-item" variant="contained" className="add-first-item-btn" startIcon={<FaPlus />}>
+          <Button component={Link} to="/user/found-items" variant="contained" className="add-first-item-btn" startIcon={<FaPlus />}>
             Report a Found Item
           </Button>
         </Box>
@@ -182,12 +178,12 @@ function UserFounds() {
                 </Box>
                 <Chip label={item.status} size="small" color={getStatusChipColor(item.status)} className="status-chip" />
               </Box>
-              <Box className="card-actions">
+              {/* <Box className="card-actions">
                 <Button size="small" variant="outlined" color="error" startIcon={<FaTrash />} onClick={() => handleOpenModal('delete', item)} disabled={isArchived}>Delete</Button>
                 <Button size="small" variant="contained" color="primary" startIcon={<FaHandshake />} onClick={() => handleOpenModal('markReturned', item)} disabled={updatingItemId === item._id || isArchived}>
                   {updatingItemId === item._id ? 'Updating...' : 'Returned'}
                 </Button>
-              </Box>
+              </Box> */}
             </Paper>
           );
         })}

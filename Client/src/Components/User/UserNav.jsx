@@ -3,11 +3,12 @@ import {
   AppBar, Box, Toolbar, IconButton, Typography,
   MenuItem, Menu, Avatar
 } from '@mui/material';
-import { Person as PersonIcon, Logout as LogoutIcon, Search as SearchIcon } from '@mui/icons-material';
+import { Person as PersonIcon, Logout as LogoutIcon, Search as SearchIcon, Menu as MenuIcon } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
-import '../../Styles/UserNav.css'; 
+import '../../Styles/UserNav.css';
 
-const sidebarWidth = 260;
+const sidebarWidth = 260; 
+const sidebarWidthCollapsed = 80; 
 
 function UserNav() {
   const [user, setUser] = useState(null);
@@ -44,12 +45,12 @@ function UserNav() {
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('userToken');
-    navigate('/'); 
+    navigate('/');
     handleCloseUserMenu();
   };
-  
+
   const handleProfileNavigation = () => {
-    navigate('/user/profile'); 
+    navigate('/user/profile');
     handleCloseUserMenu();
   };
 
@@ -63,11 +64,20 @@ function UserNav() {
       position="fixed"
       className="user-nav-app-bar"
       sx={{
-        width: { sm: `calc(100% - ${sidebarWidth}px)` },
-        ml: { sm: `${sidebarWidth}px` },
+       
+        width: { 
+            xs: `calc(100% - ${sidebarWidthCollapsed}px)`,
+            md: `calc(100% - ${sidebarWidth}px)` 
+        },
+        ml: { 
+            xs: `${sidebarWidthCollapsed}px`,
+            md: `${sidebarWidth}px` 
+        },
+        transition: 'width 0.3s ease, margin-left 0.3s ease'
       }}
     >
       <Toolbar>
+        
         <Link to="/user/dashboard" className="user-nav-logo-link">
           <SearchIcon sx={{ mr: 1, color: '#19a47a' }} />
           <Typography
@@ -76,8 +86,9 @@ function UserNav() {
             sx={{
               fontFamily: 'Poppins, sans-serif',
               fontWeight: 700,
-              letterSpacing: '.2rem',
+              letterSpacing: '.1rem',
               color: 'inherit',
+              display: { xs: 'none', sm: 'block' } 
             }}
           >
             FINDY
@@ -85,9 +96,18 @@ function UserNav() {
         </Link>
 
         <Box sx={{ flexGrow: 1 }} />
+
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Avatar alt={user?.firstName || 'User'} src={userProfileImage}>
+            <Avatar 
+                alt={user?.firstName || 'User'} 
+                src={userProfileImage}
+                sx={{ 
+                    width: 40, 
+                    height: 40,
+                    border: '2px solid rgba(255,255,255,0.2)'
+                }}
+            >
                 {!userProfileImage && userInitial}
             </Avatar>
           </IconButton>
@@ -100,22 +120,22 @@ function UserNav() {
             onClose={handleCloseUserMenu}
           >
             <Box sx={{ px: 2, py: 1.5, borderBottom: '1px solid #f0f0f0' }}>
-                <Typography variant="subtitle1" fontWeight={600} noWrap>
-                    {user ? `${user.firstName} ${user.lastName}` : 'Guest'}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" noWrap>
-                    {user?.email}
-                </Typography>
+              <Typography variant="subtitle1" fontWeight={600} noWrap>
+                {user ? `${user.firstName} ${user.lastName}` : 'Guest'}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" noWrap>
+                {user?.email}
+              </Typography>
             </Box>
             <Box sx={{ p: 1 }}>
-                <MenuItem onClick={handleProfileNavigation}>
-                    <PersonIcon sx={{ mr: 1.5, color: 'text.secondary', fontSize: '1.25rem' }}/>
-                    My Profile
-                </MenuItem>
-                <MenuItem onClick={handleLogout} sx={{ color: 'error.main' }}>
-                    <LogoutIcon sx={{ mr: 1.5, fontSize: '1.25rem' }}/>
-                    Logout
-                </MenuItem>
+              <MenuItem onClick={handleProfileNavigation}>
+                <PersonIcon sx={{ mr: 1.5, color: 'text.secondary', fontSize: '1.25rem' }} />
+                My Profile
+              </MenuItem>
+              <MenuItem onClick={handleLogout} sx={{ color: 'error.main' }}>
+                <LogoutIcon sx={{ mr: 1.5, fontSize: '1.25rem' }} />
+                Logout
+              </MenuItem>
             </Box>
           </Menu>
         </Box>

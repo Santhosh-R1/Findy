@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
-import { gsap } from 'gsap';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Box, Paper, Typography, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Avatar, Button,
@@ -7,8 +6,8 @@ import {
   List, ListItem, ListItemIcon, ListItemText, Fade, Backdrop, Chip, Grid
 } from '@mui/material';
 import {
-  Info, Close, Email, Phone, Home, Wc, Category, Inventory, ArrowBack,
-  CalendarToday, Palette, LocationOn, DocumentScanner as BarcodeIcon 
+  Info, Close, Email, Phone, ArrowBack,
+  CalendarToday, Palette, LocationOn, DocumentScanner as BarcodeIcon
 } from '@mui/icons-material';
 import axiosInstance from '../../api/baseUrl';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -18,14 +17,15 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import '../../Styles/ViewUsers.css';
+
 let DefaultIcon = L.icon({
     iconUrl: icon, shadowUrl: iconShadow, iconAnchor: [12, 41]
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const DetailRow = ({ icon, label, value }) => (
-  <ListItem className="detail-row">
-    <ListItemIcon className="detail-icon">{icon}</ListItemIcon>
+  <ListItem className="admin-view-users-detail-row">
+    <ListItemIcon className="admin-view-users-detail-icon">{icon}</ListItemIcon>
     <ListItemText primary={label} secondary={value || 'N/A'} />
   </ListItem>
 );
@@ -59,10 +59,6 @@ function ViewUsers() {
   const [selectedUserItems, setSelectedUserItems] = useState([]);
   const [selectedItemForDetail, setSelectedItemForDetail] = useState(null);
 
-
-  useEffect(() => {
-  }, [loading]);
-
   useEffect(() => {
     const fetchAndProcessData = async () => {
       try {
@@ -70,7 +66,6 @@ function ViewUsers() {
         setError(null);
         const response = await axiosInstance.get('/api/items/allItems');
         const items = response.data.data;
-        console.log(items);
         
         setAllItems(items);
 
@@ -120,33 +115,33 @@ function ViewUsers() {
 
   const renderUserDetailsView = () => (
     <>
-      <Box className="modal-header">
-        <Avatar src={`http://localhost:5001${selectedUser?.profileImage}`} className="modal-avatar" />
+      <Box className="admin-view-users-modal-header">
+        <Avatar src={`http://localhost:5001${selectedUser?.profileImage}`} className="admin-view-users-modal-avatar" />
         <Box>
           <Typography variant="h6" component="h2">{selectedUser?.firstName} {selectedUser?.lastName}</Typography>
           <Typography variant="body2" color="textSecondary">Joined: {new Date(selectedUser?.createdAt).toDateString()}</Typography>
         </Box>
       </Box>
       <Divider />
-      <List className="modal-list">
-        <ListItem className="modal-list-item"><ListItemIcon className="modal-list-icon"><Email /></ListItemIcon><ListItemText primary="Email" secondary={selectedUser?.email} /></ListItem>
-        <ListItem className="modal-list-item"><ListItemIcon className="modal-list-icon"><Phone /></ListItemIcon><ListItemText primary="Phone" secondary={selectedUser?.phone} /></ListItem>
+      <List className="admin-view-users-modal-list">
+        <ListItem className="admin-view-users-modal-list-item"><ListItemIcon className="admin-view-users-modal-list-icon"><Email /></ListItemIcon><ListItemText primary="Email" secondary={selectedUser?.email} /></ListItem>
+        <ListItem className="admin-view-users-modal-list-item"><ListItemIcon className="admin-view-users-modal-list-icon"><Phone /></ListItemIcon><ListItemText primary="Phone" secondary={selectedUser?.phone} /></ListItem>
       </List>
       <Divider />
       <Box sx={{ p: 2, maxHeight: '50vh', overflowY: 'auto' }}>
-        <Typography variant="overline" className="modal-items-header">User's Registered Items ({selectedUserItems.length})</Typography>
+        <Typography variant="overline" className="admin-view-users-modal-items-header">User's Registered Items ({selectedUserItems.length})</Typography>
         {selectedUserItems.length > 0 ? (
           <List disablePadding>
             {selectedUserItems.map(item => (
-              <ListItem key={item._id} button className="modal-item" onClick={() => handleViewItemDetails(item)}>
+              <ListItem key={item._id} button className="admin-view-users-modal-item" onClick={() => handleViewItemDetails(item)}>
                 <ListItemIcon>
-                  <Avatar variant="rounded" src={`http://localhost:5001/${item.itemImage.replace(/\\/g, '/')}`} className="modal-item-avatar" />
+                  <Avatar variant="rounded" src={`http://localhost:5001/${item.itemImage.replace(/\\/g, '/')}`} className="admin-view-users-modal-item-avatar" />
                 </ListItemIcon>
                 <ListItemText 
                   primary={item.mainCategory === 'pets' ? item.petName : item.itemName}
                   secondary={`Category: ${item.subCategory}`}
                 />
-                <Chip label={item.status} size="small" className={`status-chip status-${item.status}`} />
+                <Chip label={item.status} size="small" className={`admin-view-users-status-chip admin-view-users-status-${item.status}`} />
               </ListItem>
             ))}
           </List>
@@ -157,59 +152,81 @@ function ViewUsers() {
     </>
   );
 
-  const renderItemDetailsView = () => (
-    <>
-      <Box className="modal-header item-detail-header">
-         <IconButton onClick={handleReturnToUserView} className="modal-back-button"><ArrowBack /></IconButton>
-        <Typography variant="h6" component="h2">Item Details</Typography>
-      </Box>
-      <Divider />
-      <Box sx={{ p: 2, maxHeight: '70vh', overflowY: 'auto' }}>
-        <Grid container spacing={2}>
-            <Grid item xs={12} md={5}>
-                <Avatar variant="rounded" src={`http://localhost:5001/${selectedItemForDetail?.itemImage.replace(/\\/g, '/')}`} sx={{ width: '100%', height: 'auto', aspectRatio: '4/3' }}/>
-            </Grid>
-            <Grid item xs={12} md={7}>
-                <Typography variant="h5" fontWeight="600">{selectedItemForDetail?.itemName}</Typography>
-                <Typography variant="body1" color="text.secondary" gutterBottom>Brand: {selectedItemForDetail?.brand || "N/A"}</Typography>
-                <Chip label={selectedItemForDetail?.status} size="small" className={`status-chip status-${selectedItemForDetail?.status}`} />
-            </Grid>
-        </Grid>
-        <List dense>
-            <DetailRow icon={<Palette />} label="Color/Markings" value={selectedItemForDetail?.color} />
-            <DetailRow icon={<BarcodeIcon />} label="Serial Number" value={selectedItemForDetail?.serialNumber} />
-            <DetailRow icon={<Info />} label="Description" value={selectedItemForDetail?.description} />
-            <Divider sx={{ my: 1 }}/>
-            {selectedItemForDetail?.status === 'lost' && (
-                <>
-                    <DetailRow icon={<CalendarToday />} label="Date Lost" value={new Date(selectedItemForDetail.lostDate).toLocaleDateString()} />
-                    <DetailRow icon={<LocationOn />} label="Last Seen Location" value={selectedItemForDetail.lostLocationAddress} />
-                    <MapDisplay coords={selectedItemForDetail.lostLocation?.coordinates} />
-                </>
-            )}
-            {selectedItemForDetail?.status === 'found' && (
-                <>
-                    <DetailRow icon={<CalendarToday />} label="Date Found" value={new Date(selectedItemForDetail.foundDate).toLocaleDateString()} />
-                    <DetailRow icon={<LocationOn />} label="Found Location" value={selectedItemForDetail.foundLocationAddress} />
-                    <MapDisplay coords={selectedItemForDetail.foundLocation?.coordinates} />
-                </>
-            )}
-        </List>
-      </Box>
-    </>
-  );
+  const renderItemDetailsView = () => {
+    const isPet = selectedItemForDetail?.mainCategory === 'pets';
+
+    return (
+      <>
+        <Box className="admin-view-users-modal-header admin-view-users-item-detail-header">
+           <IconButton onClick={handleReturnToUserView} className="admin-view-users-modal-back-button"><ArrowBack /></IconButton>
+          <Typography variant="h6" component="h2">{isPet ? 'Pet Details' : 'Item Details'}</Typography>
+        </Box>
+        <Divider />
+        <Box sx={{ p: 2, maxHeight: '70vh', overflowY: 'auto' }}>
+          <Grid container spacing={2}>
+              <Grid item xs={12} md={5}>
+                  <Avatar variant="rounded" src={`http://localhost:5001/${selectedItemForDetail?.itemImage.replace(/\\/g, '/')}`} sx={{ width: '100%', height: 'auto', aspectRatio: '4/3' }}/>
+              </Grid>
+              <Grid item xs={12} md={7}>
+                  <Typography variant="h5" fontWeight="600">
+                    {isPet ? selectedItemForDetail?.petName : selectedItemForDetail?.itemName}
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary" gutterBottom>
+                    {isPet ? `Breed: ${selectedItemForDetail?.subCategory}` : `Brand: ${selectedItemForDetail?.brand || "N/A"}`}
+                  </Typography>
+                  <Chip label={selectedItemForDetail?.status} size="small" className={`admin-view-users-status-chip admin-view-users-status-${selectedItemForDetail?.status}`} />
+              </Grid>
+          </Grid>
+          <List dense>
+              <DetailRow icon={<Palette />} label="Color/Markings" value={selectedItemForDetail?.color} />
+              {!isPet && (
+                <DetailRow icon={<BarcodeIcon />} label="Serial Number" value={selectedItemForDetail?.serialNumber} />
+              )}
+              <DetailRow icon={<Info />} label="Description" value={selectedItemForDetail?.description} />
+              
+              <Divider sx={{ my: 1 }}/>
+              
+              {selectedItemForDetail?.status === 'lost' && (
+                  <>
+                      <DetailRow icon={<CalendarToday />} label="Date Lost" value={new Date(selectedItemForDetail.lostDate).toLocaleDateString()} />
+                      <DetailRow icon={<LocationOn />} label="Last Seen Location" value={selectedItemForDetail.lostLocationAddress} />
+                      <MapDisplay coords={selectedItemForDetail.lostLocation?.coordinates} />
+                  </>
+              )}
+              {selectedItemForDetail?.status === 'found' && (
+                  <>
+                      <DetailRow icon={<CalendarToday />} label="Date Found" value={new Date(selectedItemForDetail.foundDate).toLocaleDateString()} />
+                      <DetailRow icon={<LocationOn />} label="Found Location" value={selectedItemForDetail.foundLocationAddress} />
+                      <MapDisplay coords={selectedItemForDetail.foundLocation?.coordinates} />
+                  </>
+              )}
+              {(selectedItemForDetail?.status === 'finded' || selectedItemForDetail?.status === 'claimed') && (
+                  <>
+                    {selectedItemForDetail.lostLocationAddress && (
+                        <DetailRow icon={<LocationOn />} label="Last Seen Location" value={selectedItemForDetail.lostLocationAddress} />
+                    )}
+                    {selectedItemForDetail.foundLocationAddress && (
+                        <DetailRow icon={<LocationOn />} label="Recovery Location" value={selectedItemForDetail.foundLocationAddress} />
+                    )}
+                  </>
+              )}
+          </List>
+        </Box>
+      </>
+    );
+  };
 
   return (
-    <Box className="view-users-container" ref={main}>
-      <Box className="view-users-header">
+    <Box className="admin-view-users-container" ref={main}>
+      <Box className="admin-view-users-header">
         <Typography variant="h4" component="h1" gutterBottom>View All Users</Typography>
       </Box>
       
       {loading ? <CircularProgress /> : error ? <Alert severity="error">{error}</Alert> :
-      <TableContainer component={Paper} className="view-users-table-container">
+      <TableContainer component={Paper} className="admin-view-users-table-container">
         <Table>
           <TableHead>
-            <TableRow className="user-table-header">
+            <TableRow className="admin-view-users-table-header">
               <TableCell>User</TableCell>
               <TableCell>Contact</TableCell>
               <TableCell>Joined On</TableCell>
@@ -218,10 +235,10 @@ function ViewUsers() {
           </TableHead>
           <TableBody>
             {uniqueUsers.map((user) => (
-              <TableRow key={user._id} hover className="user-table-row">
+              <TableRow key={user._id} hover className="admin-view-users-table-row">
                 <TableCell>
-                  <Box className="user-info-cell">
-                    <Avatar src={`http://localhost:5001${user.profileImage}`} className="user-avatar" />
+                  <Box className="admin-view-users-info-cell">
+                    <Avatar src={`http://localhost:5001${user.profileImage}`} className="admin-view-users-avatar" />
                     <Box><Typography variant="body1" fontWeight="bold">{user.firstName} {user.lastName}</Typography></Box>
                   </Box>
                 </TableCell>
@@ -242,10 +259,10 @@ function ViewUsers() {
       </TableContainer>
       }
 
-      <Modal open={modalOpen} onClose={handleCloseModal} closeAfterTransition slots={{ backdrop: Backdrop }} slotProps={{ backdrop: { timeout: 500, className: "modal-backdrop" }}}>
+      <Modal open={modalOpen} onClose={handleCloseModal} closeAfterTransition slots={{ backdrop: Backdrop }} slotProps={{ backdrop: { timeout: 500, className: "admin-view-users-modal-backdrop" }}}>
         <Fade in={modalOpen}>
-          <Box className="user-details-modal">
-            <IconButton onClick={handleCloseModal} className="modal-close-button"><Close /></IconButton>
+          <Box className="admin-view-users-details-modal">
+            <IconButton onClick={handleCloseModal} className="admin-view-users-modal-close-button"><Close /></IconButton>
             
             {modalView === 'USER_DETAILS' && selectedUser && renderUserDetailsView()}
             {modalView === 'ITEM_DETAILS' && selectedItemForDetail && renderItemDetailsView()}

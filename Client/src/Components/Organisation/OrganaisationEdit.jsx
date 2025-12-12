@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Box, Typography, CircularProgress, Alert, Paper, Button, TextField, InputAdornment, Avatar,
-  // 1. Import new components for the dropdown
   Select, MenuItem, FormControl, InputLabel, FormHelperText
 } from '@mui/material';
 import {
@@ -11,7 +10,6 @@ import {
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/OrganisationEdit.css';
 
-// 2. Define the organisation types, similar to your registration page
 const organisationTypes = [
   { value: 'cafe', label: 'Café / Restaurant' },
   { value: 'retail', label: 'Retail Store' },
@@ -131,7 +129,6 @@ function OrganaisationEdit() {
     return errors;
   };
 
-// In OrganaisationEdit.js
 
 const handleSubmit = async (e) => {
     e.preventDefault();
@@ -144,7 +141,6 @@ const handleSubmit = async (e) => {
     setLoading(true);
     const data = new FormData();
     
-    // Map frontend state names back to backend field names
     data.append('organisationName', formData.name);
     data.append('organisationType', formData.type);
     data.append('contactPerson', formData.contact);
@@ -154,12 +150,9 @@ const handleSubmit = async (e) => {
     data.append('address', formData.address);
     data.append('website', formData.website);
     
-    // --- THIS IS THE FIX ---
-    // Change 'logo' to 'organisationLogo' to match the backend middleware
     if (logoFile) {
         data.append('organisationLogo', logoFile);
     }
-    // ----------------------
 
     try {
         const response = await axiosInstance.put(`/api/organaisation/profile/${organisation._id}`, data, {
@@ -237,7 +230,6 @@ const handleSubmit = async (e) => {
         <Box className="organisation-profile-details-grid">
           {renderTextField("Organisation Name", "name", formData.name, <FaBuilding />, 'text', true)}
           
-          {/* 3. Replace the old renderTextField with this new conditional block */}
           {isEditing ? (
             <FormControl fullWidth variant="outlined" required error={!!formErrors.type}>
               <InputLabel id="organisation-type-select-label">Organisation Type</InputLabel>
@@ -258,7 +250,6 @@ const handleSubmit = async (e) => {
               {formErrors.type && <FormHelperText>{formErrors.type}</FormHelperText>}
             </FormControl>
           ) : (
-            // In view mode, we display the user-friendly label instead of the raw value
             <Box className="organisation-profile-detail-item">
               <span className="organisation-profile-detail-icon"><FaStore /></span>
               <Box className="organisation-profile-detail-text-content">

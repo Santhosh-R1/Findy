@@ -1,0 +1,151 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  --org-bg: #f8f9fa;
+  --org-text-main: #1f2937;
+  --org-text-secondary: #6b7280;
+  --org-card-bg: #ffffff;
+  --org-border: #e5e7eb;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--org-bg);
+}
+
+.org-dash-container {
+  margin-left: 260px;
+  padding: 3rem;
+  width: calc(100% - 260px);
+  box-sizing: border-box;
+  min-height: 100vh;
+  margin-top: 15px;
+}
+
+.org-dash-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin-left: 260px;
+}
+
+.org-dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid var(--org-border);
+  padding-bottom: 1.5rem;
+}
+
+.org-dash-title {
+  font-weight: 800 !important;
+  color: var(--org-text-main);
+  letter-spacing: -0.03em;
+}
+
+.org-dash-subtitle {
+  color: var(--org-text-secondary);
+  margin-top: 0.5rem !important;
+}
+
+.org-header-btn {
+  background-color: #3b82f6 !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  padding: 10px 24px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+}
+
+.org-stat-card {
+  padding: 1.5rem;
+  border-radius: 16px !important;
+  background: var(--org-card-bg) !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03) !important;
+  border: 1px solid var(--org-border) !important;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  transition: transform 0.2s ease;
+  height: 100%;
+}
+
+.org-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.06) !important;
+}
+
+.org-stat-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.org-stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.org-stat-value {
+  font-weight: 700 !important;
+  color: var(--org-text-main);
+}
+
+.org-stat-title {
+  color: var(--org-text-secondary);
+  font-weight: 500 !important;
+}
+
+.org-chart-paper {
+  padding: 1.5rem;
+  border-radius: 20px !important;
+  background: var(--org-card-bg) !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03) !important;
+  border: 1px solid var(--org-border) !important;
+  height: 100%;
+  min-height: 400px;
+}
+
+.org-chart-title {
+  margin-bottom: 2rem !important;
+  font-weight: 700 !important;
+  color: var(--org-text-main);
+}
+
+.org-no-data {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--org-text-secondary);
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .org-dash-container {
+    margin-left: 0;
+    width: 100%;
+    padding: 1.5rem;
+  }
+  
+  .org-dash-loading {
+    margin-left: 0;
+  }
+
+  .org-dash-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .org-header-btn {
+    width: 100%;
+  }
+}

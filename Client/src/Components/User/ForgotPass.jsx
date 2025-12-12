@@ -14,7 +14,6 @@ function ForgotPassword() {
   const [successMessage, setSuccessMessage] = useState(null);
 
   useLayoutEffect(() => {
-    // This GSAP animation remains and will work perfectly with the new background
     gsap.fromTo(
       ".user-forgot-pass-card",
       { opacity: 0, y: 50 },
@@ -52,7 +51,6 @@ function ForgotPassword() {
   return (
     <>
       <div className="user-forgot-pass-page">
-        {/* --- ADDED: Animated Background Bubbles --- */}
         <div className="background-bubbles">
           <div className="bubble"></div>
           <div className="bubble"></div>

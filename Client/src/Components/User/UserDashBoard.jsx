@@ -1,3 +1,5 @@
+// src/components/user/UserDashBoard.js
+
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Paper, Grid, CircularProgress, Alert, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +13,7 @@ const StatCard = ({ title, value, icon, color, delay }) => (
     className="stat-card"
     elevation={0}
     variant="outlined"
-    style={{ animationDelay: delay }} 
+    style={{ animationDelay: delay }}
   >
     <Box className="stat-icon-wrapper" sx={{ backgroundColor: color }}>
       {icon}
@@ -36,51 +38,54 @@ function UserDashBoard() {
   const [error, setError] = useState(null);
   const [userName, setUserName] = useState('');
   const navigate = useNavigate();
-  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
-  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        console.log(userInfo);
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
         if (!userInfo || !userInfo._id) {
           throw new Error("Authentication error. Please log in again.");
         }
-        setUserName(userInfo.name || 'User');
+        setUserName(userInfo.firstName || 'User');
 
-        const [registeredResponse, foundResponse] = await Promise.all([
+        const [registeredResponse, foundResponse, matchesResponse] = await Promise.all([
           axiosInstance.get(`/api/items/user/${userInfo._id}`),
-          axiosInstance.get(`/api/items/found/user/${userInfo._id}`)
+          axiosInstance.get(`/api/items/found/user/${userInfo._id}`),
+          axiosInstance.get(`/api/items/my-matches/${userInfo._id}`)
         ]);
 
-        const registeredItems = registeredResponse.data.data;
-        const foundItems = foundResponse.data.data;
-        console.log("Registered Items:", registeredItems);
-        console.log("Found Items:", foundItems);
+        const registeredItems = registeredResponse.data.data; 
+        const foundItems = foundResponse.data.data;           
+        const myMatches = matchesResponse.data.data;
 
         const totalRegistered = registeredItems.length;
+
         const totalLost = registeredItems.filter(item => item.status === 'lost').length;
+
         const totalFound = foundItems.length;
-                const myItemsReturned = registeredItems.filter(item => item.status === 'claimed' || item.status === 'returned').length;
-        const itemsIFoundReturned = foundItems.filter(item => item.status === 'claimed' || item.status === 'returned').length;
-        const totalReturned = myItemsReturned + itemsIFoundReturned;
+
+        const totalReturned = myMatches.filter(match => {
+          const finderId = match.finder?._id || match.finder;
+          return finderId === userInfo._id && match.status === 'resolved';
+        }).length;
 
         setStats({ totalRegistered, totalLost, totalFound, totalReturned });
 
-        const allUserItems = registeredItems; 
+        const itemsForCharts = registeredItems; 
 
-        const categoryCounts = allUserItems.reduce((acc, item) => {
+        const categoryCounts = itemsForCharts.reduce((acc, item) => {
           const category = item.mainCategory.charAt(0).toUpperCase() + item.mainCategory.slice(1);
           acc[category] = (acc[category] || 0) + 1;
           return acc;
         }, {});
         setCategoryData(Object.keys(categoryCounts).map(key => ({ name: key, value: categoryCounts[key] })));
 
-        const statusCounts = allUserItems.reduce((acc, item) => {
-            const status = item.status.charAt(0).toUpperCase() + item.status.slice(1);
-            acc[status] = (acc[status] || 0) + 1;
-            return acc;
+        const statusCounts = itemsForCharts.reduce((acc, item) => {
+          const status = item.status.charAt(0).toUpperCase() + item.status.slice(1);
+          acc[status] = (acc[status] || 0) + 1;
+          return acc;
         }, {});
         setStatusData(Object.keys(statusCounts).map(key => ({ name: key, count: statusCounts[key] })));
 
@@ -100,7 +105,7 @@ function UserDashBoard() {
   const BAR_CHART_COLORS = ['#0d6efd', '#dc3545', '#198754', '#ffc107', '#6f42c1', '#0dcaf0', '#6610f2'];
 
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
-    if (percent < 0.05) return null; 
+    if (percent < 0.05) return null;
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * (Math.PI / 180));
     const y = cy + radius * Math.sin(-midAngle * (Math.PI / 180));
@@ -128,14 +133,14 @@ function UserDashBoard() {
     );
   }
 
-  const hasData = stats.totalRegistered > 0;
+  const hasChartData = categoryData.length > 0;
 
   return (
     <Box className="dashboard-content-area">
       <Box className="dashboard-inner-content">
         <Box className="dashboard-header">
           <Box>
-            <Typography variant="h4" component="h1" className="welcome-header">Welcome back, {userInfo?.firstName} !</Typography>
+            <Typography variant="h4" component="h1" className="welcome-header">Welcome back, {userName} !</Typography>
             <Typography variant="subtitle1" className="welcome-subheader">Here's a summary of your inventory and activity.</Typography>
           </Box>
           <Box className="header-actions">
@@ -163,38 +168,38 @@ function UserDashBoard() {
           </Grid>
         </Grid>
 
-        {hasData ? (
+        {hasChartData ? (
           <Grid container spacing={4} className="charts-grid">
             <Grid item xs={12} lg={5}>
               <Paper className="chart-paper" elevation={0} variant="outlined" style={{ animationDelay: '500ms' }}>
-                <Typography variant="h6" className="chart-title">Items by Category</Typography>
-                <ResponsiveContainer width={500} height={380}>
-                  <PieChart>
-                    <Pie
-                      data={categoryData}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={130}
-                      fill="#8884d8"
-                      labelLine={false}
-                      label={renderCustomizedLabel}
-                    >
-                      {categoryData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={(value, name) => [value, name]} />
-                    <Legend iconType="circle" />
-                  </PieChart>
+                <Typography variant="h6" className="chart-title">My Registered Items (Category)</Typography>
+                <ResponsiveContainer width={500} height={380}>                 
+                   <PieChart>
+                  <Pie
+                    data={categoryData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    fill="#8884d8"
+                    labelLine={false}
+                    label={renderCustomizedLabel}
+                  >
+                    {categoryData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value, name) => [value, name]} />
+                  <Legend iconType="circle" />
+                </PieChart>
                 </ResponsiveContainer>
               </Paper>
             </Grid>
             <Grid item xs={12} lg={7}>
               <Paper className="chart-paper" elevation={0} variant="outlined" style={{ animationDelay: '600ms' }}>
-                <Typography variant="h6" className="chart-title">Overview by Status</Typography>
-                <ResponsiveContainer width={500} height={380}>
+                <Typography variant="h6" className="chart-title">My Registered Items (Status)</Typography>
+                <ResponsiveContainer width={500} height={380}>                 
                   <BarChart data={statusData} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--clean-border-color)" />
                     <XAxis dataKey="name" tick={{ fill: 'var(--clean-text-secondary)' }} tickLine={false} axisLine={false} />
@@ -221,8 +226,8 @@ function UserDashBoard() {
         ) : (
           <Paper className="no-data-paper" elevation={0} variant="outlined">
             <FaBox className="no-data-icon" />
-            <Typography variant="h6">Your dashboard is waiting for data</Typography>
-            <Typography color="text.secondary">Register your first item or report a found one to see your stats here.</Typography>
+            <Typography variant="h6">No Registered Items Yet</Typography>
+            <Typography color="text.secondary">Register items to see analytics. Found items are not included in charts.</Typography>
           </Paper>
         )}
       </Box>

@@ -18,7 +18,6 @@ function ModeratorLogin() {
   const [error, setError] = useState('');
 
   useLayoutEffect(() => {
-    // GSAP animations for the card remain unchanged
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.3 });
       tl.from(".moderator-login-card", { opacity: 0, scale: 0.9, duration: 0.8, ease: 'expo.out' })

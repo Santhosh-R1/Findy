@@ -1,14 +1,8 @@
-/*
- *  File: /src/Styles/OrganisationSideMenu.css
- *  Styles for the Organisation Sidemenu component.
- */
+
 
 :root {
-  /* Colors from OrganisationLogin.css */
   --org-sidemenu-primary-color: #6f42c1; 
-  
-  /* Shared colors from the original sidemenu */
-  --dark-color: #0a2540;
+    --dark-color: #0a2540;
   --light-color: #ffffff;
   --text-light-translucent: rgba(255, 255, 255, 0.7);
 }

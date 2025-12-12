@@ -42,7 +42,13 @@ function OrganaisationFounds() {
     }
   }, [success, error]);
 
-  const getTodayDateString = () => new Date().toISOString().split("T")[0];
+  const getTodayDateString = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   const handleMainCategoryChange = (e) => {
     setMainCategory(e.target.value);
@@ -81,17 +87,24 @@ function OrganaisationFounds() {
     const errors = {};
     const nameRegex = /^[A-Za-z\s]+$/;
 
-    if (!formData.foundDate) errors.foundDate = "Please specify when the item was found.";
-    else {
-      const selectedDate = new Date(formData.foundDate);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      if (selectedDate > today) errors.foundDate = "This date cannot be in the future.";
+    if (!formData.foundDate) {
+        errors.foundDate = "Please specify when the item was found.";
+    } else {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to 00:00:00 local
+
+        const [year, month, day] = formData.foundDate.split('-').map(Number);
+                const selectedDate = new Date(year, month - 1, day); 
+        selectedDate.setHours(0, 0, 0, 0);
+
+        if (selectedDate > today) {
+            errors.foundDate = "This date cannot be in the future.";
+        }
     }
+
     if (!formData.description.trim()) errors.description = "Please provide some details.";
     if (!formData.color.trim()) errors.color = "Color is required.";
 
-    // --- UPDATED: More specific validation per category ---
     if (mainCategory === 'pets') {
       if (formData.petName && !nameRegex.test(formData.petName)) errors.petName = "Name can only contain letters.";
       if (formData.itemName && !nameRegex.test(formData.itemName)) errors.itemName = "Breed can only contain letters.";
@@ -99,10 +112,8 @@ function OrganaisationFounds() {
       if (!formData.itemName.trim()) errors.itemName = "Model name is required.";
       if (!formData.brand.trim()) errors.brand = "Brand is required.";
     } else if (mainCategory === 'accessories') {
-      // For accessories, we only require the brand, not the item name.
       if (!formData.brand.trim()) errors.brand = "Brand is required.";
     }
-    // --------------------------------------------------------
     return errors;
   };
 
@@ -110,6 +121,7 @@ function OrganaisationFounds() {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+    
     const validationErrors = validateForm();
     if (!itemImage) {
       validationErrors.image = "Please upload an image of the item.";
@@ -119,20 +131,30 @@ function OrganaisationFounds() {
       if (validationErrors.image) setError(validationErrors.image);
       return;
     }
+
     setLoading(true);
-    const data = new FormData();
+    
     const orgInfo = JSON.parse(localStorage.getItem('organisationInfo'));
-    if (!orgInfo || !orgInfo.data || !orgInfo.data._id || !orgInfo.data.address) {
-      setError("Organization details not found. Please log in again.");
+    // Check both potential locations for the ID
+    const finderId = orgInfo?.data?._id || orgInfo?._id;
+    const orgAddress = orgInfo?.data?.address || orgInfo?.address;
+
+    if (!finderId) {
+      setError("Organization ID not found. Please log in again.");
       setLoading(false);
       return;
     }
-    data.append('finderId', orgInfo.data._id);
+
+    const data = new FormData();
+    data.append('finderId', finderId); 
     data.append('mainCategory', mainCategory);
     data.append('subCategory', subCategory);
     Object.keys(formData).forEach(key => data.append(key, formData[key]));
-    data.append('foundLocationAddress', orgInfo.data.address);
+    
+    data.append('foundLocationAddress', orgAddress || "Organization Address"); 
+    
     data.append('itemImage', itemImage);
+
     try {
       await axiosInstance.post('/api/items/found/add/Org', data, {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -145,13 +167,13 @@ function OrganaisationFounds() {
       setSubCategory('');
       setFormErrors({});
     } catch (err) {
+      console.error("Submission Error:", err);
       setError(err.response?.data?.message || "Failed to submit report.");
     } finally {
       setLoading(false);
     }
   };
 
-  // --- REFACTORED: renderDynamicFields for specific category inputs ---
   const renderDynamicFields = () => {
     if (!subCategory) return null;
     const isPet = mainCategory === 'pets';
@@ -162,7 +184,6 @@ function OrganaisationFounds() {
           {`Details of the found ${subCategory}`}
         </Typography>
         
-        {/* --- Block for Pets --- */}
         {mainCategory === 'pets' && (
           <>
             <TextField fullWidth label="Pet's Name (if known)" name="petName" value={formData.petName} onChange={handleChange} placeholder="e.g., Tag says 'Buddy'" InputProps={{ startAdornment: <InputAdornment position="start"><FaSignature /></InputAdornment> }} error={!!formErrors.petName} helperText={formErrors.petName} />
@@ -170,7 +191,6 @@ function OrganaisationFounds() {
           </>
         )}
 
-        {/* --- Block for Electronics --- */}
         {mainCategory === 'electronics' && (
           <>
             <TextField fullWidth required label="Model Name" name="itemName" value={formData.itemName} onChange={handleChange} placeholder="e.g., iPhone 14 Pro" InputProps={{ startAdornment: <InputAdornment position="start"><FaTag /></InputAdornment> }} error={!!formErrors.itemName} helperText={formErrors.itemName} />
@@ -178,21 +198,18 @@ function OrganaisationFounds() {
           </>
         )}
         
-        {/* --- Block for Accessories --- */}
         {mainCategory === 'accessories' && (
           <>
             <TextField fullWidth required label="Brand" name="brand" value={formData.brand} onChange={handleChange} placeholder="e.g., Gucci, Fossil" InputProps={{ startAdornment: <InputAdornment position="start"><FaBuilding /></InputAdornment> }} error={!!formErrors.brand} helperText={formErrors.brand} />
           </>
         )}
 
-        {/* --- Common fields for ALL categories --- */}
         <TextField fullWidth required label="Color / Markings" name="color" value={formData.color} onChange={handleChange} placeholder={isPet ? "e.g., Black with white spot" : "e.g., Tan Brown"} InputProps={{ startAdornment: <InputAdornment position="start"><FaPalette /></InputAdornment> }} error={!!formErrors.color} helperText={formErrors.color} />
         <TextField fullWidth required label="Date Found" name="foundDate" type="date" value={formData.foundDate} onChange={handleChange} InputLabelProps={{ shrink: true }} inputProps={{ max: getTodayDateString() }} InputProps={{ startAdornment: <InputAdornment position="start"><FaCalendarAlt /></InputAdornment> }} error={!!formErrors.foundDate} helperText={formErrors.foundDate} />
         <TextField fullWidth required label="Additional Details" name="description" value={formData.description} onChange={handleChange} multiline rows={4} placeholder={isPet ? "Collar details, temperament..." : "Any damage, contents..."} InputProps={{ startAdornment: <InputAdornment position="start" sx={{ alignItems: 'flex-start', mt: '1rem' }}><FaAlignLeft /></InputAdornment> }} error={!!formErrors.description} helperText={formErrors.description} />
       </Box>
     );
   };
-  // -------------------------------------------------------------------
 
   return (
     <Box className="add-item-container">

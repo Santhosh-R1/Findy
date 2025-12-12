@@ -3,12 +3,13 @@ import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { Avatar, Box, Typography, Skeleton } from '@mui/material';
 import {
     FaTachometerAlt,
-    FaListUl,         // Correct icon for "My Found Items"
-    FaBuilding,       // Kept for profile avatar fallback
+    FaListUl,
+    FaBuilding,
     FaSignOutAlt,
     FaSearchPlus,
-    FaSearch,         // Correct icon for "Lost Items"
-    FaIdCard          // Correct icon for "View Profile"
+    FaSearch,
+    FaIdCard,
+    FaHeadset 
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/OrganisationSideMenu.css';
@@ -25,8 +26,10 @@ function OrganisationSidemenu() {
             if (storedOrganisationInfo) {
                 const parsedData = JSON.parse(storedOrganisationInfo);
 
-                if (parsedData && parsedData.data && parsedData.data._id) {
-                    const response = await axiosInstance.get(`/api/organaisation/get-by-id/${parsedData.data._id}`);
+                const orgId = parsedData.data?._id || parsedData._id;
+
+                if (orgId) {
+                    const response = await axiosInstance.get(`/api/organaisation/get-by-id/${orgId}`);
                     setOrganisation(response.data.data);
                 } else {
                     console.error("Organisation ID not found in localStorage data.");
@@ -45,16 +48,9 @@ function OrganisationSidemenu() {
 
     useEffect(() => {
         loadOrganisationDataFromAPI();
-
-        const handleProfileUpdate = () => {
-            loadOrganisationDataFromAPI();
-        };
-
+        const handleProfileUpdate = () => { loadOrganisationDataFromAPI(); };
         window.addEventListener('organisationProfileUpdated', handleProfileUpdate);
-
-        return () => {
-            window.removeEventListener('organisationProfileUpdated', handleProfileUpdate);
-        };
+        return () => { window.removeEventListener('organisationProfileUpdated', handleProfileUpdate); };
     }, [loadOrganisationDataFromAPI]);
 
     const handleLogout = () => {
@@ -85,7 +81,6 @@ function OrganisationSidemenu() {
                             src={logoUrl}
                             sx={{ width: 84, height: 84, border: '3px solid var(--org-sidemenu-primary-color)' }}
                         >
-                            {/* Fallback to building icon if no logo and no name */}
                             {organisation.organisationName ? organisation.organisationName.charAt(0).toUpperCase() : <FaBuilding />}
                         </Avatar>
                         <Typography variant="subtitle1" className="organisation-profile-name">
@@ -107,11 +102,11 @@ function OrganisationSidemenu() {
             {renderProfileSection()}
             <nav className="organisation-sidemenu-nav">
                 <ul>
-                    {/* --- ICONS CORRECTED BELOW --- */}
                     <li><NavLink to="/organisation/dashboard"><FaTachometerAlt className="organisation-sidemenu-icon" /><span>Dashboard</span></NavLink></li>
                     <li><NavLink to="/organisation/founts"><FaSearchPlus className="organisation-sidemenu-icon" /><span>Report Found Item</span></NavLink></li>
                     <li><NavLink to="/organisation/my-found-items"><FaListUl className="organisation-sidemenu-icon" /><span> My Found Items</span></NavLink></li>
-                    <li><NavLink to="/organisation/lost-items-others"><FaSearch className="organisation-sidemenu-icon" /><span>Lost Items Network</span></NavLink></li>
+                    {/* <li><NavLink to="/organisation/lost-items-others"><FaSearch className="organisation-sidemenu-icon" /><span>Lost Items Network</span></NavLink></li> */}
+                    <li><NavLink to="/organisation/help-desk"><FaHeadset className="organisation-sidemenu-icon" /><span>Help Desk</span></NavLink></li> 
                     <li><NavLink to="/organisation/profile"><FaIdCard className="organisation-sidemenu-icon" /><span>View Profile</span></NavLink></li>
                 </ul>
             </nav>

@@ -3,13 +3,12 @@
   --dark-color: #0a2540;
   --light-color: #ffffff;
   --text-light-translucent: rgba(255, 255, 255, 0.7);
+  --sidebar-width: 260px;
+  --sidebar-width-collapsed: 80px; 
 }
-.user-profile-section.skeleton {
-  align-items: center; 
-  gap: 12px;
-}
+
 .user-sidemenu {
-  width: 260px;
+  width: var(--sidebar-width);
   height: 100vh;
   background-color: var(--dark-color);
   color: var(--light-color);
@@ -20,8 +19,8 @@
   left: 0;
   box-shadow: 4px 0px 15px rgba(0, 0, 0, 0.2);
   z-index: 1000;
+  transition: width 0.3s ease; 
 }
-
 
 .user-profile-link {
   text-decoration: none;
@@ -36,11 +35,17 @@
   gap: 12px;              
   padding: 1.5rem 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  min-height: 140px; 
+  justify-content: center;
 }
 
 .user-profile-link:hover .user-profile-section {
   background-color: rgba(255, 255, 255, 0.05);
+}
+
+.user-profile-section .MuiAvatar-root {
+  transition: width 0.3s ease, height 0.3s ease;
 }
 
 .user-profile-name {
@@ -51,6 +56,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  opacity: 1;
+  transition: opacity 0.2s ease; 
+}
+
+.user-profile-section.skeleton {
+  align-items: center; 
+  gap: 12px;
 }
 
 .user-sidemenu-header-placeholder {
@@ -61,11 +73,14 @@
   font-weight: 700;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--user-primary-color);
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .user-sidemenu-nav {
   flex-grow: 1;
   overflow-y: auto;
+  overflow-x: hidden; 
 }
 
 .user-sidemenu-nav ul {
@@ -85,6 +100,7 @@
   font-weight: 500;
   transition: all 0.3s ease;
   border-left: 4px solid transparent;
+  white-space: nowrap; 
 }
 
 .user-sidemenu-logout button {
@@ -99,8 +115,15 @@
 .user-sidemenu-icon {
   margin-right: 1rem;
   font-size: 1.2rem;
-  width: 20px;
+  min-width: 24px; 
   text-align: center;
+  transition: margin 0.3s ease;
+}
+
+.user-sidemenu-nav a span,
+.user-sidemenu-logout button span {
+  opacity: 1;
+  transition: opacity 0.2s ease;
 }
 
 .user-sidemenu-nav a:hover,
@@ -121,25 +144,43 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .user-sidemenu {
-    width: 80px; 
+    width: var(--sidebar-width-collapsed); 
   }
+
   .user-profile-section {
-    padding: 1rem 0;
+    padding: 1rem 0.5rem;
+    gap: 0; 
+    min-height: auto;
   }
+
   .user-profile-name,
-  .user-sidemenu-header-placeholder h3,
+  .user-sidemenu-header-placeholder h3 {
+    display: none;
+    opacity: 0;
+  }
+
+  .user-profile-section .MuiAvatar-root {
+    width: 45px !important;
+    height: 45px !important;
+    border-width: 2px !important;
+  }
+
+  .user-sidemenu-nav a,
+  .user-sidemenu-logout button {
+    justify-content: center; 
+    padding: 1rem 0;         
+  }
+
+  .user-sidemenu-icon {
+    margin-right: 0;
+    font-size: 1.4rem; 
+  }
+
   .user-sidemenu-nav a span,
   .user-sidemenu-logout button span {
     display: none;
-  }
-  .user-sidemenu-nav a,
-  .user-sidemenu-logout button {
-    justify-content: center;
-    padding: 1rem 0;
-  }
-  .user-sidemenu-icon {
-    margin-right: 0;
+    opacity: 0;
   }
 }

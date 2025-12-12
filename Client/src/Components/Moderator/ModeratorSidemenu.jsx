@@ -7,9 +7,9 @@ import {
   FaCheckSquare,
   FaUsers,
   FaSignOutAlt,
-  FaUserCircle // Kept for profile avatar fallback
+  FaUserCircle 
 } from 'react-icons/fa';
-import axiosInstance from '../../api/baseUrl'; // Make sure this path is correct
+import axiosInstance from '../../api/baseUrl'; 
 import '../../Styles/ModeratorSidemenu.css'; 
 
 function ModeratorSidemenu() {
@@ -17,28 +17,21 @@ function ModeratorSidemenu() {
   const [moderator, setModerator] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // This function now loads initial data from localStorage for speed,
-  // then fetches the latest data from the API.
   const loadModeratorData = useCallback(async () => {
     try {
       const storedModeratorInfo = localStorage.getItem('moderatorInfo');
       if (storedModeratorInfo) {
         const parsedData = JSON.parse(storedModeratorInfo);
 
-        // --- CORRECTED LOGIC HERE ---
-        // Use the flat data structure from local storage immediately
         if (parsedData && parsedData._id) {
-          setModerator(parsedData); // Instantly set state with local data
-          setLoading(false); // Stop loading, we have something to show
+          setModerator(parsedData); 
+          setLoading(false); 
 
-          // Now, fetch the most up-to-date data from the server in the background
           try {
             const response = await axiosInstance.get(`/api/moderator/get-by-id/${parsedData._id}`);
-            // The API response might be nested under a 'data' key, adjust if needed
             setModerator(response.data.data); 
           } catch (apiError) {
             console.error("Failed to fetch updated moderator info from API, using local data.", apiError);
-            // If API fails, the user still sees the data from localStorage
           }
         } else {
           console.error("Moderator ID not found in localStorage data.");
@@ -56,7 +49,6 @@ function ModeratorSidemenu() {
     }
   }, []);
 
-  // Effect to load data on mount and listen for profile updates
   useEffect(() => {
     loadModeratorData();
 
@@ -88,7 +80,6 @@ function ModeratorSidemenu() {
       );
     }
     if (moderator) {
-      // --- CORRECTED PROPERTY ACCESS ---
       const profilePicUrl = moderator.profileImage
         ? `http://localhost:5001${moderator.profileImage.replace(/\\/g, '/')}`
         : '';
@@ -97,14 +88,14 @@ function ModeratorSidemenu() {
         <Link to="/moderator/profile" className="moderators-profile-link">
           <Box className="moderators-profile-section">
             <Avatar
-              alt={moderator.firstName} // Use firstName
+              alt={moderator.firstName}
               src={profilePicUrl}
               sx={{ width: 84, height: 84, border: '3px solid var(--mod-primary-color)' }}
             >
               {moderator.firstName ? moderator.firstName.charAt(0).toUpperCase() : <FaUserCircle />}
             </Avatar>
             <Typography variant="subtitle1" className="moderators-profile-name">
-              {moderator.firstName} {/* Use firstName */}
+              {moderator.firstName} 
             </Typography>
           </Box>
         </Link>

@@ -46,6 +46,13 @@ import ModeratorsFound from './Components/Moderator/ModeratorsFound';
 import MatchReviewPage from './Components/User/MatchReviewPage';
 import ManageClaim from './Components/Moderator/ManageClaim';
 import UserHelpDesk from './Components/User/HelpDesk';
+import ModeratorProfile from './Components/Moderator/ModeratorProfile';
+import OrganisationSidemenu from './Components/Organisation/OrganaisationSidemenu';
+import OrganisationHelpDesk from './Components/Organisation/OrganisationHelpDesk';
+import OrganaisationNav from './Components/Organisation/OrganisationNav';
+import ModeratorNav from './Components/Moderator/ModeratorNav';
+
+
 function App() {
   return (
     <Router>
@@ -81,17 +88,19 @@ function App() {
         <Route path="/user/my-found-items" element={[<UserNav />, <UserSideMenu />, <UserFounds />]} />
         <Route path="/user/lost-items-others" element={[<UserNav />, <UserSideMenu />, <UserLostItems />]} />
         <Route path="/admin/view-all-lost" element={[<AdminSidemenu />, <AdminViewAllLost />]} />
-        <Route path="/organisation/DashBoard" element={[<OrganaisationSidemenu />, <OrganaisationDashBoard />]} />
-        <Route path="/organisation/founts" element={[<OrganaisationSidemenu />, <OrganaisationFounds />]} />
-        <Route path="/organisation/my-found-items" element={[<OrganaisationSidemenu />, <OrganaisationFinds />]} />
-        <Route path="/organisation/lost-items-others" element={[<OrganaisationSidemenu />, < UserLostItems />]} />
-        <Route path="/organisation/profile" element={[<OrganaisationSidemenu />, < OrganisationEdit />]} />
-        <Route path="/moderator/DashBoard" element={[<ModeratorSidemenu />, < ModeratorDashBoard />]} />
-        <Route path="/moderator/LostItems" element={[<ModeratorSidemenu />, < ModeratorLost />]} />
-        <Route path="/moderator/FoundItems" element={[<ModeratorSidemenu />, < ModeratorsFound />]} />
-        <Route path="/match-review" element={<MatchReviewPage />} />
-                <Route path="/moderator/manage-claims" element={[<ModeratorSidemenu />, < ManageClaim />]} />
-                <Route path="/user/HelpDesk" element={[<UserSideMenu />, < UserHelpDesk />]} />
+        <Route path="/organisation/DashBoard" element={[<OrganaisationNav />, <OrganaisationSidemenu />, <OrganaisationDashBoard />]} />
+        <Route path="/organisation/founts" element={[<OrganaisationNav />, <OrganaisationSidemenu />, <OrganaisationFounds />]} />
+        <Route path="/organisation/my-found-items" element={[<OrganaisationNav />, <OrganaisationSidemenu />, <OrganaisationFinds />]} />
+        <Route path="/organisation/lost-items-others" element={[<OrganaisationNav />, <OrganaisationSidemenu />, < UserLostItems />]} />
+        <Route path="/organisation/profile" element={[<OrganaisationNav />, <OrganaisationSidemenu />, < OrganisationEdit />]} />
+        <Route path="/moderator/DashBoard" element={[<ModeratorNav />, <ModeratorSidemenu />, < ModeratorDashBoard />]} />
+        <Route path="/moderator/LostItems" element={[<ModeratorNav />, <ModeratorSidemenu />, < ModeratorLost />]} />
+        <Route path="/moderator/FoundItems" element={[<ModeratorNav />, <ModeratorSidemenu />, < ModeratorsFound />]} />
+        <Route path="/match-review" element={[<UserNav />, <UserSideMenu />, <MatchReviewPage />]} />
+        <Route path="/moderator/manage-claims" element={[<ModeratorNav />, <ModeratorSidemenu />, < ManageClaim />]} />
+        <Route path="/user/HelpDesk" element={[<UserNav />, <UserSideMenu />, < UserHelpDesk />]} />
+        <Route path="/moderator/profile" element={[<ModeratorNav />, < ModeratorSidemenu />, < ModeratorProfile />]} />
+        <Route path="/Organisation/Help-Desk" element={[<OrganaisationNav />, < OrganisationSidemenu />, < OrganisationHelpDesk />]} />
 
       </Routes>
     </Router>

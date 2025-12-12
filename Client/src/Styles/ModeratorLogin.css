@@ -12,27 +12,23 @@
   --font-body: 'Lato', sans-serif;
 }
 
-/* --- MODIFIED: UPGRADED BACKGROUND AND POSITIONING --- */
 .moderator-login-page {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  /* A dark background to make the orange triangles stand out */
   background-color: #1a1a1d;
   padding: 2rem;
   position: relative;
   overflow: hidden;
 }
 
-/* --- NEW SECTION: ANIMATED TRIANGLE BACKGROUND --- */
 @keyframes animateTriangles {
   0% {
     transform: translateY(0) rotate(0deg);
     opacity: 0.7;
   }
   100% {
-    /* Move up and off the screen while rotating and fading */
     transform: translateY(-120vh) rotate(360deg);
     opacity: 0;
   }
@@ -49,15 +45,13 @@
 
 .triangle {
   position: absolute;
-  /* This is the CSS trick: no width/height, use borders to create the shape */
   width: 0;
   height: 0;
-  bottom: -150px; /* Start below the screen */
+  bottom: -150px;
   animation: animateTriangles linear infinite;
   opacity: 0;
 }
 
-/* Customize each triangle for a random, dynamic effect */
 .triangle:nth-child(1) {
   left: 10%;
   border-left: 20px solid transparent;
@@ -138,7 +132,6 @@
   animation-duration: 14s;
   animation-delay: -6s;
 }
-/* --- END OF NEW SECTION --- */
 
 
 .moderator-login-error-message {

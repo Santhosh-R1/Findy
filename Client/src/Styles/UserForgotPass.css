@@ -1,5 +1,4 @@
 :root {
-  /* Assuming these are defined elsewhere */
   --user-primary-color: #20c997;
   --user-primary-dark: #19a47a;
   --light-color: #ffffff;
@@ -11,14 +10,12 @@
   --font-body: 'Lato', sans-serif;
 }
 
-/* --- MODIFIED: Upgraded background and added positioning --- */
 .user-forgot-pass-page {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   padding: 3rem 1.5rem;
-  /* New gradient background from UserLogin */
   background: linear-gradient(to bottom right, #0fffb7, #20c997);
   position: relative;
   overflow: hidden;
@@ -191,7 +188,6 @@
   }
 }
 
-/* --- NEW SECTION: ANIMATED BUBBLE BACKGROUND (FROM USER LOGIN) --- */
 @keyframes rise {
   0% {
     bottom: -100px;
@@ -220,7 +216,6 @@
   bottom: -100px;
   width: 40px;
   height: 40px;
-  /* The color uses the existing --user-primary-color variable */
   background-color: #19a47a;
   border-radius: 50%;
   opacity: 0.5;

@@ -1,12 +1,13 @@
 .user-nav-app-bar {
   background-color: #0a2540 !important;
-  color: white !important; 
+  color: white !important;
   box-shadow: none !important;
-  border-bottom: 1px solid #0a2540; 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+  z-index: 1100; 
 }
 
 .user-nav-logo-link {
-  color: inherit !important; 
+  color: inherit !important;
   text-decoration: none !important;
   display: flex;
   align-items: center;
@@ -16,6 +17,7 @@
 .user-nav-logo-link:hover {
   opacity: 0.8;
 }
+
 .user-nav-menu .MuiPaper-root {
   border-radius: 12px !important;
   margin-top: 12px !important;
@@ -33,4 +35,10 @@
 
 .user-nav-menu .MuiMenuItem-root:hover {
   background-color: #f8f9fa !important;
+}
+
+@media (max-width: 600px) {
+  .user-nav-app-bar {
+    padding-right: 0 !important; 
+  }
 }
