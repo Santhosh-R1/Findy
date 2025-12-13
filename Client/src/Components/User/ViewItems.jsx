@@ -14,7 +14,6 @@ import '../../Styles/ViewItems.css';
 import '@geoapify/geocoder-autocomplete/styles/minimal.css';
 
 const getIconForSubCategory = (subCategory) => {
-  // 2. Add 'wallet' to the icons mapping
   const icons = { 
     phone: <FaMobileAlt />, 
     laptop: <FaLaptop />, 
@@ -222,9 +221,9 @@ function ViewItems() {
             </Box>
             <Box className="card-actions">
               <Button component={Link} to={`/user/edit-item/${item._id}`} size="small" variant="text" startIcon={<FaEdit />} disabled={item.status === 'lost'}>Edit</Button>
-              <Button size="small" variant="outlined" color="error" startIcon={<FaTrash />} onClick={() => handleOpenModal('delete', item)} disabled={item.status === 'lost'}>Delete</Button>
+              <Button size="small" variant="text" color="error" startIcon={<FaTrash />} onClick={() => handleOpenModal('delete', item)} disabled={item.status === 'lost'}>Delete</Button>
               <Button size="small" variant="contained" color="warning" startIcon={updatingItemId === item._id ? <CircularProgress size={16} color="inherit" /> : <FaExclamationTriangle />} onClick={() => handleOpenModal('reportLost', item)} disabled={updatingItemId === item._id || item.status === 'lost'}>
-                {updatingItemId === item._id ? 'Reporting...' : 'Report Lost'}
+                {updatingItemId === item._id ? 'Reporting...' : 'Lost'}
               </Button>
             </Box>
           </Paper>

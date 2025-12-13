@@ -6,7 +6,6 @@ import {
 import {
   FaPaw, FaLaptop, FaMobileAlt, FaDog, FaCat, FaUpload, FaTag, FaAlignLeft,
   FaShapes, FaCalendarAlt, FaBuilding, FaBarcode, FaSyncAlt, FaSignature,
-  // 1. Imported new icons
   FaShoppingBag, FaWallet, FaPalette
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
@@ -77,7 +76,6 @@ function AddItems() {
     }
     if (!formData.description.trim()) errors.description = "Additional details are required.";
     
-    // 4. Updated validation logic to include accessories
     if (mainCategory === 'pets') {
       if (!formData.petName.trim()) errors.petName = "Pet's name is required.";
       else if (!nameRegex.test(formData.petName)) errors.petName = "Name can only contain letters.";
@@ -138,7 +136,6 @@ function AddItems() {
     }
   };
 
-  // 3. Updated renderDynamicFields to handle all three categories
   const renderDynamicFields = () => {
     if (!subCategory) return null;
     const isPet = mainCategory === 'pets';

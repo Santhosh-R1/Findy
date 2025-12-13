@@ -7,7 +7,6 @@ import {
 import {
   FaPaw, FaLaptop, FaMobileAlt, FaDog, FaCat, FaSave, FaTag, FaAlignLeft,
   FaCalendarAlt, FaBuilding, FaBarcode, FaSyncAlt, FaSignature,
-  // 1. Imported new icons
   FaShoppingBag, FaWallet, FaPalette
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
@@ -96,7 +95,6 @@ function EditItem() {
     }
     if (!formData.description?.trim()) errors.description = "Additional details are required.";
 
-    // 4. Updated validation logic for all categories
     if (mainCategory === 'pets') {
       if (!formData.petName?.trim()) errors.petName = "Pet's name is required.";
       else if (!nameRegex.test(formData.petName)) errors.petName = "Name can only contain letters.";
@@ -148,7 +146,6 @@ function EditItem() {
     }
   };
 
-  // 3. Refactored renderDynamicFields to handle all categories
   const renderDynamicFields = () => {
     if (!subCategory) return null;
     const isPet = mainCategory === 'pets';
@@ -214,7 +211,6 @@ function EditItem() {
           <Box className="item-form-section">
             <Box className="form-step-group">
               <Typography variant="overline" className="step-header">Category (Cannot be changed)</Typography>
-              {/* 2. Updated disabled dropdowns to include all categories */}
               <FormControl fullWidth disabled>
                 <InputLabel>Item Type</InputLabel>
                 <Select value={mainCategory} label="Item Type">

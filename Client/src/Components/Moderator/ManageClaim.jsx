@@ -1,5 +1,3 @@
-// src/components/moderator/ManageClaim.js
-
 import React, { useState, useEffect } from 'react';
 import {
   Box, Typography, CircularProgress, Alert, Paper, Chip, Avatar, Button,
@@ -11,9 +9,8 @@ import {
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/ManageClaim.css';
-import ChatModal from './ChatModal'; // Import the ChatModal component
+import ChatModal from './ChatModal'; 
 
-// Helper function to render a status chip with appropriate color and icon
 const renderStatusChip = (status) => {
   switch (status) {
     case 'resolved':
@@ -34,7 +31,6 @@ function ManageClaim() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // State to manage the chat modal
   const [chatState, setChatState] = useState({ open: false, matchId: null, matchData: null });
 
   const handleOpenChat = (match) => {
@@ -48,8 +44,8 @@ function ManageClaim() {
     const fetchMatches = async () => {
       try {
         setLoading(true);
-        // Corrected API endpoint to fetch matches
         const response = await axiosInstance.get('/api/items');
+        console.log(response);
         
         if (response.data?.success) {
           setMatches(response.data.data);
@@ -132,7 +128,7 @@ function ManageClaim() {
                 </TableCell>
                 <TableCell className="mc-table-cell">
                    <Box className="mc-user-cell-content">
-                     <Typography className="mc-user-name">{`${match.lostItemOwner.firstName} ${match.lostItemOwner.lastName || ''}`}</Typography>
+                     <Typography className="mc-user-name">{`${match.lostItemOwner?.firstName} ${match.lostItemOwner.lastName || ''}`}</Typography>
                      <Typography variant="caption" color="text.secondary">{match.lostItemOwner.email}</Typography>
                    </Box>
                 </TableCell>
@@ -145,8 +141,7 @@ function ManageClaim() {
                         className="mc-type-chip"
                         color={match.matchType === 'ai' ? 'primary' : 'secondary'}
                      />
-                     <Typography variant="body2">Finder: <strong>{match.finder.firstName} {match.finder.lastName || ''}</strong></Typography>
-                     {match.matchType === 'manual' && match.moderator && (
+<Typography variant="body2">Finder: <strong>{match.finder?.firstName} {match.finder?.lastName || ''}</strong></Typography>                     {match.matchType === 'manual' && match.moderator && (
                         <Typography variant="caption" color="text.secondary" className="mc-moderator-info">
                             by Mod: {match.moderator.firstName}
                         </Typography>
@@ -191,7 +186,6 @@ function ManageClaim() {
 
       {renderContent()}
 
-      {/* Render the ChatModal, it will only be visible when 'open' is true */}
       <ChatModal
         open={chatState.open}
         onClose={handleCloseChat}

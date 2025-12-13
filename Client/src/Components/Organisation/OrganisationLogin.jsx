@@ -18,7 +18,6 @@ function OrganisationLogin() {
   const [error, setError] = useState(null);
 
   useLayoutEffect(() => {
-    // GSAP animations remain the same as they target the login card itself
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.3 });
       tl.from(".organisation-login-card", {
@@ -98,7 +97,6 @@ function OrganisationLogin() {
         </div>
 
         <div className="organisation-login-card">
-          {/* ... rest of your card content ... */}
           <div className="organisation-login-visual">
             <FaBuilding className="organisation-login-icon" />
             <h2>Organization Portal</h2>

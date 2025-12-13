@@ -10,14 +10,12 @@
   --font-body: 'Lato', sans-serif;
 }
 
-/* --- MODIFIED: Upgraded background and added positioning --- */
 .moderator-forgot-pass-page {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   padding: 3rem 1.5rem;
-  /* Dark background from the login page */
   background-color: #1a1a1d;
   position: relative;
   overflow: hidden;
@@ -32,7 +30,6 @@
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   overflow: hidden;
-  /* --- ADDED: Ensure card is on top of the animation --- */
   position: relative;
   z-index: 1;
 }
@@ -196,7 +193,6 @@
   }
 }
 
-/* --- NEW SECTION: ANIMATED TRIANGLE BACKGROUND --- */
 @keyframes animateTriangles {
   0% {
     transform: translateY(0) rotate(0deg);

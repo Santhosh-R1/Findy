@@ -7,7 +7,7 @@ import {
   FaShoppingBag, FaWallet
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
-import '../../Styles/ViewItems.css'; // Using the same styles as UserFounds
+import '../../Styles/ViewItems.css'; 
 
 const getIconForSubCategory = (subCategory) => {
   const icons = {
@@ -42,6 +42,8 @@ function OrganaisationFinds() {
           throw new Error("Organization details not found. Please log in again.");
         }
         const response = await axiosInstance.get(`/api/items/found/user/${orgInfo.data._id}`);
+        console.log(response);
+        
         setItems(response.data.data);
         setError(null);
       } catch (err) {
@@ -54,17 +56,14 @@ function OrganaisationFinds() {
     fetchOrgFoundItems();
   }, []);
 
-  // --- THIS IS THE CHANGE ---
-  // Updated function to create a more descriptive name for the dialog
   const handleOpenModal = (item) => {
     let dialogItemName = '';
 
     if (item.mainCategory === 'pets') {
       dialogItemName = item.petName || item.itemName;
     } else if (item.mainCategory === 'accessories') {
-      // Combine brand and item name for accessories
       dialogItemName = `${item.brand} ${item.itemName}`;
-    } else { // Default for electronics and others
+    } else { 
       dialogItemName = item.itemName;
     }
 
@@ -74,7 +73,6 @@ function OrganaisationFinds() {
       itemName: dialogItemName,
     });
   };
-  // -------------------------
 
   const handleCloseModal = () => {
     setModalState({ open: false, itemId: null, itemName: '' });
@@ -167,9 +165,9 @@ function OrganaisationFinds() {
                 <Chip label={item.status} size="small" color={getStatusChipColor(item.status)} className="status-chip" />
               </Box>
               <Box className="card-actions">
-                <Button size="small" variant="contained" color="primary" startIcon={<FaHandshake />} onClick={() => handleOpenModal(item)} disabled={updatingItemId === item._id || isArchived} sx={{ flexGrow: 1 }}>
+                {/* <Button size="small" variant="contained" color="primary" startIcon={<FaHandshake />} onClick={() => handleOpenModal(item)} disabled={updatingItemId === item._id || isArchived} sx={{ flexGrow: 1 }}>
                   {updatingItemId === item._id ? 'Updating...' : 'Mark as Returned'}
-                </Button>
+                </Button> */}
               </Box>
             </Paper>
           );

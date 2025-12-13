@@ -1,302 +1,298 @@
-/* src/styles/ModeratorLost.css */
-
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
-  --mod-primary-color: #fd7e14;
-  --mod-primary-dark: #e66a00;
-  --mod-dark-bg: #343a40;
-  --mod-light-color: #ffffff;
-  --mod-bg-color: #f8f9fa;
-  --mod-border-color: #dee2e6;
-  --mod-text-primary: #212529;
-  --mod-text-secondary: #6c757d;
-  --mod-shadow-md: 0 4px 12px -4px rgba(0, 0, 0, 0.08);
-  --sidebar-width-desktop: 260px;
-  --sidebar-width-mobile: 80px;
+  --mod-lost-primary: #f97316; 
+  --mod-lost-primary-hover: #ea580c;
+  --mod-lost-bg: #f8fafc;
+  --mod-lost-border: #e2e8f0;
+  --mod-lost-text: #1e293b;
+  --mod-lost-text-muted: #64748b;
+  --sidebar-width: 260px;
 }
 
-@keyframes fadeInScaleUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
+body { font-family: "Inter", sans-serif; }
 
-body {
-  font-family: "Inter", sans-serif;
-}
-
-/* --- Main Page Layout --- */
 .mod-lost-page {
-  margin-left: var(--sidebar-width-desktop);
-  width: calc(100% - var(--sidebar-width-desktop));
-  padding: 2.5rem;
-  background-color: var(--mod-bg-color);
+  margin-left: var(--sidebar-width);
+  padding: 2rem;
+  background-color: var(--mod-lost-bg);
   min-height: 100vh;
-  box-sizing: border-box;
+  margin-top: 40px;
 }
 
 .mod-lost-page-header-container {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--mod-border-color);
+  border-bottom: 1px solid var(--mod-lost-border);
 }
 
 .mod-lost-page-header {
   font-weight: 700 !important;
-  color: var(--mod-text-primary);
+  color: var(--mod-lost-text);
+  margin-bottom: 0.25rem !important;
 }
 
-.mod-lost-page-subtitle {
-  color: var(--mod-text-secondary);
-  margin-top: 0.25rem !important;
+.mod-lost-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
-/* --- Empty/Status States --- */
-.mod-lost-status-container {
+.mod-lost-loader {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.mod-lost-empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 4rem 1rem;
-  margin-top: 2rem;
-  background-color: #fff;
-  border: 1px dashed var(--mod-border-color);
-  border-radius: 16px;
+  padding: 4rem;
+  background: white;
+  border-radius: 12px;
+  border: 1px dashed var(--mod-lost-border);
+  color: var(--mod-lost-text-muted);
+  gap: 1rem;
 }
+.mod-lost-empty-state svg { font-size: 2.5rem; opacity: 0.5; }
 
-.mod-lost-no-items-icon {
-  font-size: 3rem;
-  color: var(--mod-text-secondary);
-  margin-bottom: 1rem;
-  opacity: 0.7;
-}
-
-/* --- Items Grid --- */
-.mod-lost-items-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2rem;
-}
-
-/* --- Card Styling --- */
-.mod-lost-item-card {
+.mod-lost-card {
+  border: 1px solid var(--mod-lost-border) !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+  transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
-  border-radius: 16px !important;
-  border: 1px solid var(--mod-border-color) !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-  background-color: #fff;
-  height: 100%;
 }
 
-.mod-lost-item-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--mod-shadow-md) !important;
-  border-color: var(--mod-primary-color) !important;
+.mod-lost-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  border-color: var(--mod-lost-primary) !important;
 }
 
-.mod-lost-card-image-container {
+.mod-lost-card-header {
   position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+  height: 160px;
+  background-color: #f1f5f9;
 }
 
-.mod-lost-card-image {
+.mod-lost-card-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
 }
 
-.mod-lost-item-card:hover .mod-lost-card-image {
-  transform: scale(1.05);
-}
-
-.mod-lost-category-chip {
+.mod-lost-card-chip {
   position: absolute !important;
-  top: 12px;
-  right: 12px;
-  background-color: rgba(253, 126, 20, 0.9) !important;
-  color: #fff !important;
+  top: 8px;
+  right: 8px;
+  background: rgba(255,255,255,0.95) !important;
+  font-weight: 600 !important;
   backdrop-filter: blur(4px);
-  text-transform: capitalize;
-  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+  color: var(--mod-lost-text) !important;
 }
 
-.mod-lost-card-content {
-  padding: 1.25rem;
-  flex-grow: 1;
+.mod-lost-card-body {
+  padding: 1rem;
+  flex: 1;
+}
+
+.mod-lost-card-meta {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--mod-lost-text-muted);
+  margin-bottom: 8px;
 }
+.mod-lost-card-avatar { border: 1px solid var(--mod-lost-border); }
 
-.mod-lost-owner-info-container {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #f0f0f0;
-}
+.mod-lost-dot { font-size: 0.6rem; }
 
-.mod-lost-owner-name, .mod-lost-owner-email {
-    font-weight: 600 !important;
-    line-height: 1.2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.mod-lost-owner-email {
-    color: var(--mod-text-secondary);
-    font-weight: 400 !important;
-}
-
-.mod-lost-item-title {
-  font-weight: 600 !important;
-  color: var(--mod-text-primary);
+.mod-lost-card-title {
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  color: var(--mod-lost-text);
   margin-bottom: 0.5rem !important;
 }
 
-.mod-lost-item-description {
-  flex-grow: 1;
-  margin-bottom: 1rem !important;
-  line-height: 1.6;
-}
-
-.mod-lost-item-details-grid {
-    display: grid;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-}
-
-.mod-lost-detail-item {
+.mod-lost-card-loc {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  color: var(--mod-text-secondary);
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--mod-lost-text-muted);
 }
+.mod-lost-card-loc svg { color: var(--mod-lost-primary); }
 
-.mod-lost-detail-item svg {
-    color: var(--mod-primary-color);
-}
-
-.mod-lost-card-actions {
-  padding: 0 1.25rem 1.25rem;
-}
-
-.mod-lost-manage-item-btn {
-  background-color: var(--mod-primary-color) !important;
+.mod-lost-card-btn {
+  background-color: #fff !important;
+  color: var(--mod-lost-primary) !important;
+  border-top: 1px solid var(--mod-lost-border) !important;
+  border-radius: 0 !important;
+  padding: 12px !important;
   font-weight: 600 !important;
   text-transform: none !important;
-  padding: 10px 0 !important;
-  box-shadow: none !important;
-  transition: all 0.2s ease-in-out !important;
 }
+.mod-lost-card-btn:hover { background-color: #fff7ed !important; }
 
-.mod-lost-manage-item-btn:hover {
-  background-color: var(--mod-primary-dark) !important;
-  transform: scale(1.02);
-}
-
-/* --- DIALOG STYLES --- */
-.mod-lost-dialog-paper {
+.mod-lost-modal-paper {
   border-radius: 12px !important;
-  max-height: 90vh;
   overflow: hidden;
-  animation: fadeInScaleUp 0.3s ease-out forwards;
 }
 
-.mod-lost-dialog-title {
+.mod-lost-modal-header {
+  background-color: #fff;
+  border-bottom: 1px solid var(--mod-lost-border);
+  padding: 16px 24px !important;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.mod-lost-header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mod-lost-header-title {
   font-weight: 700 !important;
-  background-color: var(--mod-dark-bg);
-  color: var(--mod-light-color);
-  padding: 16px 24px !important;
-}
-.mod-lost-dialog-title svg {
-  color: var(--mod-primary-color);
+  color: var(--mod-lost-text);
 }
 
-.mod-lost-dialog-content {
-  padding: 0 !important;
-  background-color: #f9fafb;
+.mod-lost-id-chip {
+  background-color: #f1f5f9 !important;
+  font-family: monospace;
+  font-weight: bold !important;
+  color: var(--mod-lost-text-muted) !important;
+  height: 24px !important;
 }
 
-.mod-lost-dialog-column-left,
-.mod-lost-dialog-column-right {
+.mod-lost-close-btn { color: var(--mod-lost-text-muted) !important; }
+
+.mod-lost-modal-body {
+  padding: 24px !important;
+  background-color: #fff;
+}
+
+.mod-lost-hero-section {
   display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 24px;
-}
-.mod-lost-dialog-column-right{
-  width: 500px !important;
-}
-.mod-lost-dialog-column-left {
-  border-right: 1px solid var(--mod-border-color);
-  background-color: var(--mod-light-color);
-  overflow-y: auto;
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
-.mod-lost-dialog-column-right {
+.mod-lost-hero-image-wrapper {
+  width: 140px;
+  height: 140px;
+  flex-shrink: 0;
+  border-radius: 8px;
   overflow: hidden;
+  border: 1px solid var(--mod-lost-border);
+  background: #f8fafc;
 }
 
-.mod-lost-dialog-scroll-section {
-  overflow-y: auto;
-  padding-right: 12px;
-  margin-right: -12px;
-}
-
-.mod-lost-dialog-image {
+.mod-lost-hero-image {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 100%;
   object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 1.5rem;
-  border: 1px solid var(--mod-border-color);
 }
 
-.mod-lost-info-paper {
-  padding: 1rem;
-  border-radius: 12px !important;
-  margin-bottom: 1.5rem;
+.mod-lost-hero-info {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
 }
 
-.mod-lost-info-line {
+.mod-lost-item-name {
+  font-weight: 700 !important;
+  margin-bottom: 8px !important;
+  line-height: 1.2 !important;
+}
+
+.mod-lost-tags-row {
+  display: flex;
+  gap: 8px;
+}
+
+.mod-lost-tag-primary { background-color: var(--mod-lost-text) !important; color: #fff !important; }
+.mod-lost-tag-secondary { border-color: var(--mod-lost-border) !important; }
+
+.mod-lost-owner-row {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 12px;
+  margin-top: auto;
 }
-.mod-lost-info-line strong { display: flex; align-items: center; gap: 0.75rem; }
-.mod-lost-info-value { word-break: break-all; }
 
-.mod-lost-dialog-actions {
+.mod-lost-divider { margin: 24px 0 !important; }
+
+.mod-lost-section-label {
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em;
+  color: var(--mod-lost-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 12px !important;
+}
+
+.mod-lost-detail-cell {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background-color: #f8fafc;
+  border-radius: 6px;
+}
+.mod-lost-icon-muted { color: #94a3b8; margin-top: 3px; }
+
+.mod-lost-description-box {
+  margin-top: 16px;
+  padding: 12px;
+  border-left: 3px solid var(--mod-lost-primary);
+  background-color: #fff7ed;
+  border-radius: 0 6px 6px 0;
+}
+
+.mod-lost-location-box {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px dashed var(--mod-lost-border);
+}
+
+.mod-lost-map-wrapper {
+  margin-top: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 200px;
+  border: 1px solid var(--mod-lost-border);
+}
+
+.mod-lost-contact-box {
+  margin-top: 24px;
+  background-color: #f1f5f9;
+  padding: 16px;
+  border-radius: 8px;
+}
+.mod-lost-icon-primary { color: var(--mod-lost-primary); }
+
+.mod-lost-modal-footer {
+  border-top: 1px solid var(--mod-lost-border);
   padding: 16px 24px !important;
-  border-top: 1px solid var(--mod-border-color);
-  background-color: var(--mod-bg-color);
+  background-color: #f8fafc;
 }
 
-/* --- Responsive Design --- */
+.mod-lost-footer-btn { color: var(--mod-lost-text-muted) !important; }
+
 @media (max-width: 900px) {
   .mod-lost-page {
-    margin-left: var(--sidebar-width-mobile);
-    width: calc(100% - var(--sidebar-width-mobile));
-    padding: 1.5rem;
+    margin-left: 80px; 
+    padding: 1rem;
   }
+}
+@media (max-width: 600px) {
+    .mod-lost-hero-section { flex-direction: column; }
+    .mod-lost-hero-image-wrapper { width: 100%; height: 200px; }
 }

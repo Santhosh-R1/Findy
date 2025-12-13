@@ -1,4 +1,3 @@
-// models/chatMessage.js
 const mongoose = require("mongoose");
 
 const chatMessageSchema = new mongoose.Schema({
@@ -10,8 +9,14 @@ const chatMessageSchema = new mongoose.Schema({
     },
     sender: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Sender can be a user, moderator, or finder
         required: true,
+        refPath: 'senderModel' 
+    },
+    senderModel: {
+        type: String,
+        required: true,
+        enum: ['User', 'Organisation', 'Moderator'], 
+        default: 'User'
     },
     message: {
         type: String,

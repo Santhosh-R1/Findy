@@ -251,9 +251,6 @@ const updateOrganisationProfile = async (req, res) => {
         if (!organisation) {
             return res.status(404).json({ message: 'Organisation not found' });
         }
-
-        // --- Update text fields ---
-        // This approach is better because it allows setting a field to an empty string ""
         if (req.body.organisationName !== undefined) {
             organisation.organisationName = req.body.organisationName;
         }
@@ -269,7 +266,6 @@ const updateOrganisationProfile = async (req, res) => {
         if (req.body.email !== undefined) {
             organisation.email = req.body.email;
         }
-        // --- ADDED PHONE NUMBER UPDATE LOGIC ---
         if (req.body.phone !== undefined) {
             organisation.phone = req.body.phone;
         }
@@ -280,22 +276,16 @@ const updateOrganisationProfile = async (req, res) => {
         if (req.body.address !== undefined) {
             organisation.address = req.body.address;
         }
-
-        // --- Handle Logo Update ---
         if (req.file) {
             const oldLogoPath = organisation.organisationLogo;
 
-            // Set the new logo path
             organisation.organisationLogo = '/' + req.file.path.replace(/\\/g, "/");
 
-            // Delete the old logo if it exists
             if (oldLogoPath) {
-                // Construct the full path to the old file
                 const fullOldPath = path.join(__dirname, '..', oldLogoPath);
                 
-                // Use fs.unlink to delete the file
                 fs.unlink(fullOldPath, (err) => {
-                    if (err && err.code !== 'ENOENT') { // ENOENT means file not found, which is fine
+                    if (err && err.code !== 'ENOENT') { 
                         console.error(`Failed to delete old logo: ${fullOldPath}`, err);
                     } else {
                         console.log(`Successfully deleted old logo or it was already gone: ${fullOldPath}`);
@@ -315,11 +305,9 @@ const updateOrganisationProfile = async (req, res) => {
     } catch (error) {
         console.error('Update Organisation Profile Error:', error);
         
-        // Handle potential duplicate key errors (e.g., if email is changed to an existing one)
         if (error.code === 11000) {
             return res.status(400).json({ message: 'Email or Registration ID is already in use by another organisation.' });
         }
-        // Handle Mongoose validation errors
         if (error.name === 'ValidationError') {
             return res.status(400).json({ message: error.message });
         }

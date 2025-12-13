@@ -1,3 +1,5 @@
+// src/components/user/UserSideMenu.js
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { Avatar, Box, Typography, Skeleton } from '@mui/material';
@@ -7,9 +9,9 @@ import {
   FaListUl,
   FaUserCircle,
   FaSignOutAlt,
-  FaQuestionCircle, // Correct icon for Help Desk
+  FaQuestionCircle,
   FaSearchPlus,
-  FaBoxOpen // A slightly more thematic icon for "View My Items"
+  FaBoxOpen 
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/UserSideMenu.css';
@@ -44,16 +46,9 @@ function UserSideMenu() {
 
   useEffect(() => {
     loadUserDataFromAPI();
-
-    const handleProfileUpdate = () => {
-      loadUserDataFromAPI();
-    };
-
+    const handleProfileUpdate = () => { loadUserDataFromAPI(); };
     window.addEventListener('profileUpdated', handleProfileUpdate);
-
-    return () => {
-      window.removeEventListener('profileUpdated', handleProfileUpdate);
-    };
+    return () => { window.removeEventListener('profileUpdated', handleProfileUpdate); };
   }, [loadUserDataFromAPI]);
 
   const handleLogout = () => {
@@ -67,19 +62,18 @@ function UserSideMenu() {
     if (loading) {
       return (
         <Box className="user-profile-section skeleton">
-          <Skeleton variant="circular" width={84} height={84} />
-          <Skeleton variant="text" sx={{ fontSize: '1.2rem', width: '80%', mt: 1 }} />
+          <Skeleton variant="circular" width={60} height={60} />
         </Box>
       );
     }
     if (user) {
       return (
-        <Link to="/user/profile" className="user-profile-link">
+        <Link to="/user/profile" className="user-profile-link" title="View Profile">
           <Box className="user-profile-section">
             <Avatar
               alt={`${user.firstName} ${user.lastName}`}
               src={`http://localhost:5001${user.profileImage ? user.profileImage.replace(/\\/g, '/') : ''}`}
-              sx={{ width: 84, height: 84, border: '3px solid var(--user-primary-color)' }}
+              sx={{ width: 80, height: 80, border: '3px solid var(--user-primary-color)' }}
             >
               {user.firstName ? user.firstName.charAt(0) : ''}
             </Avatar>
@@ -92,7 +86,7 @@ function UserSideMenu() {
     }
     return (
       <div className="user-sidemenu-header-placeholder">
-        <h3>Findy Portal</h3>
+        <h3>Findy</h3>
       </div>
     );
   };
@@ -102,14 +96,36 @@ function UserSideMenu() {
       {renderProfileSection()}
       <nav className="user-sidemenu-nav">
         <ul>
-          <li><NavLink to="/user/dashboard"><FaTachometerAlt className="user-sidemenu-icon" /><span>Dashboard</span></NavLink></li>
-          <li><NavLink to="/user/add-item"><FaPlusCircle className="user-sidemenu-icon" /><span>Add Item</span></NavLink></li>
-          {/* Using FaBoxOpen is slightly more descriptive for viewing physical items */}
-          <li><NavLink to="/user/view-items"><FaBoxOpen className="user-sidemenu-icon" /><span>View My Items</span></NavLink></li>
-          {/* CORRECTED ICON: FaQuestionCircle is perfect for a Help Desk */}
-          <li><NavLink to="/user/HelpDesk"><FaQuestionCircle className="user-sidemenu-icon" /><span>Help Desk</span></NavLink></li>
-          <li><NavLink to="/user/found-items"><FaSearchPlus className="user-sidemenu-icon" /><span>Found Items</span></NavLink></li>
-          <li><NavLink to="/user/profile"><FaUserCircle className="user-sidemenu-icon" /><span>My Profile</span></NavLink></li>
+          <li>
+            <NavLink to="/user/dashboard" className={({ isActive }) => (isActive ? 'active' : '')}>
+                <FaTachometerAlt className="user-sidemenu-icon" /><span>Dashboard</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/user/add-item" className={({ isActive }) => (isActive ? 'active' : '')}>
+                <FaPlusCircle className="user-sidemenu-icon" /><span>Add Item</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/user/view-items" className={({ isActive }) => (isActive ? 'active' : '')}>
+                <FaBoxOpen className="user-sidemenu-icon" /><span>View My Items</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/user/HelpDesk" className={({ isActive }) => (isActive ? 'active' : '')}>
+                <FaQuestionCircle className="user-sidemenu-icon" /><span>Help Desk</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/user/found-items" className={({ isActive }) => (isActive ? 'active' : '')}>
+                <FaSearchPlus className="user-sidemenu-icon" /><span>Found Items</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/user/profile" className={({ isActive }) => (isActive ? 'active' : '')}>
+                <FaUserCircle className="user-sidemenu-icon" /><span>My Profile</span>
+            </NavLink>
+          </li>
         </ul>
       </nav>
       <div className="user-sidemenu-logout">

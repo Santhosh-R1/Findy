@@ -39,7 +39,7 @@ function OrganisationRegistration() {
 
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState('');
-  const [success, setSuccess] = useState(''); // State for success message
+  const [success, setSuccess] = useState(''); 
   const [errors, setErrors] = useState({});
 
   useLayoutEffect(() => {

@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tensorflow-models/mobilenet": "^2.1.1",
+    "@tensorflow/tfjs": "^4.22.0",
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
@@ -20,6 +22,7 @@
     "mongoose": "^8.17.2",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.5",
+    "sharp": "^0.34.5",
     "string-similarity": "^4.0.4"
   },
   "devDependencies": {

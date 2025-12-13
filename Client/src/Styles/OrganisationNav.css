@@ -1,0 +1,44 @@
+
+.org-nav-app-bar {
+  color: white !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+  z-index: 1100;
+}
+
+.org-nav-logo-link {
+  color: inherit !important;
+  text-decoration: none !important;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.3s ease;
+}
+
+.org-nav-logo-link:hover {
+  opacity: 0.8;
+}
+
+.org-nav-menu .MuiPaper-root {
+  border-radius: 12px !important;
+  margin-top: 12px !important;
+  min-width: 240px !important;
+  box-shadow: 0 8px 30px -10px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #f0f0f0;
+}
+
+.org-nav-menu .MuiMenuItem-root {
+  font-size: 0.95rem !important;
+  padding: 12px 16px !important;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease !important;
+}
+
+.org-nav-menu .MuiMenuItem-root:hover {
+  background-color: #f8f9fa !important;
+}
+
+@media (max-width: 600px) {
+  .org-nav-app-bar {
+    padding-right: 0 !important;
+  }
+}

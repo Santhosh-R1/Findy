@@ -1,113 +1,63 @@
 :root {
-  --admin-primary-color: #0d6efd; 
-  --admin-primary-light: #f0f6ff; 
-  --admin-text-primary: #212529;
-  --admin-text-secondary: #6c757d;
-  --admin-border-color: #dee2e6;
+  --admin-view-users-primary-color: #0d6efd; 
+  --admin-view-users-primary-light: #f0f6ff; 
+  --admin-view-users-text-primary: #212529;
+  --admin-view-users-text-secondary: #6c757d;
+  --admin-view-users-border-color: #dee2e6;
+  --admin-view-users-bg-color: #f8f9fa;
 }
 
-.view-users-container {
-  margin-left: 240px;
-  width: calc(100% - 240px);
+.admin-view-users-container {
+  margin-left: 260px; 
+  width: calc(100% - 260px);
   box-sizing: border-box;
   padding: 2rem;
-  background-color: #f8f9fa;
+  background-color: var(--admin-view-users-bg-color);
   min-height: 100vh;
 }
-/* ... (keep all your existing CSS from the file) ... */
 
-/* --- NEW STYLES for Modal's Item List --- */
-.modal-items-header {
-  display: block;
-  padding: 0.5rem 1rem;
-  color: var(--admin-text-secondary);
-  font-weight: 600;
-}
-
-.modal-item {
-  padding: 0.75rem 1rem !important;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
-}
-
-.modal-item:hover {
-  background-color: var(--admin-primary-light);
-}
-
-.modal-item-icon {
-  min-width: 40px !important;
-  color: var(--admin-primary-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-item .MuiListItemText-primary {
-  font-weight: 600;
-}
-
-.modal-item .MuiListItemText-secondary {
-  text-transform: capitalize;
-}
-
-.status-chip {
-  text-transform: capitalize;
-  font-weight: 600 !important;
-}
-
-.status-chip.status-lost {
-  background-color: #ffebee !important;
-  color: #c62828 !important;
-}
-
-.status-chip.status-found {
-  background-color: #e8f5e9 !important;
-  color: #2e7d32 !important;
-}
-
-.status-chip.status-registered {
-  background-color: #e3f2fd !important;
-  color: #1565c0 !important;
-}
-.view-users-header h1 {
+.admin-view-users-header h1 {
   font-family: 'Poppins', sans-serif;
-  color: var(--admin-text-primary);
+  color: var(--admin-view-users-text-primary);
+  font-weight: 700;
 }
 
-.view-users-table-container {
+.admin-view-users-table-container {
   border-radius: 12px !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
 }
 
-.user-table-header .MuiTableCell-root {
+.admin-view-users-table-header .MuiTableCell-root {
   font-weight: 600 !important;
-  color: var(--admin-text-secondary);
-  border-bottom: 2px solid var(--admin-border-color);
+  color: var(--admin-view-users-text-secondary);
+  border-bottom: 2px solid var(--admin-view-users-border-color);
+  background-color: #fff;
 }
 
-.user-info-cell { display: flex; align-items: center; gap: 1rem; }
-.user-avatar { width: 48px !important; height: 48px !important; }
-.user-actions { display: flex; justify-content: center; gap: 0.75rem; }
-
-.user-actions .MuiButton-outlinedInfo {
-  color: var(--admin-primary-color) !important;
-  border-color: var(--admin-primary-color) !important;
+.admin-view-users-info-cell { 
+  display: flex; 
+  align-items: center; 
+  gap: 1rem; 
 }
 
-.loading-container,
-.error-container {
+.admin-view-users-avatar { 
+  width: 48px !important; 
+  height: 48px !important; 
+}
+
+.admin-view-users-loading-container,
+.admin-view-users-error-container {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 4rem; gap: 1rem; background-color: #fff; border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-
-.modal-backdrop {
+.admin-view-users-modal-backdrop {
   backdrop-filter: blur(4px);
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-.user-details-modal {
+.admin-view-users-details-modal {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -121,65 +71,106 @@
   overflow: hidden;
 }
 
-.modal-header {
+.admin-view-users-modal-header {
   display: flex;
   align-items: center;
   gap: 1.25rem;
   padding: 1.5rem;
-  background-color: var(--admin-primary-light);
-  border-bottom: 1px solid var(--admin-border-color);
+  background-color: var(--admin-view-users-primary-light);
+  border-bottom: 1px solid var(--admin-view-users-border-color);
 }
 
-.modal-avatar {
+.admin-view-users-modal-avatar {
   width: 72px !important;
   height: 72px !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border: 3px solid #fff;
 }
 
-.modal-header h2 {
-  color: var(--admin-text-primary);
+.admin-view-users-modal-header h2 {
+  color: var(--admin-view-users-text-primary);
   font-weight: 700;
   font-family: 'Poppins', sans-serif;
 }
 
-.modal-list {
+.admin-view-users-modal-list {
   padding: 1rem !important;
 }
 
-.modal-list-item {
+.admin-view-users-modal-list-item {
   padding: 0.75rem 1rem !important;
 }
 
-.modal-list-item .MuiListItemText-primary {
+.admin-view-users-modal-list-item .MuiListItemText-primary {
   font-weight: 600;
-  color: var(--admin-text-primary);
+  color: var(--admin-view-users-text-primary);
   font-size: 0.9rem;
 }
 
-.modal-list-item .MuiListItemText-secondary {
-  color: var(--admin-text-secondary);
+.admin-view-users-modal-list-item .MuiListItemText-secondary {
+  color: var(--admin-view-users-text-secondary);
   font-size: 0.95rem;
   word-break: break-word;
 }
 
-.modal-list-item .capitalize .MuiListItemText-secondary {
-  text-transform: capitalize;
-}
-
-.modal-list-icon {
-  color: var(--admin-primary-color) !important;
+.admin-view-users-modal-list-icon {
+  color: var(--admin-view-users-primary-color) !important;
   min-width: 40px !important;
 }
 
-.modal-close-button {
+.admin-view-users-modal-close-button {
   position: absolute !important;
   top: 12px;
   right: 12px;
-  color: var(--admin-text-secondary);
+  color: var(--admin-view-users-text-secondary);
   background-color: rgba(0, 0, 0, 0.05);
   z-index: 100;
 }
-.modal-close-button:hover {
+.admin-view-users-modal-close-button:hover {
   background-color: rgba(0, 0, 0, 0.1);
+}
+
+.admin-view-users-modal-items-header {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--admin-view-users-text-secondary);
+  font-weight: 600;
+}
+
+.admin-view-users-modal-item {
+  padding: 0.75rem 1rem !important;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.admin-view-users-modal-item:hover {
+  background-color: var(--admin-view-users-primary-light);
+}
+
+.admin-view-users-status-chip {
+  text-transform: capitalize;
+  font-weight: 600 !important;
+}
+
+.admin-view-users-status-lost {
+  background-color: #ffebee !important;
+  color: #c62828 !important;
+}
+
+.admin-view-users-status-found {
+  background-color: #e8f5e9 !important;
+  color: #2e7d32 !important;
+}
+
+.admin-view-users-status-registered {
+  background-color: #e3f2fd !important;
+  color: #1565c0 !important;
+}
+
+@media (max-width: 900px) {
+  .admin-view-users-container {
+    margin-left: 0;
+    width: 100%;
+    padding: 1rem;
+  }
 }

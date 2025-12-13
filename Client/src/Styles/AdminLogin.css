@@ -6,15 +6,12 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  /* Changed background to match the theme */
   background-color: #0a2540; 
   padding: 2rem;
-  /* Added for positioning the shapes */
   position: relative;
   overflow: hidden; 
 }
 
-/* --- NEW SECTION: ANIMATED BACKGROUND --- */
 @keyframes animateShapes {
   0% {
     transform: translateY(0) rotate(0deg);
@@ -43,13 +40,11 @@
   list-style: none;
   width: 20px;
   height: 20px;
-  /* Use a subtle color from your theme */
   background: rgba(255, 255, 255, 0.1); 
   animation: animateShapes 25s linear infinite;
   bottom: -150px;
 }
 
-/* Customize each shape for a random effect */
 .background-shapes span:nth-child(1) {
   left: 25%;
   width: 80px;
@@ -101,7 +96,6 @@
   animation-delay: 15s;
   animation-duration: 45s;
 }
-/* --- END OF NEW SECTION --- */
 
 
 .admin-login-error-message {
@@ -120,18 +114,17 @@
   grid-template-columns: 1fr 1.5fr;
   max-width: 900px;
   width: 100%;
-  background-color: white; /* Changed from var(--light-color) for clarity */
+  background-color: white; 
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   overflow: hidden;
-  /* --- MODIFIED: Ensure card is above the background --- */
   position: relative;
   z-index: 1;
 }
 
 .admin-login-visual {
   background: #0a2540;
-  color: white; /* Changed from var for clarity */
+  color: white; 
   padding: 3rem;
   display: flex;
   flex-direction: column;
@@ -142,7 +135,7 @@
 
 .admin-login-icon {
   font-size: 5rem;
-  color: #007bff; /* Primary color */
+  color: #007bff; 
   margin-bottom: 1.5rem;
   filter: drop-shadow(0 0 15px rgba(0, 123, 255, 0.4));
 }
@@ -174,7 +167,7 @@
 }
 
 .admin-login-subtitle {
-  color: #6c757d; /* text-light color */
+  color: #6c757d; 
   margin: 0.5rem 0 2rem 0;
 }
 
@@ -196,7 +189,7 @@
   top: 50%;
   left: 16px;
   transform: translateY(-50%);
-  color: #6c757d; /* text-light color */
+  color: #6c757d; 
   font-size: 1.1rem;
   pointer-events: none;
 }
@@ -205,29 +198,29 @@
   width: 100%;
   box-sizing: border-box;
   padding: 1rem 1rem 1rem 3.25rem;
-  border: 1px solid #ced4da; /* border-color */
+  border: 1px solid #ced4da; 
   border-radius: 8px;
   font-family: 'Lato', sans-serif;
   font-size: 1rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  background-color: #f8f9fa; /* bg-light-gray */
+  background-color: #f8f9fa;
 }
 
 .admin-login-form-group input:focus {
   outline: none;
-  border-color: #007bff; /* primary-color */
+  border-color: #007bff; 
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
 }
 
 .admin-login-form-group input:focus ~ .admin-login-input-icon {
-  color: #007bff; /* primary-color */
+  color: #007bff; 
 }
 
 .admin-login-button {
   width: 100%;
   border: none;
   cursor: pointer;
-  background-color: #007bff; /* primary-color */
+  background-color: #007bff; 
   color: white;
   padding: 1rem;
   border-radius: 8px;
@@ -239,7 +232,7 @@
 }
 
 .admin-login-button:hover {
-  background-color: #0056b3; /* primary-dark */
+  background-color: #0056b3; 
   transform: translateY(-3px);
 }
 
@@ -253,7 +246,7 @@
   margin-top: 1.5rem;
   text-align: center;
   display: block;
-  color: #007bff; /* primary-color */
+  color: #007bff; 
   text-decoration: none;
   font-weight: 700;
   font-size: 0.9rem;

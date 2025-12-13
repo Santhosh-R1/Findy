@@ -12,6 +12,6 @@ router.patch('/:id/activate',moderatorController.activateModerator);
 router.get("/get-by-id/:id", moderatorController.getModeratorProfile);
 
 router.patch('/:id/deactivate', moderatorController.deactivateModerator);
-
+router.put('/update/:id', uploadMiddleware.uploadProfileImage, moderatorController.updateModeratorProfile);
 
 module.exports = router;

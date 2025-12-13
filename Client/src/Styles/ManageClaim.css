@@ -1,4 +1,4 @@
-/* src/Styles/ManageClaim.css */
+
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
@@ -13,7 +13,6 @@
   --sidebar-width-desktop: 260px;
 }
 
-/* --- Main Page Layout --- */
 .manage-claim-page {
   margin-left: var(--sidebar-width-desktop);
   width: calc(100% - var(--sidebar-width-desktop));
@@ -21,6 +20,7 @@
   background-color: var(--mod-bg-color);
   min-height: 100vh;
   box-sizing: border-box;
+  margin-top: 40px;
 }
 
 .mc-page-header-container {
@@ -39,7 +39,6 @@
   margin-top: 0.25rem !important;
 }
 
-/* --- Status/Empty States --- */
 .mc-status-container {
   display: flex;
   flex-direction: column;
@@ -60,7 +59,6 @@
   opacity: 0.7;
 }
 
-/* --- Table Styling --- */
 .mc-table-container {
   border-radius: 12px !important;
   border: 1px solid var(--mod-border-color) !important;
@@ -93,7 +91,6 @@
   padding: 16px !important;
 }
 
-/* --- Custom Cell Content --- */
 .mc-item-cell-content,
 .mc-user-cell-content {
   display: flex;
@@ -118,7 +115,6 @@
   text-transform: capitalize;
 }
 
-/* Use MUI's primary/secondary colors for theming */
 .mc-type-chip.MuiChip-colorPrimary {
   background-color: rgba(99, 102, 241, 0.1) !important;
   color: #4f46e5 !important;
@@ -144,10 +140,8 @@
 .mc-action-btn:hover {
   background-color: rgba(253, 126, 20, 0.05) !important;
 }
-/* --- Responsive Design --- */
 @media (max-width: 900px) {
   .manage-claim-page {
-    /* Adjust if your sidebar collapses on smaller screens */
     margin-left: 80px; 
     width: calc(100% - 80px);
     padding: 1.5rem;

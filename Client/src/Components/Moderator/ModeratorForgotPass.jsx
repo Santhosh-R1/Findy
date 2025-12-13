@@ -13,7 +13,6 @@ function ModeratorForgotPass() {
   const [successMessage, setSuccessMessage] = useState(null);
 
   useLayoutEffect(() => {
-    // This GSAP animation will work perfectly over the new background
     gsap.fromTo(
       ".moderator-forgot-pass-card",
       { opacity: 0, y: 50 },
@@ -38,8 +37,6 @@ function ModeratorForgotPass() {
       setSuccessMessage(response.data.message);
       setEmail('');
     } catch (err) {
-      // This part correctly handles the error message from your backend.
-      // If the backend says "Email not found", this will display it.
       setError(err?.response?.data?.message || "Failed to send reset link. Please try again.");
       console.error("Forgot Password Error:", err);
     } finally {
@@ -49,7 +46,6 @@ function ModeratorForgotPass() {
 
   return (
     <div className="moderator-forgot-pass-page">
-      {/* --- Animated Triangle Background --- */}
       <div className="background-triangles">
           <div className="triangle"></div>
           <div className="triangle"></div>

@@ -33,14 +33,11 @@ const organisationSchema = new Schema({
         type: String,
         validate: {
             validator: function(v) {
-                // This allows the field to be optional (null or empty string).
-                // If a value is provided, it must be a 10-digit string.
                 return !v || /^\d{10}$/.test(v);
             },
             message: props => `${props.value} is not a valid 10-digit phone number!`
         }
     },
-    // -------------------------
     website: {
         type: String,
     },

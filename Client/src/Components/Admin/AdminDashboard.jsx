@@ -1,44 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Paper, Typography, CircularProgress, Alert, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Avatar, Chip, IconButton, Badge, Popover, List, ListItem, ListItemText, Divider, Button } from '@mui/material';
+import { 
+  Box, Grid, Typography, Paper, CircularProgress, Alert, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Avatar, Chip, IconButton, Badge, Popover, List, ListItem, ListItemText, Divider, Button 
+} from '@mui/material';
 import AdminSidemenu from './AdminSidemenu';
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/AdminDashboard.css';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
-import { Doughnut, Line, Bar } from 'react-chartjs-2';
-import { Group, Inventory, Handshake, Business, Notifications, MailOutline } from '@mui/icons-material';
-ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, PointElement, LineElement, Title, Tooltip, Legend, Filler);
+import { 
+  LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer 
+} from 'recharts';
+import { 
+  Group, Inventory, Handshake, Business, Notifications, MailOutline, CheckCircle 
+} from '@mui/icons-material';
 
-const API_BASE_URL = 'http://localhost:5001';
-const StatCard = ({ icon, value, label, color, colorLight }) => (
-  <Paper className="stat-card">
-    <Box className="stat-icon-wrapper" sx={{ background: `linear-gradient(45deg, ${color}, ${colorLight})` }}>
+const StatCard = ({ icon, value, label, color }) => (
+  <Paper className="stat-card" elevation={0}>
+    <Box className="stat-icon-wrapper" sx={{ backgroundColor: color, boxShadow: `0 4px 10px ${color}66` }}>
       {icon}
     </Box>
     <Box className="stat-info">
-      <Typography className="stat-value">{value}</Typography>
-      <Typography className="stat-label">{label}</Typography>
+      <Typography variant="h4" component="h2" className="stat-value">{value}</Typography>
+      <Typography variant="subtitle2" className="stat-label">{label}</Typography>
     </Box>
   </Paper>
 );
-const createGradient = (ctx, color1, color2) => {
-  const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-  gradient.addColorStop(0, color1);
-  gradient.addColorStop(1, color2);
-  return gradient;
-};
+
 const StatusBadge = ({ status }) => {
   let color = 'default';
   if (status === 'lost') color = 'error';
-  if (status === 'found') color = 'success';
-  if (status === 'registered') color = 'primary';
+  else if (status === 'found') color = 'success';
+  else if (status === 'claimed' || status === 'finded') color = 'success';
+  else if (status === 'registered') color = 'primary';
+  
   return <Chip label={status} color={color} size="small" sx={{ textTransform: 'capitalize' }} />;
 };
 
 const RecentItemsTable = ({ items }) => (
   <Paper className="data-container">
-    <Typography variant="h6" className="data-container-header">Recently Added Items</Typography>
-    <TableContainer>
-      <Table className="dashboard-table">
+    <Typography variant="h6" className="data-container-header">Recently Registered Items</Typography>
+    <TableContainer sx={{ maxHeight: 400 }}>
+      <Table stickyHeader className="dashboard-table">
         <TableHead>
           <TableRow>
             <TableCell>Item</TableCell>
@@ -50,12 +50,12 @@ const RecentItemsTable = ({ items }) => (
           {items.map(item => (
             <TableRow hover key={item._id}>
               <TableCell>
-                <Box className="table-cell-content">
-                  <Avatar variant="rounded" src={`${API_BASE_URL}/${item.itemImage.replace(/\\/g, '/')}`} />
-                  <Typography variant="body2">{item.itemName}</Typography>
+                <Box className="table-cell-content" sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Avatar variant="rounded" src={`http://localhost:5001/${item.itemImage.replace(/\\/g, '/')}`} />
+                  <Typography variant="body2" fontWeight="500">{item.itemName}</Typography>
                 </Box>
               </TableCell>
-              <TableCell>{`${item.owner?.firstName || 'N/A'}`}</TableCell>
+              <TableCell>{item.owner ? `${item.owner.firstName}` : 'N/A'}</TableCell>
               <TableCell align="center"><StatusBadge status={item.status} /></TableCell>
             </TableRow>
           ))}
@@ -68,8 +68,8 @@ const RecentItemsTable = ({ items }) => (
 const NewUsersTable = ({ users }) => (
   <Paper className="data-container">
     <Typography variant="h6" className="data-container-header">New User Signups</Typography>
-    <TableContainer>
-      <Table className="dashboard-table">
+    <TableContainer sx={{ maxHeight: 400 }}>
+      <Table stickyHeader className="dashboard-table">
         <TableHead>
           <TableRow>
             <TableCell>User</TableCell>
@@ -81,9 +81,9 @@ const NewUsersTable = ({ users }) => (
           {users.map(user => (
             <TableRow hover key={user._id}>
               <TableCell>
-                <Box className="table-cell-content">
-                  <Avatar src={`http://localhost:5001${user.profileImage ? user.profileImage.replace(/\\/g, '/') : ''}`} />
-                  <Typography variant="body2">{`${user.firstName} ${user.lastName}`}</Typography>
+                <Box className="table-cell-content" sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Avatar src={user.profileImage ? `http://localhost:5001${user.profileImage}` : ''} />
+                  <Typography variant="body2" fontWeight="500">{`${user.firstName} ${user.lastName}`}</Typography>
                 </Box>
               </TableCell>
               <TableCell>{user.email}</TableCell>
@@ -96,15 +96,19 @@ const NewUsersTable = ({ users }) => (
   </Paper>
 );
 
-
 function AdminDashboard() {
   const [stats, setStats] = useState({ users: 0, items: 0, moderators: 0, organizations: 0 });
-  const [chartData, setChartData] = useState({ itemStatus: null, itemActivity: null, userActivity: null, overview: null });
+  
+  // Recharts Data States
+  const [statusChartData, setStatusChartData] = useState([]);
+  const [itemActivityData, setItemActivityData] = useState([]);
+  const [userActivityData, setUserActivityData] = useState([]);
+  
   const [recentData, setRecentData] = useState({ items: [], users: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // --- State for Notifications ---
+  // Notifications
   const [notifications, setNotifications] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -118,38 +122,58 @@ function AdminDashboard() {
           axiosInstance.get('/api/organaisation'),
           axiosInstance.get('/api/contact'),
         ]);
-        const allItems = itemsRes.data.data;
-        const allUsers = usersRes.data.data;
-        console.log(allItems);
 
+        const allItemsRaw = itemsRes.data.data; 
+        const allUsers = usersRes.data.data;
+        
+        const registeredItemsOnly = allItemsRaw.filter(item => !item.finder);
+
+        // Stats
         const newStats = {
           users: allUsers.length,
-          items: allItems.filter(item => item.status === 'registered' || item.status === 'lost').length,
+          items: registeredItemsOnly.length, 
           moderators: modsRes.data.data.length,
           organizations: orgsRes.data.data.length,
         };
         setStats(newStats);
 
-        const statusCounts = allItems.reduce((acc, item) => { acc[item.status] = (acc[item.status] || 0) + 1; return acc; }, {});
+       
+        const statusCounts = registeredItemsOnly.reduce((acc, item) => { 
+             let s = item.status;
+             if(s === 'finded' || s === 'claimed') s = 'claimed';
+             
+             acc[s] = (acc[s] || 0) + 1; 
+             return acc; 
+        }, {});
+        
+        const pieData = Object.keys(statusCounts).map(key => ({
+            name: key.charAt(0).toUpperCase() + key.slice(1),
+            value: statusCounts[key]
+        }));
+        setStatusChartData(pieData);
+
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        
         const itemMonthCounts = Array(12).fill(0);
-        allItems.forEach(item => itemMonthCounts[new Date(item.createdAt).getMonth()]++);
+        registeredItemsOnly.forEach(item => itemMonthCounts[new Date(item.createdAt).getMonth()]++);
+        
         const userMonthCounts = Array(12).fill(0);
         allUsers.forEach(user => userMonthCounts[new Date(user.createdAt).getMonth()]++);
 
-        setChartData({
-          itemStatus: { labels: ['Lost', 'Found', 'Registered'], datasets: [{ data: [statusCounts.lost || 0, statusCounts.found || 0, statusCounts.registered || 0], backgroundColor: ['#ef4444', '#22c55e', '#3b82f6'], borderColor: '#f8f9fa', borderWidth: 4, hoverOffset: 4 }] },
-          itemActivity: { labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], datasets: [{ label: 'Items Added', data: itemMonthCounts, fill: true, backgroundColor: (context) => createGradient(context.chart.ctx, 'rgba(75, 192, 192, 0.5)', 'rgba(75, 192, 192, 0)'), borderColor: 'rgb(75, 192, 192)', tension: 0.4 }] },
-          userActivity: { labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], datasets: [{ label: 'Users Joined', data: userMonthCounts, fill: true, backgroundColor: (context) => createGradient(context.chart.ctx, 'rgba(153, 102, 255, 0.5)', 'rgba(153, 102, 255, 0)'), borderColor: 'rgb(153, 102, 255)', tension: 0.4 }] },
-          overview: { labels: ['Users', 'Items', 'Moderators', 'Organizations'], datasets: [{ label: 'Total Count', data: [newStats.users, newStats.items, newStats.moderators, newStats.organizations], backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'], borderRadius: 4 }] }
-        });
+        const activityData = months.map((month, index) => ({
+            name: month,
+            items: itemMonthCounts[index],
+            users: userMonthCounts[index]
+        }));
+        setItemActivityData(activityData);
+
 
         setRecentData({
-          items: allItems.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5),
+          items: registeredItemsOnly.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5),
           users: allUsers.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5)
         });
 
-        console.log(contactRes);
-
+       
         if (contactRes.data?.data) {
           const newMessages = contactRes.data.data.contacts.filter(msg => msg.status === 'new');
           setNotifications(newMessages);
@@ -157,7 +181,7 @@ function AdminDashboard() {
 
       } catch (err) {
         console.error("Dashboard data fetching error:", err);
-        setError("Failed to load dashboard data. Please try again.");
+        setError("Failed to load dashboard data.");
       } finally {
         setLoading(false);
       }
@@ -165,46 +189,37 @@ function AdminDashboard() {
     fetchData();
   }, []);
 
-  const handleNotificationClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleNotificationClose = () => {
-    setAnchorEl(null);
-  };
+  const handleNotificationClick = (event) => setAnchorEl(event.currentTarget);
+  const handleNotificationClose = () => setAnchorEl(null);
 
   const handleMarkAsRead = async (id) => {
     try {
       await axiosInstance.put(`/api/contact/${id}`, { status: 'read' });
       setNotifications(prev => prev.filter(msg => msg._id !== id));
-    } catch (err) {
-      console.error("Failed to mark message as read:", err);
-    }
+    } catch (err) { console.error(err); }
   };
 
   const open = Boolean(anchorEl);
   const id = open ? 'notification-popover' : undefined;
-  const commonOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } };
-  const lineChartOptions = { ...commonOptions, scales: { y: { beginAtZero: true, grid: { drawBorder: false } }, x: { grid: { display: false } } } };
-  const doughnutChartOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } } } };
-  const barChartOptions = { ...commonOptions, indexAxis: 'y', scales: { x: { grid: { display: false, drawBorder: false } }, y: { grid: { display: false } } } };
 
-  if (loading) return <Box className="center-screen"><CircularProgress size={60} /></Box>;
-  if (error) return <Box className="center-screen"><Alert severity="error" sx={{ m: 4 }}>{error}</Alert></Box>;
+  // Colors
+  const PIE_COLORS = ['#3b82f6', '#10b981', '#ef4444', '#f59e0b'];
+
+  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}><CircularProgress /></Box>;
+  if (error) return <Box sx={{ p: 4 }}><Alert severity="error">{error}</Alert></Box>;
 
   return (
     <Box className="dashboard-container">
       <AdminSidemenu />
       <Box component="main" className="dashboard-content">
-        <Box className="dashboard-header">
-          <Typography variant="h4" component="h1">Welcome back, Admin!</Typography>
-          <Box>
-            <IconButton color="default" aria-describedby={id} onClick={handleNotificationClick}>
-              <Badge badgeContent={notifications.length} color="error">
-                <Notifications />
-              </Badge>
-            </IconButton>
-          </Box>
+        
+        <Box className="dashboard-header" sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="h4" component="h1" fontWeight="700" color="#1b2559">Admin Dashboard</Typography>
+          <IconButton color="primary" onClick={handleNotificationClick} sx={{ backgroundColor: '#fff', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
+            <Badge badgeContent={notifications.length} color="error">
+              <Notifications />
+            </Badge>
+          </IconButton>
         </Box>
 
         <Popover
@@ -214,33 +229,27 @@ function AdminDashboard() {
           onClose={handleNotificationClose}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-          PaperProps={{ className: 'notification-popover' }}
+          PaperProps={{ sx: { width: 320, maxHeight: 400, borderRadius: 2 } }}
         >
-          <Box className="notification-header">
-            <Typography variant="subtitle1">New Messages</Typography>
+          <Box sx={{ p: 2, borderBottom: '1px solid #eee' }}>
+            <Typography variant="subtitle1" fontWeight="bold">New Messages</Typography>
           </Box>
           <List sx={{ p: 0 }}>
             {notifications.length > 0 ? (
               notifications.map((msg, index) => (
                 <React.Fragment key={msg._id}>
-                  <ListItem alignItems="flex-start" className="notification-item">
-                    <MailOutline sx={{ mt: 1, mr: 2, color: 'text.secondary' }} />
+                  <ListItem alignItems="flex-start" sx={{ '&:hover': { bgcolor: '#f9f9f9' } }}>
+                    <MailOutline sx={{ mt: 1, mr: 2, color: 'primary.main' }} />
                     <ListItemText
-                      primary={`${msg.name} (${msg.email})`}
+                      primary={
+                        <Typography variant="subtitle2" fontWeight="600">{msg.name}</Typography>
+                      }
                       secondary={
-                        <React.Fragment>
-                          <Typography component="span" variant="body2" color="text.primary" sx={{ display: 'block', mt: 1, mb: 1 }}>
-                            {msg.message}
-                          </Typography>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            onClick={() => handleMarkAsRead(msg._id)}
-                            sx={{ mt: 1 }}
-                          >
-                            Mark as Read
-                          </Button>
-                        </React.Fragment>
+                        <>
+                          <Typography variant="caption" display="block" color="text.secondary" sx={{ mb: 0.5 }}>{msg.email}</Typography>
+                          <Typography variant="body2" color="text.primary">{msg.message}</Typography>
+                          <Button size="small" onClick={() => handleMarkAsRead(msg._id)} sx={{ mt: 1, textTransform: 'none' }}>Mark Read</Button>
+                        </>
                       }
                     />
                   </ListItem>
@@ -248,34 +257,125 @@ function AdminDashboard() {
                 </React.Fragment>
               ))
             ) : (
-              <ListItem>
-                <ListItemText primary="No new messages" sx={{ textAlign: 'center', color: 'text.secondary' }} />
-              </ListItem>
+              <ListItem><ListItemText primary="No new messages" sx={{ textAlign: 'center', color: 'text.secondary' }} /></ListItem>
             )}
           </List>
         </Popover>
 
-        <Grid container spacing={3} justifyContent="center" sx={{ mb: 4 }}>
-          <Grid item sx={{ width: 250 }}><StatCard icon={<Group />} value={stats.users} label="Total Users" color="#3b82f6" colorLight="#60a5fa" /></Grid>
-          <Grid item sx={{ width: 250 }}><StatCard icon={<Inventory />} value={stats.items} label="Total Items" color="#10b981" colorLight="#34d399" /></Grid>
-          <Grid item sx={{ width: 250 }}><StatCard icon={<Handshake />} value={stats.moderators} label="Moderators" color="#f59e0b" colorLight="#fbbf24" /></Grid>
-          <Grid item sx={{ width: 250 }}><StatCard icon={<Business />} value={stats.organizations} label="Organizations" color="#8b5cf6" colorLight="#a78bfa" /></Grid>
+        <Grid container spacing={12} mb={4}>
+          <Grid item xs={12} sm={12} md={3}  >
+            <StatCard  icon={<Group sx={{ color: 'white' }} />} value={stats.users} label="Total Users" color="#4318FF" />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <StatCard icon={<Inventory sx={{ color: 'white' }} />} value={stats.items} label="Registered Items" color="#05CD99" />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <StatCard icon={<Handshake sx={{ color: 'white' }} />} value={stats.moderators} label="Moderators" color="#FFB547" />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <StatCard icon={<Business sx={{ color: 'white' }} />} value={stats.organizations} label="Organizations" color="#868CFF" />
+          </Grid>
         </Grid>
 
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid item sx={{ width: 580 }}><Paper className="data-container"><Typography variant="h6" className="data-container-header">Monthly Item Activity</Typography><Box className="chart-wrapper">{chartData.itemActivity && <Line options={lineChartOptions} data={chartData.itemActivity} />}</Box></Paper></Grid>
-          <Grid item sx={{ width: 580 }}><Paper className="data-container"><Typography variant="h6" className="data-container-header">Monthly User Signups</Typography><Box className="chart-wrapper">{chartData.userActivity && <Line options={lineChartOptions} data={chartData.userActivity} />}</Box></Paper></Grid>
+        <Grid container spacing={3} mb={4}>
+          <Grid item xs={12} md={6}>
+            <Paper className="data-container" sx={{ p: 3, borderRadius: 4, boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}>
+              <Typography variant="h6" fontWeight="bold" mb={2}>Monthly Item Registrations</Typography>
+              <ResponsiveContainer width={520} height={300}>
+                <AreaChart data={itemActivityData}>
+                    <defs>
+                        <linearGradient id="colorItems" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#05CD99" stopOpacity={0.8}/>
+                            <stop offset="95%" stopColor="#05CD99" stopOpacity={0}/>
+                        </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E0E5F2" />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#A3AED0'}} />
+                    <YAxis axisLine={false} tickLine={false} tick={{fill: '#A3AED0'}} />
+                    <RechartsTooltip contentStyle={{ borderRadius: '10px', border: 'none' }} />
+                    <Area type="monotone" dataKey="items" stroke="#05CD99" fillOpacity={1} fill="url(#colorItems)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+             <Paper className="data-container" sx={{ p: 3, borderRadius: 4, boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}>
+              <Typography variant="h6" fontWeight="bold" mb={2}>Monthly User Signups</Typography>
+              <ResponsiveContainer width={520} height={300}>
+                <AreaChart data={itemActivityData}>
+                    <defs>
+                        <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#4318FF" stopOpacity={0.8}/>
+                            <stop offset="95%" stopColor="#4318FF" stopOpacity={0}/>
+                        </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E0E5F2" />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#A3AED0'}} />
+                    <YAxis axisLine={false} tickLine={false} tick={{fill: '#A3AED0'}} />
+                    <RechartsTooltip contentStyle={{ borderRadius: '10px', border: 'none' }} />
+                    <Area type="monotone" dataKey="users" stroke="#4318FF" fillOpacity={1} fill="url(#colorUsers)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </Paper>
+          </Grid>
         </Grid>
 
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid item sx={{ width: 580 }}><Paper className="data-container"><Typography variant="h6" className="data-container-header">Item Status Breakdown</Typography><Box className="chart-wrapper">{chartData.itemStatus && <Doughnut options={doughnutChartOptions} data={chartData.itemStatus} />}</Box></Paper></Grid>
-          <Grid item sx={{ width: 580 }}><Paper className="data-container"><Typography variant="h6" className="data-container-header">Platform Totals Overview</Typography><Box className="chart-wrapper">{chartData.overview && <Bar options={barChartOptions} data={chartData.overview} />}</Box></Paper></Grid>
+        <Grid container spacing={3} mb={4}>
+          <Grid item xs={12} md={5}>
+            <Paper className="data-container" sx={{ p: 3, borderRadius: 4, boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}>
+              <Typography variant="h6" fontWeight="bold" mb={2}>Item Status Breakdown</Typography>
+              <ResponsiveContainer width={520} height={300}>
+                <PieChart>
+                  <Pie
+                    data={statusChartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={100}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {statusChartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <RechartsTooltip />
+                  <Legend iconType="circle" verticalAlign="bottom" align="center" />
+                </PieChart>
+              </ResponsiveContainer>
+            </Paper>
+          </Grid>
+
+           <Grid item xs={12} md={7}>
+            <Paper className="data-container" sx={{ p: 3, borderRadius: 4, boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}>
+               <Typography variant="h6" fontWeight="bold" mb={2}>Platform Totals Overview</Typography>
+               <ResponsiveContainer width={520} height={300}>
+                 <BarChart data={[
+                    { name: 'Users', count: stats.users },
+                    { name: 'Items', count: stats.items },
+                    { name: 'Mods', count: stats.moderators },
+                    { name: 'Orgs', count: stats.organizations }
+                 ]} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E0E5F2" />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#A3AED0'}} />
+                    <YAxis axisLine={false} tickLine={false} tick={{fill: '#A3AED0'}} />
+                    <RechartsTooltip cursor={{fill: 'transparent'}} contentStyle={{ borderRadius: '10px' }}/>
+                    <Bar dataKey="count" fill="#868CFF" radius={[10, 10, 0, 0]} barSize={50}>
+                        { [stats.users, stats.items, stats.moderators, stats.organizations].map((entry, index) => (
+                             <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                        ))}
+                    </Bar>
+                 </BarChart>
+               </ResponsiveContainer>
+            </Paper>
+          </Grid>
         </Grid>
 
         <Grid container spacing={3} justifyContent="center">
-          <Grid item sx={{ width: '550px' }}><RecentItemsTable items={recentData.items} /></Grid>
-          <Grid item sx={{ width: '550px' }}><NewUsersTable users={recentData.users} /></Grid>
-        </Grid>
+      <Grid item sx={{ width: '550px' }}><RecentItemsTable items={recentData.items} /></Grid>
+      <Grid item sx={{ width: '550px' }}><NewUsersTable users={recentData.users} /></Grid>
+    </Grid>
 
       </Box>
     </Box>

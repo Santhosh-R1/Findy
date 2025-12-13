@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Lato:wght@400;700&display=swap');
 
 :root {
-  /* Assuming these are defined elsewhere, but adding them for clarity */
   --user-primary-color: #20c997;
   --user-primary-dark: #19a47a;
   --light-color: #ffffff;
@@ -13,20 +12,17 @@
   --font-body: 'Lato', sans-serif;
 }
 
-/* --- MODIFIED: UPGRADED BACKGROUND AND ADDED POSITIONING --- */
 .user-login-page {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  /* A more pleasant background that complements the theme */
   background: linear-gradient(to bottom right, #0fffb7, #20c997);
   padding: 2rem;
   position: relative;
   overflow: hidden;
 }
 
-/* --- NEW SECTION: ANIMATED BUBBLE BACKGROUND --- */
 @keyframes rise {
   0% {
     bottom: -100px;
@@ -55,14 +51,12 @@
   bottom: -100px;
   width: 40px;
   height: 40px;
-  /* Use the primary color with transparency */
   background-color: #19a47a;
   border-radius: 50%;
   opacity: 0.5;
   animation: rise 25s infinite ease-in;
 }
 
-/* Customize each bubble for a random, natural effect */
 .bubble:nth-child(1) { left: 10%; animation-duration: 25s; width: 40px; height: 40px; }
 .bubble:nth-child(2) { left: 20%; animation-duration: 15s; animation-delay: 2s; width: 60px; height: 60px; }
 .bubble:nth-child(3) { left: 25%; animation-duration: 30s; animation-delay: 4s; width: 25px; height: 25px; }
@@ -73,7 +67,6 @@
 .bubble:nth-child(8) { left: 80%; animation-duration: 28s; animation-delay: 5s; width: 20px; height: 20px; }
 .bubble:nth-child(9) { left: 90%; animation-duration: 19s; animation-delay: 2s; width: 45px; height: 45px; }
 .bubble:nth-child(10) { left: 55%; animation-duration: 33s; animation-delay: 7s; width: 70px; height: 70px; }
-/* --- END OF NEW SECTION --- */
 
 
 .user-login-error-message {
@@ -98,7 +91,6 @@
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   overflow: hidden;
-  /* --- MODIFIED: Ensure card is above the background --- */
   position: relative;
   z-index: 1;
 }

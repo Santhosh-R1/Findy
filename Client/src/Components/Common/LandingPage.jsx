@@ -9,7 +9,7 @@ import heroBackground from '../../assets/Hand2.jpg';
 import phoneImage from '../../assets/Traveller.jpg';
 import petsImage from '../../assets/Pets.jpg';
 import creativeTech from '../../assets/TakeItEasy.jpg';
-import wallet from '../../assets/wallet.jpg'; // The new image for wallets/handbags
+import wallet from '../../assets/wallet.jpg'; 
 
 import LandingNav from './LandingNav';
 
@@ -50,7 +50,6 @@ function LandingPage() {
           ease: 'expo.out'
         }, "-=1"); 
 
-      // General Section Title/Subtitle Animation
       const sections = gsap.utils.toArray('.landing-section');
       sections.forEach(section => {
         const title = section.querySelector('.landing-section-title');
@@ -77,7 +76,6 @@ function LandingPage() {
         }
       });
       
-      // Card Grid Animations
       gsap.from(".landing-info-card", {
         scrollTrigger: { trigger: ".landing-info-grid", start: "top 85%", once: true },
         opacity: 0,
@@ -97,14 +95,12 @@ function LandingPage() {
         stagger: 0.15
       });
 
-      // Feature Section Animations (This will automatically include the new wallet section)
       const features = gsap.utils.toArray('.landing-feature-item');
       features.forEach(feature => {
         const imageWrapper = feature.querySelector('.landing-feature-image');
         const image = feature.querySelector('.landing-feature-image img');
         const content = feature.querySelectorAll('.landing-feature-content > *');
 
-        // Parallax for feature images
         gsap.to(image, {
           yPercent: -10,
           ease: "none",
@@ -139,7 +135,6 @@ function LandingPage() {
           }, "-=1.2");
       });
 
-      // Final CTA Animation
       gsap.from(".landing-final-cta-section .landing-container > *", {
         scrollTrigger: { trigger: ".landing-final-cta-section", start: "top 80%", once: true },
         opacity: 0,
@@ -156,8 +151,6 @@ function LandingPage() {
 
   return (
     <div>
-      {/* Assuming LandingNav is a separate component you want to keep */}
-      {/* <LandingNav /> */}
       <div className="landing-page" ref={main}>
         <section className="landing-hero-section" style={{ backgroundImage: `url(${heroBackground})` }}>
           <div className="landing-hero-overlay"></div>

@@ -1,9 +1,7 @@
 :root {
-  /* New Organisation Theme Colors */
   --org-primary-color: #6f42c1; 
   --org-primary-dark: #5a349b;
 
-  /* General Clean UI Variables (can be shared or customized) */
   --org-bg-color: #f8f9fa;
   --org-border-color: #dee2e6;
   --org-text-primary: #212529;
@@ -12,13 +10,13 @@
 }
 
 .organisation-profile-container {
-  margin-left: 260px; /* Adjust if you have a sidebar */
+  margin-left: 260px; 
   padding: 2.5rem;
   background-color: var(--org-bg-color);
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  margin-top: 50px; /* Adjust if you have a fixed navbar */
+  margin-top: 50px; 
 }
 
 .organisation-profile-loading-container {
@@ -147,7 +145,6 @@
 }
 
 
-/* Responsive */
 @media (max-width: 900px) {
   .organisation-profile-container {
     margin-left: 80px;
