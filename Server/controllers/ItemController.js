@@ -1,11 +1,11 @@
 const Item = require('../models/Items');
 const User = require("../models/User");
 const Match = require('../models/match');
-const Organisation = require('../models/Organaization'); 
+const Organisation = require('../models/Organaization');
 const fs = require('fs');
 const path = require('path');
-const { sendBulkEmail } = require("../utils/email");
-
+const { sendEmail, sendBulkEmail } = require("../utils/email");
+const { getMatchFoundHTML, getCommunityAlertHTML } = require("../utils/emailTemplates");
 const stringSimilarity = require('string-similarity');
 const tf = require('@tensorflow/tfjs');
 const mobilenet = require('@tensorflow-models/mobilenet');
@@ -31,7 +31,7 @@ const imageToTensor = async (imagePath) => {
     try {
         const buffer = await sharp(imagePath).resize(224, 224, { fit: 'fill' }).removeAlpha().raw().toBuffer();
         const tensor = tf.tensor3d(new Uint8Array(buffer), [224, 224, 3]);
-        return tensor; 
+        return tensor;
     } catch (err) {
         console.error(`Error converting image (${imagePath}) to tensor:`, err.message);
         return null;
@@ -74,7 +74,7 @@ const calculateImageSimilarity = async (pathA, pathB) => {
 };
 
 const calculateMatchScore = async (lostItem, foundItem) => {
-    if (!lostItem.itemImage || !foundItem.itemImage) return 0; 
+    if (!lostItem.itemImage || !foundItem.itemImage) return 0;
     let imageScore = await calculateImageSimilarity(lostItem.itemImage, foundItem.itemImage);
     const IMAGE_THRESHOLD = 0.60;
     if (imageScore < IMAGE_THRESHOLD) return 0;
@@ -82,7 +82,7 @@ const calculateMatchScore = async (lostItem, foundItem) => {
     const nameSim = stringSimilarity.compareTwoStrings(lostItem.itemName || '', foundItem.itemName || '');
     const descSim = stringSimilarity.compareTwoStrings(lostItem.description || '', foundItem.description || '');
     const textScore = (nameSim * 0.6) + (descSim * 0.4);
-    
+
     return (imageScore * 0.8) + (textScore * 0.2);
 };
 
@@ -118,9 +118,21 @@ const findAndNotifyPotentialMatches = async (foundItem) => {
             await newMatch.save();
 
             const reviewUrl = `http://localhost:5173/match-review?lostItemId=${bestMatch.lostItem._id}&foundItemId=${bestMatch.foundItem._id}`;
-            const subject = `Potential Match Found: ${bestMatch.lostItem.itemName}`;
-            const html = `<h3>Good News!</h3><p>Potential match found (${(bestMatch.score * 100).toFixed(0)}%).</p><a href="${reviewUrl}">Review Match</a>`;
-            await sendBulkEmail({ recipients: [owner.email], subject, html });
+            const itemName = bestMatch.lostItem.itemName || bestMatch.lostItem.petName || 'Item';
+
+            const emailHtml = getMatchFoundHTML(
+                owner.firstName,
+                itemName,
+                bestMatch.foundItem.itemImage,
+                reviewUrl
+            );
+            await sendEmail({
+                email: owner.email,
+                subject: `✨ Good News! Potential Match Found for your ${itemName}`,
+                html: emailHtml
+            });
+
+            console.log(`Match found and email sent to ${owner.email}`);
         }
     } catch (error) {
         console.error("AI Matcher Error:", error);
@@ -134,14 +146,14 @@ const viewFoundItems = async (req, res) => {
             .lean();
 
         const populatedItems = await Promise.all(items.map(async (item) => {
-            if (!item.finder) return item; 
+            if (!item.finder) return item;
 
             const userFinder = await User.findById(item.finder)
                 .select('firstName lastName email phone profileImage');
 
             if (userFinder) {
                 item.finder = userFinder;
-                item.finder.type = 'User'; 
+                item.finder.type = 'User';
                 return item;
             }
 
@@ -150,7 +162,7 @@ const viewFoundItems = async (req, res) => {
 
             if (orgFinder) {
                 item.finder = orgFinder;
-                item.finder.firstName = orgFinder.organisationName; 
+                item.finder.firstName = orgFinder.organisationName;
                 item.finder.profileImage = orgFinder.organisationLogo;
                 item.finder.type = 'Organisation';
                 return item;
@@ -159,10 +171,10 @@ const viewFoundItems = async (req, res) => {
             return item;
         }));
 
-        res.status(200).json({ 
-            success: true, 
-            count: populatedItems.length, 
-            data: populatedItems 
+        res.status(200).json({
+            success: true,
+            count: populatedItems.length,
+            data: populatedItems
         });
 
     } catch (error) {
@@ -181,12 +193,12 @@ const addItem = async (req, res) => {
             status: 'registered'
         });
         console.log(newItem);
-        
+
         const savedItem = await newItem.save();
         res.status(201).json({ message: 'Item registered successfully!', item: savedItem });
     } catch (error) {
         console.log(error);
-        
+
         res.status(500).json({ message: 'Server error.' });
     }
 };
@@ -196,7 +208,7 @@ const addFoundItemReport = async (req, res) => {
         const { finderId, mainCategory, subCategory, itemName, description, brand, color, foundDate, foundLocationAddress, foundLocationLat, foundLocationLon } = req.body;
         const newFoundItem = new Item({
             finder: finderId,
-            finderModel: 'User', 
+            finderModel: 'User',
             mainCategory, subCategory, itemName, description, brand, color, foundDate,
             itemImage: req.file ? req.file.path.replace(/\\/g, "/") : "",
             status: 'found', foundLocationAddress,
@@ -246,7 +258,7 @@ const confirmMatchClaim = async (req, res) => {
 
         await Match.deleteMany({
             lostItem: lostItemId,
-            foundItem: { $ne: foundItemId } 
+            foundItem: { $ne: foundItemId }
         });
 
         res.status(200).json({ success: true, message: 'Item claimed. Other matches for this item have been removed.' });
@@ -258,10 +270,10 @@ const confirmMatchClaim = async (req, res) => {
 const addFoundItemReportOrg = async (req, res) => {
     try {
         const { finderId, mainCategory, subCategory, itemName, description, brand, petName, color, foundDate, foundLocationAddress, foundLocationLat, foundLocationLon } = req.body;
-        
+
         const newItemData = {
             finder: finderId,
-            finderModel: 'Organisation', 
+            finderModel: 'Organisation',
             mainCategory, subCategory, itemName, description, brand, petName, color, foundDate,
             itemImage: req.file ? req.file.path.replace(/\\/g, "/") : "",
             status: 'found', foundLocationAddress,
@@ -291,13 +303,52 @@ const reportItemLost = async (req, res) => {
     try {
         const { itemId } = req.params;
         const { lostLocationAddress, lostLocationLat, lostLocationLon, lostDate } = req.body;
+
         const updatePayload = {
-            status: 'lost', lostDate: lostDate || Date.now(), lostLocationAddress,
+            status: 'lost',
+            lostDate: lostDate || Date.now(),
+            lostLocationAddress,
             lostLocation: { type: 'Point', coordinates: [parseFloat(lostLocationLon), parseFloat(lostLocationLat)] }
         };
-        const updatedItem = await Item.findByIdAndUpdate(itemId, { $set: updatePayload }, { new: true });
-        res.status(200).json({ message: 'Item reported as lost.', data: updatedItem });
+
+        const updatedItem = await Item.findByIdAndUpdate(itemId, { $set: updatePayload }, { new: true }).populate('owner');
+
+        if (!updatedItem) return res.status(404).json({ message: 'Item not found' });
+        try {
+            console.log(`[Alert System] Preparing alerts for Lost Item: ${updatedItem.itemName}`);
+            const allUsers = await User.find({
+                _id: { $ne: updatedItem.owner._id }
+            }).select('email');
+
+            console.log(`[Alert System] Found ${allUsers.length} other users to notify.`);
+
+            if (allUsers.length > 0) {
+                const recipientEmails = allUsers.map(u => u.email);
+
+                const emailHtml = getCommunityAlertHTML(
+                    updatedItem.itemName || updatedItem.petName,
+                    updatedItem.description,
+                    updatedItem.lostLocationAddress,
+                    updatedItem.lostDate,
+                    updatedItem.itemImage
+                );
+                await sendBulkEmail({
+                    recipients: recipientEmails,
+                    subject: `📢 Community Alert: Lost ${updatedItem.mainCategory} Reported`,
+                    html: emailHtml
+                });
+
+                console.log(`[Alert System] Emails sent successfully.`);
+            } else {
+                console.log(`[Alert System] No other users found in database to notify.`);
+            }
+        } catch (emailErr) {
+            console.error("[Alert System] Failed to send community alerts:", emailErr);
+        }
+
+        res.status(200).json({ message: 'Item reported as lost. Community notified.', data: updatedItem });
     } catch (error) {
+        console.error("Report Lost Error:", error);
         res.status(500).json({ message: 'Server error.' });
     }
 };
@@ -325,18 +376,39 @@ const notifyOwnerOfMatch = async (req, res) => {
         const { lostItemId, foundItemId, moderatorId } = req.body;
         const lostItem = await Item.findById(lostItemId).populate('owner');
         const foundItem = await Item.findById(foundItemId);
+
         if (!lostItem || !foundItem) return res.status(404).json({ message: 'Items not found.' });
+
         const existing = await Match.findOne({ lostItem: lostItemId, foundItem: foundItemId });
         if (existing) return res.status(409).json({ message: 'Notification already sent.' });
+
         const newMatch = new Match({
-            lostItem: lostItemId, foundItem: foundItemId, lostItemOwner: lostItem.owner._id,
-            finder: foundItem.finder, moderator: moderatorId, matchType: 'manual', status: 'pending_review'
+            lostItem: lostItemId,
+            foundItem: foundItemId,
+            lostItemOwner: lostItem.owner._id,
+            finder: foundItem.finder,
+            moderator: moderatorId,
+            matchType: 'manual',
+            status: 'pending_review'
         });
         await newMatch.save();
-        const reviewUrl = `http://localhost:5173/match-review?lostItemId=${lostItemId}&foundItemId=${foundItemId}`;
-        const subject = `Potential Match for ${lostItem.itemName}`;
-        const html = `<p>A moderator identified a potential match.</p><a href="${reviewUrl}">Review Match</a>`;
-        await sendBulkEmail({ recipients: [lostItem.owner.email], subject, html });
+        try {
+            const reviewUrl = `http://localhost:5173/match-review?lostItemId=${lostItemId}&foundItemId=${foundItemId}`;
+            const emailHtml = getMatchFoundHTML(
+                lostItem.owner.firstName,
+                lostItem.itemName || lostItem.petName,
+                foundItem.itemImage,
+                reviewUrl
+            );
+
+            await sendEmail({
+                email: lostItem.owner.email,
+                subject: `Potential Match Verified by Moderator`,
+                html: emailHtml
+            });
+        } catch (emailErr) {
+            console.error("Failed to send match email:", emailErr);
+        }
         res.status(200).json({ success: true, message: 'Owner notified.' });
     } catch (error) {
         res.status(500).json({ message: 'Server error.' });
@@ -411,23 +483,23 @@ const getAllMatches = async (req, res) => {
         const matches = await Match.find({})
             .populate('lostItem foundItem lostItemOwner moderator')
             .sort({ createdAt: -1 })
-            .lean(); 
+            .lean();
         const populatedMatches = await Promise.all(matches.map(async (match) => {
             if (!match.finder) return match;
             let finderData = await User.findById(match.finder).select('firstName lastName email phone profileImage');
-            
+
             if (finderData) {
                 match.finder = finderData;
                 match.finder.type = 'User';
                 return match;
             }
             let orgData = await Organisation.findById(match.finder).select('organisationName email phone organisationLogo');
-            
+
             if (orgData) {
                 match.finder = {
                     _id: orgData._id,
-                    firstName: orgData.organisationName, 
-                    lastName: '', 
+                    firstName: orgData.organisationName,
+                    lastName: '',
                     email: orgData.email,
                     phone: orgData.phone,
                     profileImage: orgData.organisationLogo,
@@ -436,7 +508,7 @@ const getAllMatches = async (req, res) => {
                 return match;
             }
 
-            return match; 
+            return match;
         }));
 
         res.status(200).json({ success: true, data: populatedMatches });
@@ -450,7 +522,7 @@ const getAllMatches = async (req, res) => {
 const getUserMatches = async (req, res) => {
     try {
         const { userId } = req.params;
-        const matches = await Match.find({ 
+        const matches = await Match.find({
             $or: [{ lostItemOwner: userId }, { finder: userId }]
         }).populate('lostItem foundItem').sort({ createdAt: -1 });
         res.status(200).json({ success: true, data: matches });
@@ -476,14 +548,14 @@ const rejectMatch = async (req, res) => {
 const viewOrgFoundItems = async (req, res) => {
     try {
         const items = await Item.find({ status: 'found' }).lean();
-        
+
         const orgItems = [];
 
         for (const item of items) {
-            if(item.finder) {
+            if (item.finder) {
                 const org = await Organisation.findById(item.finder)
                     .select('organisationName email phone address organisationLogo');
-                
+
                 if (org) {
                     item.finder = org;
                     item.finder.firstName = org.organisationName;
@@ -504,5 +576,5 @@ module.exports = {
     addItem, viewUserItems, editItem, getItemById, deleteItem, reportItemLost,
     addFoundItemReport, addFoundItemReportOrg, getUserFoundItems, viewFoundItems, viewLostItems, viewAllItems, markItemAsReturned,
     findMatchesForFoundItem, notifyOwnerOfMatch, getMatchDetails, getAllMatches, getUserMatches, allowFinderToChat, rejectMatch,
-    confirmMatchClaim,viewOrgFoundItems, confirmMatchByOwner
+    confirmMatchClaim, viewOrgFoundItems, confirmMatchByOwner
 };
