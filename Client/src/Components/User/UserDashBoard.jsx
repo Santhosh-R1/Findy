@@ -8,19 +8,52 @@ import { FaBox, FaSearch, FaExclamationTriangle, FaCheckCircle, FaPlus } from 'r
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/UserDashBoard.css';
 
-const StatCard = ({ title, value, icon, color, delay }) => (
+import goldmedal from '../../assets/gold.png';
+import silvermedal from '../../assets/silver.png';
+import bronzemedal from '../../assets/bronze.png';
+
+const StatCard = ({ title, value, icon, color, delay, medal }) => (
   <Paper
     className="stat-card"
     elevation={0}
     variant="outlined"
-    style={{ animationDelay: delay }}
+    style={{ animationDelay: delay, position: 'relative', overflow: 'visible' }}
   >
-    <Box className="stat-icon-wrapper" sx={{ backgroundColor: color }}>
-      {icon}
-    </Box>
-    <Box>
-      <Typography variant="h5" component="p" className="stat-value">{value}</Typography>
-      <Typography variant="body2" className="stat-title">{title}</Typography>
+    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+      <Box className="stat-icon-wrapper" sx={{ backgroundColor: color }}>
+        {icon}
+      </Box>
+      
+      <Box sx={{ flexGrow: 1 }}>
+        <Typography variant="h5" component="p" className="stat-value">{value}</Typography>
+        <Typography variant="body2" className="stat-title">{title}</Typography>
+      </Box>
+
+      {medal && (
+        <Box 
+            sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                ml: 2,
+                p: 0.5,
+                background: 'rgba(255, 255, 255, 0.5)',
+                borderRadius: '50%',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+            }}
+        >
+            <img 
+                src={medal} 
+                alt="Achievement Medal" 
+                style={{ 
+                    width: 40, 
+                    height: 40, 
+                    objectFit: 'contain',
+                    filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))' 
+                }} 
+            />
+        </Box>
+      )}
     </Box>
   </Paper>
 );
@@ -37,6 +70,9 @@ function UserDashBoard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userName, setUserName] = useState('');
+  
+  const [userMedal, setUserMedal] = useState(null);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,9 +97,7 @@ function UserDashBoard() {
         const myMatches = matchesResponse.data.data;
 
         const totalRegistered = registeredItems.length;
-
         const totalLost = registeredItems.filter(item => item.status === 'lost').length;
-
         const totalFound = foundItems.length;
 
         const totalReturned = myMatches.filter(match => {
@@ -72,6 +106,16 @@ function UserDashBoard() {
         }).length;
 
         setStats({ totalRegistered, totalLost, totalFound, totalReturned });
+
+        if (totalReturned > 20) {
+            setUserMedal(goldmedal);
+        } else if (totalReturned >= 11) {
+            setUserMedal(silvermedal);
+        } else if (totalReturned >= 1) {
+            setUserMedal(bronzemedal);
+        } else {
+            setUserMedal(null);
+        }
 
         const itemsForCharts = registeredItems; 
 
@@ -153,7 +197,7 @@ function UserDashBoard() {
           </Box>
         </Box>
 
-        <Grid container spacing={4} className="stats-grid">
+        <Grid container spacing={6} className="stats-grid">
           <Grid item xs={12} sm={6} lg={3}>
             <StatCard title="Items Registered" value={stats.totalRegistered} icon={<FaBox />} color="#0d6efd" delay="100ms" />
           </Grid>
@@ -164,7 +208,15 @@ function UserDashBoard() {
             <StatCard title="Items Found by You" value={stats.totalFound} icon={<FaSearch />} color="#fd7e14" delay="300ms" />
           </Grid>
           <Grid item xs={12} sm={6} lg={3}>
-            <StatCard title="Successfully Returned" value={stats.totalReturned} icon={<FaCheckCircle />} color="#198754" delay="400ms" />
+            {/* Pass the medal prop */}
+            <StatCard 
+                title="Successfully Returned" 
+                value={stats.totalReturned} 
+                icon={<FaCheckCircle />} 
+                color="#198754" 
+                delay="400ms" 
+                medal={userMedal} 
+            />
           </Grid>
         </Grid>
 

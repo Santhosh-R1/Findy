@@ -70,6 +70,7 @@ body {
   gap: 1.25rem;
   transition: transform 0.2s ease;
   height: 100%;
+  min-width: 240px;
 }
 
 .org-stat-card:hover {
@@ -86,6 +87,7 @@ body {
   justify-content: center;
   color: white;
   font-size: 1.5rem;
+  margin-right: 15px;
 }
 
 .org-stat-content {

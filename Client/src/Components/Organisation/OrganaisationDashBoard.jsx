@@ -13,14 +13,49 @@ import {
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/OrganaisationDashBoard.css';
 
-const StatCard = ({ title, value, icon, color }) => (
+import goldmedal from '../../assets/gold.png';
+import silvermedal from '../../assets/silver.png';
+import bronzemedal from '../../assets/bronze.png';
+
+const StatCard = ({ title, value, icon, color, medal }) => (
   <Paper className="org-stat-card" elevation={0}>
-    <Box className="org-stat-icon-wrapper" sx={{ backgroundColor: color, boxShadow: `0 4px 10px ${color}66` }}>
-      {icon}
-    </Box>
-    <Box className="org-stat-content">
-      <Typography variant="h4" className="org-stat-value">{value}</Typography>
-      <Typography variant="subtitle2" className="org-stat-title">{title}</Typography>
+    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+        {/* Icon Box */}
+        <Box className="org-stat-icon-wrapper" sx={{ backgroundColor: color, boxShadow: `0 4px 10px ${color}66` }}>
+          {icon}
+        </Box>
+        
+        {/* Content */}
+        <Box className="org-stat-content" sx={{ flexGrow: 1 }}>
+          <Typography variant="h4" className="org-stat-value">{value}</Typography>
+          <Typography variant="subtitle2" className="org-stat-title">{title}</Typography>
+        </Box>
+
+        {medal && (
+            <Box 
+                sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    ml: 2,
+                    p: 0.5,
+                    background: 'rgba(255, 255, 255, 0.5)',
+                    borderRadius: '50%',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                }}
+            >
+                <img 
+                    src={medal} 
+                    alt="Achievement Medal" 
+                    style={{ 
+                        width: 40, 
+                        height: 40, 
+                        objectFit: 'contain',
+                        filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))' 
+                    }} 
+                />
+            </Box>
+        )}
     </Box>
   </Paper>
 );
@@ -40,6 +75,8 @@ function OrganaisationDashBoard() {
 
   const [categoryData, setCategoryData] = useState([]);
   const [statusData, setStatusData] = useState([]);
+  
+  const [orgMedal, setOrgMedal] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,6 +97,7 @@ function OrganaisationDashBoard() {
         const myFoundItems = itemsRes.data.data || [];
         const myMatches = matchesRes.data.data || [];
 
+        // --- Calculate Stats ---
         const total = myFoundItems.length;
         const returned = myFoundItems.filter(i => i.status === 'claimed' || i.status === 'returned').length;
         const active = myFoundItems.filter(i => i.status === 'found').length;
@@ -73,6 +111,15 @@ function OrganaisationDashBoard() {
           activeMatches: activeMatchCount
         });
 
+        if (returned > 20) {
+            setOrgMedal(goldmedal);
+        } else if (returned >= 11) {
+            setOrgMedal(silvermedal);
+        } else if (returned >= 1) {
+            setOrgMedal(bronzemedal);
+        } else {
+            setOrgMedal(null);
+        }
         const catMap = {};
         myFoundItems.forEach(item => {
             const cat = item.mainCategory ? item.mainCategory.charAt(0).toUpperCase() + item.mainCategory.slice(1) : 'Other';
@@ -83,7 +130,7 @@ function OrganaisationDashBoard() {
         const statusMap = [
             { name: 'Active (Found)', value: active },
             { name: 'Returned/Claimed', value: returned },
-            { name: 'Pending Review', value: myFoundItems.filter(i => i.status === 'pending_review').length } // If status exists on item
+            { name: 'Pending Review', value: myFoundItems.filter(i => i.status === 'pending_review').length } 
         ].filter(i => i.value > 0);
         setStatusData(statusMap);
 
@@ -105,6 +152,7 @@ function OrganaisationDashBoard() {
 
   return (
     <Box className="org-dash-container">
+      {/* Header */}
       <Box className="org-dash-header">
         <Box>
           <Typography variant="h4" className="org-dash-title">Welcome, {orgName}</Typography>
@@ -120,7 +168,7 @@ function OrganaisationDashBoard() {
         </Button>
       </Box>
 
-      <Grid container spacing={10} mb={4}>
+      <Grid container spacing={4} mb={5}>
         <Grid item xs={12} sm={6} md={3}>
           <StatCard title="Total Reported" value={stats.totalReported} icon={<FaClipboardList />} color="#3b82f6" />
         </Grid>
@@ -128,26 +176,32 @@ function OrganaisationDashBoard() {
           <StatCard title="Currently Active" value={stats.activeFound} icon={<FaSearchPlus />} color="#f59e0b" />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <StatCard title="Successfully Returned" value={stats.successfullyReturned} icon={<FaCheckCircle />} color="#10b981" />
+            <StatCard 
+                title="Successfully Returned" 
+                value={stats.successfullyReturned} 
+                icon={<FaCheckCircle />} 
+                color="#10b981" 
+                medal={orgMedal}
+            />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <StatCard title="Active Matches" value={stats.activeMatches} icon={<FaHandshake />} color="#8b5cf6" />
         </Grid>
       </Grid>
 
-      <Grid container spacing={3}>
+      <Grid container spacing={4}>
         
         <Grid item xs={12} md={7}>
           <Paper className="org-chart-paper">
             <Typography variant="h6" className="org-chart-title">Found Items by Category</Typography>
             {categoryData.length > 0 ? (
-                <ResponsiveContainer width={525} height={320}>
+                <ResponsiveContainer width={500} height={400}>
                 <BarChart data={categoryData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E0E5F2" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#A3AED0'}} />
                     <YAxis axisLine={false} tickLine={false} tick={{fill: '#A3AED0'}} />
                     <RechartsTooltip cursor={{fill: 'transparent'}} contentStyle={{ borderRadius: '12px', border: 'none' }} />
-                    <Bar dataKey="count" fill="#3b82f6" radius={[6, 6, 0, 0]} barSize={40} />
+                    <Bar dataKey="count" fill="#3b82f6" radius={[6, 6, 0, 0]} barSize={50} />
                 </BarChart>
                 </ResponsiveContainer>
             ) : (
@@ -160,14 +214,14 @@ function OrganaisationDashBoard() {
           <Paper className="org-chart-paper">
             <Typography variant="h6" className="org-chart-title">Resolution Status</Typography>
             {statusData.length > 0 ? (
-                <ResponsiveContainer width={525} height={320}>
+                <ResponsiveContainer width={500} height={400}>
                 <PieChart>
                     <Pie
                     data={statusData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
+                    innerRadius={80} 
+                    outerRadius={130} 
                     paddingAngle={5}
                     dataKey="value"
                     >
