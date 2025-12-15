@@ -1,6 +1,6 @@
 import React, { useState, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { FaBuilding, FaEnvelope, FaLock } from 'react-icons/fa';
+import { FaBuilding, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import '../../Styles/OrganisationLogin.css';
 import LandingNav from '../Common/LandingNav';
@@ -14,41 +14,17 @@ function OrganisationLogin() {
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.3 });
-      tl.from(".organisation-login-card", {
-        opacity: 0,
-        scale: 0.9,
-        duration: 0.8,
-        ease: 'expo.out'
-      })
-      .from(".organisation-login-visual", {
-        x: "-100%",
-        duration: 1.2,
-        ease: 'power4.inOut'
-      }, "-=0.6")
-      .from([".organisation-login-icon", ".organisation-login-visual h2", ".organisation-login-visual p"], {
-        opacity: 0,
-        y: 30,
-        stagger: 0.15,
-        duration: 0.8,
-        ease: 'power3.out'
-      }, "-=0.8")
-      .from([
-        ".organisation-login-form-section h2",
-        ".organisation-login-form-group",
-        ".organisation-login-links"
-      ], {
-        opacity: 0,
-        x: 40,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: 'power3.out'
-      }, "-=0.9");
+      tl.from(".organisation-login-card", { opacity: 0, scale: 0.9, duration: 0.8, ease: 'expo.out' })
+      .from(".organisation-login-visual", { x: "-100%", duration: 1.2, ease: 'power4.inOut' }, "-=0.6")
+      .from([".organisation-login-icon", ".organisation-login-visual h2", ".organisation-login-visual p"], { opacity: 0, y: 30, stagger: 0.15, duration: 0.8, ease: 'power3.out' }, "-=0.8")
+      .from([".organisation-login-form-section h2", ".organisation-login-form-group", ".organisation-login-links"], { opacity: 0, x: 40, stagger: 0.1, duration: 0.8, ease: 'power3.out' }, "-=0.9");
     }, main);
     return () => ctx.revert();
   }, []);
@@ -58,19 +34,21 @@ function OrganisationLogin() {
     setError(null);
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     try {
       const response = await axiosInstance.post('/api/organaisation/login', formData);
-      console.log('Login successful:', response.data);
       localStorage.setItem('organisationInfo', JSON.stringify(response.data));
       navigate('/organisation/DashBoard');
     } catch (err) {
       const errorMessage = err.response?.data?.message || "An unexpected error occurred. Please try again.";
       setError(errorMessage);
-      console.error('Login error:', err.response || err);
     } finally {
       setLoading(false);
     }
@@ -80,20 +58,8 @@ function OrganisationLogin() {
     <>
       <LandingNav />
       <div className="organisation-login-page" ref={main}>
-        {/* Animated Constellation Background */}
         <div className="background-constellation">
-          <div className="star"></div>
-          <div className="star"></div>
-          <div className="star"></div>
-          <div className="star"></div>
-          <div className="star"></div>
-          <div className="star"></div>
-          <div className="star"></div>
-          <div className="star"></div>
-          <div className="star"></div>
-          <div className="star"></div>
-          <div className="star"></div>
-          <div className="star"></div>
+          {[...Array(12)].map((_, i) => <div key={i} className="star"></div>)}
         </div>
 
         <div className="organisation-login-card">
@@ -106,7 +72,12 @@ function OrganisationLogin() {
             <h2>Organization Sign In</h2>
             <p className="organisation-login-subtitle">Enter your official credentials to access the portal.</p>
             {error && <p className="organisation-login-error-message">{error}</p>}
-            <form onSubmit={handleSubmit} className="organisation-login-form">
+            
+            <form onSubmit={handleSubmit} className="organisation-login-form" autoComplete="off">
+              {/* Fake inputs to prevent browser autofill */}
+              <input type="text" style={{display: 'none'}} />
+              <input type="password" style={{display: 'none'}} />
+
               <div className="organisation-login-form-group">
                 <FaEnvelope className="organisation-login-input-icon" />
                 <input
@@ -117,19 +88,28 @@ function OrganisationLogin() {
                   value={formData.email}
                   onChange={handleChange}
                   required
+                  autoComplete="off"
+                  readOnly
+                  onFocus={(e) => e.target.removeAttribute('readonly')}
                 />
               </div>
-              <div className="organisation-login-form-group">
+              <div className="organisation-login-form-group password-group">
                 <FaLock className="organisation-login-input-icon" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
                   placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
                   required
+                  autoComplete="new-password"
+                  readOnly
+                  onFocus={(e) => e.target.removeAttribute('readonly')}
                 />
+                <span className="password-toggle-icon-org" onClick={togglePasswordVisibility}>
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </div>
               <div className="organisation-login-form-group">
                 <button

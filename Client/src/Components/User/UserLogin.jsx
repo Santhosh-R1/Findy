@@ -1,6 +1,6 @@
 import React, { useState, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { FaEnvelope, FaLock, FaUserCircle } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaUserCircle, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/UserLogin.css';
@@ -12,6 +12,7 @@ function UserLogin() {
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -29,6 +30,10 @@ function UserLogin() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevData => ({ ...prevData, [name]: value }));
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -56,16 +61,7 @@ function UserLogin() {
       <div className="user-login-page" ref={main}>
         {/* Animated Background Bubbles */}
         <div className="background-bubbles">
-          <div className="bubble"></div>
-          <div className="bubble"></div>
-          <div className="bubble"></div>
-          <div className="bubble"></div>
-          <div className="bubble"></div>
-          <div className="bubble"></div>
-          <div className="bubble"></div>
-          <div className="bubble"></div>
-          <div className="bubble"></div>
-          <div className="bubble"></div>
+          {[...Array(10)].map((_, i) => <div key={i} className="bubble"></div>)}
         </div>
 
         <div className="user-login-card">
@@ -77,8 +73,14 @@ function UserLogin() {
           <div className="user-login-form-section">
             <h2>Login to Your Account</h2>
             <p className="user-login-subtitle">Please enter your credentials to continue.</p>
-            <form onSubmit={handleSubmit} className="user-login-form">
+            
+            <form onSubmit={handleSubmit} className="user-login-form" autoComplete="off">
+              {/* Fake inputs to prevent browser autofill */}
+              <input type="text" style={{display: 'none'}} />
+              <input type="password" style={{display: 'none'}} />
+
               {error && <p className="user-login-error-message">{error}</p>}
+              
               <div className="user-login-form-group">
                 <FaEnvelope className="user-login-input-icon" />
                 <input
@@ -89,19 +91,28 @@ function UserLogin() {
                   value={formData.email}
                   onChange={handleChange}
                   required
+                  autoComplete="off"
+                  readOnly
+                  onFocus={(e) => e.target.removeAttribute('readonly')}
                 />
               </div>
-              <div className="user-login-form-group">
+              <div className="user-login-form-group password-group">
                 <FaLock className="user-login-input-icon" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
                   placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
                   required
+                  autoComplete="new-password"
+                  readOnly
+                  onFocus={(e) => e.target.removeAttribute('readonly')}
                 />
+                <span className="password-toggle-icon-user" onClick={togglePasswordVisibility}>
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </div>
               <div className="user-login-form-group">
                 <button

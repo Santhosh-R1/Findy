@@ -1,6 +1,6 @@
 import React, { useState, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { FaBalanceScale, FaEnvelope, FaLock } from 'react-icons/fa';
+import { FaBalanceScale, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/baseUrl';
 
@@ -14,6 +14,7 @@ function ModeratorLogin() {
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -32,6 +33,10 @@ function ModeratorLogin() {
     const { name, value } = e.target;
     setFormData(prevData => ({ ...prevData, [name]: value }));
     setError('');
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -60,16 +65,7 @@ function ModeratorLogin() {
       <LandingNav />
       <div className="moderator-login-page" ref={main}>
         <div className="background-triangles">
-            <div className="triangle"></div>
-            <div className="triangle"></div>
-            <div className="triangle"></div>
-            <div className="triangle"></div>
-            <div className="triangle"></div>
-            <div className="triangle"></div>
-            <div className="triangle"></div>
-            <div className="triangle"></div>
-            <div className="triangle"></div>
-            <div className="triangle"></div>
+            {[...Array(10)].map((_, i) => <div key={i} className="triangle"></div>)}
         </div>
 
         <div className="moderator-login-card">
@@ -81,8 +77,14 @@ function ModeratorLogin() {
           <div className="moderator-login-form-section">
             <h2>Moderator Access</h2>
             <p className="moderator-login-subtitle">Please sign in to access moderation tools.</p>
-            <form onSubmit={handleSubmit} className="moderator-login-form">
+            
+            <form onSubmit={handleSubmit} className="moderator-login-form" autoComplete="off">
+              {/* Fake fields to trick browser autofill */}
+              <input type="text" style={{display: 'none'}} />
+              <input type="password" style={{display: 'none'}} />
+
               {error && <p className="moderator-login-error-message">{error}</p>}
+              
               <div className="moderator-login-form-group">
                 <FaEnvelope className="moderator-login-input-icon" />
                 <input
@@ -93,19 +95,28 @@ function ModeratorLogin() {
                   value={formData.email}
                   onChange={handleChange}
                   required
+                  autoComplete="off"
+                  readOnly
+                  onFocus={(e) => e.target.removeAttribute('readonly')}
                 />
               </div>
-              <div className="moderator-login-form-group">
+              <div className="moderator-login-form-group password-group">
                 <FaLock className="moderator-login-input-icon" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
                   placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
                   required
+                  autoComplete="new-password"
+                  readOnly
+                  onFocus={(e) => e.target.removeAttribute('readonly')}
                 />
+                <span className="password-toggle-icon" onClick={togglePasswordVisibility}>
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </div>
               <div className="moderator-login-form-group">
                 <button
