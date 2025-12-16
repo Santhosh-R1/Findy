@@ -1,5 +1,3 @@
-// src/components/user/UserHelpDesk.js
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -17,7 +15,7 @@ import {
   Verified as VerifiedIcon,
   Handshake as HandshakeIcon,
   Visibility as VisibilityIcon,
-  Lock as LockIcon // Icon for locked chat
+  Lock as LockIcon
 } from '@mui/icons-material';
 import axiosInstance from '../../api/baseUrl';
 import UserChatModal from './UserChatModal';
@@ -37,11 +35,11 @@ const renderStatusChip = (status) => {
 };
 
 const ItemDisplay = ({ label, color, item }) => (
-  <div className="user-help-desk-item-display">
-    <Avatar variant="rounded" src={getImageUrl(item.itemImage)} alt={item.itemName} className="user-help-desk-item-avatar" />
+  <div className="help-desk-user-item-display">
+    <Avatar variant="rounded" src={getImageUrl(item.itemImage)} alt={item.itemName} className="help-desk-user-item-avatar" />
     <Box>
-      <Chip label={label} size="small" color={color} className="user-help-desk-item-tag" />
-      <Typography className="user-help-desk-item-name">{item.itemName || item.subCategory}</Typography>
+      <Chip label={label} size="small" color={color} className="help-desk-user-item-tag" />
+      <Typography className="help-desk-user-item-name">{item.itemName || item.subCategory}</Typography>
       <Typography variant="caption" color="text.secondary">Status: <strong>{item.status}</strong></Typography>
     </Box>
   </div>
@@ -51,7 +49,6 @@ const MatchCard = ({ match, onOpenChat, currentUserId, onFinalizeClaim }) => {
   const navigate = useNavigate();
   const handleReview = () => navigate(`/match-review?lostItemId=${match.lostItem._id}&foundItemId=${match.foundItem._id}`);
 
-  // Safe ID comparisons
   const currentIdStr = String(currentUserId);
   const lostOwnerIdStr = String(match.lostItemOwner);
   const finderIdStr = match.finder && match.finder._id ? String(match.finder._id) : String(match.finder);
@@ -76,30 +73,29 @@ const MatchCard = ({ match, onOpenChat, currentUserId, onFinalizeClaim }) => {
   const chatTooltip = canChat ? "Open conversation" : "Chat locked until Moderator approval";
 
   return (
-    <Paper variant="outlined" className="user-help-desk-match-card">
-      <div className="user-help-desk-card-header">
-        <Typography variant="h6" className="user-help-desk-card-title">
+    <Paper variant="outlined" className="help-desk-user-match-card">
+      <div className="help-desk-user-card-header">
+        <Typography variant="h6" className="help-desk-user-card-title">
           {isResolved ? "Match Resolved" : isConfirmed ? "Match Confirmed - Pending Claim" : "Potential Match Found"}
         </Typography>
         {renderStatusChip(match.status)}
       </div>
 
-      <div className="user-help-desk-card-body">
-        <div className="user-help-desk-item-container">
+      <div className="help-desk-user-card-body">
+        <div className="help-desk-user-item-container">
           <ItemDisplay label={leftItemData.label} color={leftItemData.color} item={leftItemData.item} />
         </div>
-        <div className="user-help-desk-connector">
-          <div className="user-help-desk-connector-line"></div>
-          {isResolved ? <VerifiedIcon color="success" /> : <ExchangeIcon className="user-help-desk-connector-icon" />}
-          <div className="user-help-desk-connector-line"></div>
+        <div className="help-desk-user-connector">
+          <div className="help-desk-user-connector-line"></div>
+          {isResolved ? <VerifiedIcon color="success" /> : <ExchangeIcon className="help-desk-user-connector-icon" />}
+          <div className="help-desk-user-connector-line"></div>
         </div>
-        <div className="user-help-desk-item-container found-item-container">
+        <div className="help-desk-user-item-container help-desk-user-found-item-container">
           <ItemDisplay label={rightItemData.label} color={rightItemData.color} item={rightItemData.item} />
         </div>
       </div>
 
-      <div className="user-help-desk-card-actions">
-        
+      <div className="help-desk-user-card-actions">
         {isResolved ? (
           <Button variant="contained" color="success" startIcon={<VerifiedIcon />} disabled style={{ cursor: 'default' }}>
             Item Claimed
@@ -117,7 +113,7 @@ const MatchCard = ({ match, onOpenChat, currentUserId, onFinalizeClaim }) => {
           </>
         ) : (
           isPending && !isFinder && (
-            <Button variant="contained" className="user-help-desk-review-btn" startIcon={<ReviewIcon />} onClick={handleReview}>
+            <Button variant="contained" className="help-desk-user-review-btn" startIcon={<ReviewIcon />} onClick={handleReview}>
               Review Details
             </Button>
           )
@@ -127,17 +123,16 @@ const MatchCard = ({ match, onOpenChat, currentUserId, onFinalizeClaim }) => {
           <span> 
             <Button 
                 variant="outlined" 
-                className="user-help-desk-chat-btn" 
+                className="help-desk-user-chat-btn" 
                 startIcon={canChat ? <ChatIcon /> : <LockIcon />} 
                 onClick={() => onOpenChat(match._id)}
-                disabled={!canChat} // Disable if not allowed
+                disabled={!canChat} 
                 sx={!canChat ? { opacity: 0.6, borderColor: '#ccc', color: '#999' } : {}}
             >
                 Conversation
             </Button>
           </span>
         </Tooltip>
-
       </div>
     </Paper>
   );
@@ -187,11 +182,11 @@ function UserHelpDesk() {
   };
 
   const renderContent = () => {
-    if (loading) return <Box className="user-help-desk-status-container"><CircularProgress /></Box>;
-    if (error) return <Box className="user-help-desk-status-container"><Alert severity="error">{error}</Alert></Box>;
+    if (loading) return <Box className="help-desk-user-status-container"><CircularProgress /></Box>;
+    if (error) return <Box className="help-desk-user-status-container"><Alert severity="error">{error}</Alert></Box>;
     if (matches.length === 0) return (
-      <Paper variant="outlined" className="user-help-desk-status-container user-help-desk-no-items">
-        <NoMatchesIcon className="user-help-desk-no-items-icon" />
+      <Paper variant="outlined" className="help-desk-user-status-container help-desk-user-no-items">
+        <NoMatchesIcon className="help-desk-user-no-items-icon" />
         <Typography variant="h5">No Notifications Yet</Typography>
       </Paper>
     );
@@ -212,20 +207,29 @@ function UserHelpDesk() {
   };
 
   return (
-    <Box className="user-help-desk-page-wrapper">
-      <Container maxWidth="lg" className="user-help-desk-container">
-        <Box className="user-help-desk-header">
-          <Typography variant="h3" component="h1" className="user-help-desk-header-title">Your Match Notifications</Typography>
+    <Box className="help-desk-user-page-wrapper">
+      <Container maxWidth="lg" className="help-desk-user-container">
+        <Box className="help-desk-user-header">
+          <Typography variant="h3" component="h1" className="help-desk-user-header-title">Your Match Notifications</Typography>
         </Box>
         {renderContent()}
         {chatState.matchId && <UserChatModal open={chatState.open} onClose={handleCloseChat} matchId={chatState.matchId} />}
         
-        <Dialog open={claimModalOpen} onClose={handleCloseClaimModal}>
-            <DialogTitle>Confirm Item Claim</DialogTitle>
-            <DialogContent><DialogContentText>Are you sure you have received this item and want to mark it as claimed? This action cannot be undone.</DialogContentText></DialogContent>
-            <DialogActions>
-                <Button onClick={handleCloseClaimModal} color="secondary">Cancel</Button>
-                <Button onClick={handleConfirmClaim} variant="contained" color="primary" autoFocus>Yes, I have it</Button>
+        {/* Updated Modal with Specific Classes */}
+        <Dialog 
+            open={claimModalOpen} 
+            onClose={handleCloseClaimModal}
+            PaperProps={{ className: 'help-desk-user-modal-paper' }}
+        >
+            <DialogTitle className="help-desk-user-modal-title">Confirm Item Claim</DialogTitle>
+            <DialogContent className="help-desk-user-modal-content">
+                <DialogContentText className="help-desk-user-modal-text">
+                    Are you sure you have received this item and want to mark it as claimed? This action cannot be undone.
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions className="help-desk-user-modal-actions">
+                <Button onClick={handleCloseClaimModal} className="help-desk-user-modal-cancel">Cancel</Button>
+                <Button onClick={handleConfirmClaim} variant="contained" className="help-desk-user-modal-confirm" autoFocus>Yes, I have it</Button>
             </DialogActions>
         </Dialog>
       </Container>
