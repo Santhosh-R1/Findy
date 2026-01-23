@@ -76,7 +76,7 @@ function LandingNav() {
                 color: 'inherit',
               }}
             >
-              FINDMATE
+              FINDY
             </Typography>
           </Link>
 
