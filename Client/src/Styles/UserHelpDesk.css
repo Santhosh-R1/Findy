@@ -2,7 +2,7 @@
 
 :root {
   --sidebar-width: 260px;
-  --primary-color: #20c997;
+  --primary-color: #20c997; 
   --primary-dark: #19a47a;
   --bg-color: #f3f4f6; 
   --border-color: #e5e7eb;
@@ -11,6 +11,9 @@
   --card-bg: #ffffff;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --modal-bg: #ffffff;
+  --modal-overlay: rgba(0, 0, 0, 0.4);
+  --modal-radius: 20px;
 }
 
 body {
@@ -19,7 +22,8 @@ body {
   background-color: var(--bg-color);
 }
 
-.user-help-desk-page-wrapper {
+/* --- Main Page Layout --- */
+.help-desk-user-page-wrapper {
   min-height: 100vh;
   padding: 3rem 2rem;
   width: 100%;
@@ -28,29 +32,27 @@ body {
 }
 
 @media (min-width: 900px) {
-  .user-help-desk-page-wrapper {
+  .help-desk-user-page-wrapper {
     width: calc(100% - var(--sidebar-width));
     margin-left: var(--sidebar-width);
     padding: 3rem 4rem;
   }
 }
 
-.user-help-desk-header {
+/* --- Header --- */
+.help-desk-user-header {
   text-align: center;
   margin-bottom: 4rem;
 }
-.user-help-desk-header-title {
+.help-desk-user-header-title {
   font-weight: 800 !important;
   letter-spacing: -0.025em;
   color: var(--text-primary);
   margin-bottom: 0.5rem !important;
 }
-.user-help-desk-header .MuiTypography-subtitle1 {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-}
 
-.user-help-desk-status-container {
+/* --- Status/Empty States --- */
+.help-desk-user-status-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,13 +63,14 @@ body {
   border: 2px dashed var(--border-color);
   border-radius: 24px;
 }
-.user-help-desk-no-items-icon {
+.help-desk-user-no-items-icon {
   font-size: 4rem !important;
   color: #d1d5db;
   margin-bottom: 1.5rem;
 }
 
-.user-help-desk-match-card {
+/* --- Match Card Styling --- */
+.help-desk-user-match-card {
   border-radius: 20px !important;
   border: 1px solid var(--border-color) !important;
   background-color: var(--card-bg);
@@ -75,13 +78,14 @@ body {
   overflow: hidden;
   margin-bottom: 2rem; 
 }
-.user-help-desk-match-card:hover {
+.help-desk-user-match-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-hover) !important;
   border-color: rgba(32, 201, 151, 0.3) !important;
 }
 
-.user-help-desk-card-header {
+/* Card Header */
+.help-desk-user-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -89,26 +93,25 @@ body {
   background: linear-gradient(to right, #ffffff, #f9fafb);
   border-bottom: 1px solid var(--border-color);
 }
-.user-help-desk-card-title {
+.help-desk-user-card-title {
   font-weight: 700 !important;
   font-size: 1.15rem !important;
   color: var(--text-primary);
 }
 
-.user-help-desk-card-body {
+/* Card Body */
+.help-desk-user-card-body {
   display: grid;
   align-items: center;
   padding: 2.5rem 2rem;
   gap: 2rem;
   grid-template-columns: 1fr auto 1fr;
 }
-
-.user-help-desk-item-container {
+.help-desk-user-item-container {
   display: flex;
   align-items: center;
 }
-
-.user-help-desk-item-display {
+.help-desk-user-item-display {
   display: flex;
   align-items: center;
   gap: 1.25rem;
@@ -116,45 +119,44 @@ body {
   border-radius: 16px;
   transition: background-color 0.2s ease;
 }
-.user-help-desk-item-display:hover {
+.help-desk-user-item-display:hover {
   background-color: #f9fafb;
 }
-
-.user-help-desk-item-avatar {
+.help-desk-user-item-avatar {
   width: 72px !important;
   height: 72px !important;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
   background-color: #fff;
 }
-
-.user-help-desk-item-tag {
+.help-desk-user-item-tag {
   margin-bottom: 0.4rem !important;
   font-weight: 700 !important;
   font-size: 0.75rem !important;
   height: 24px !important;
 }
-.user-help-desk-item-name {
+.help-desk-user-item-name {
   font-weight: 700 !important;
   font-size: 1.1rem !important;
   color: var(--text-primary);
   line-height: 1.4 !important;
 }
 
-.user-help-desk-connector {
+/* Connector */
+.help-desk-user-connector {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
   min-width: 60px;
 }
-.user-help-desk-connector-line {
+.help-desk-user-connector-line {
   flex-grow: 1;
   height: 2px;
   background-color: #f3f4f6; 
   border-radius: 2px;
 }
-.user-help-desk-connector-icon {
+.help-desk-user-connector-icon {
   color: var(--text-secondary);
   font-size: 1.8rem !important;
   background-color: #f3f4f6;
@@ -162,15 +164,16 @@ body {
   border-radius: 50%;
 }
 
-.found-item-container {
+.help-desk-user-found-item-container {
   justify-content: flex-end; 
 }
-.found-item-container .user-help-desk-item-display {
+.help-desk-user-found-item-container .help-desk-user-item-display {
   flex-direction: row-reverse; 
   text-align: right;
 }
 
-.user-help-desk-card-actions {
+/* Actions */
+.help-desk-user-card-actions {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -179,67 +182,110 @@ body {
   background-color: #fcfcfc;
   border-top: 1px solid var(--border-color);
 }
-
-.user-help-desk-card-actions button {
+.help-desk-user-card-actions button {
   text-transform: none !important;
   font-weight: 600 !important;
   border-radius: 10px !important;
   padding: 8px 20px !important;
   font-size: 0.9rem !important;
 }
-
-.user-help-desk-review-btn {
+.help-desk-user-review-btn {
   background-color: var(--primary-color) !important;
   box-shadow: 0 4px 6px -1px rgba(32, 201, 151, 0.3) !important;
 }
-.user-help-desk-review-btn:hover {
+.help-desk-user-review-btn:hover {
   background-color: var(--primary-dark) !important;
   box-shadow: 0 6px 8px -1px rgba(32, 201, 151, 0.4) !important;
 }
-
-.user-help-desk-chat-btn {
+.help-desk-user-chat-btn {
   border: 1px solid var(--border-color) !important;
   color: var(--text-secondary) !important;
 }
-.user-help-desk-chat-btn:hover {
+.help-desk-user-chat-btn:hover {
   background-color: #fff !important;
   border-color: var(--text-primary) !important;
   color: var(--text-primary) !important;
 }
 
+/* --- MODAL STYLES (Dialog) - Prefixed --- */
+
+.help-desk-user-modal-paper {
+  border-radius: var(--modal-radius) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  overflow: hidden !important; 
+}
+
+.help-desk-user-modal-title {
+  background-color: #f9fafb; 
+  border-bottom: 1px solid var(--border-color);
+  padding: 1.5rem 2rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary);
+  font-size: 1.25rem !important;
+}
+
+.help-desk-user-modal-content {
+  padding: 2rem !important;
+  background-color: #ffffff;
+}
+
+.help-desk-user-modal-text {
+  color: var(--text-secondary) !important;
+  font-size: 1rem !important;
+  line-height: 1.6 !important;
+}
+
+.help-desk-user-modal-actions {
+  padding: 1.5rem 2rem !important;
+  border-top: 1px solid var(--border-color);
+  background-color: #f9fafb; 
+  gap: 1rem;
+}
+
+.help-desk-user-modal-cancel {
+  text-transform: none !important;
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+}
+.help-desk-user-modal-cancel:hover {
+  background-color: rgba(107, 114, 128, 0.05) !important;
+}
+
+.help-desk-user-modal-confirm {
+  text-transform: none !important;
+  background-color: var(--primary-color) !important;
+  box-shadow: 0 4px 6px -1px rgba(32, 201, 151, 0.3) !important;
+  font-weight: 600 !important;
+}
+.help-desk-user-modal-confirm:hover {
+  background-color: var(--primary-dark) !important;
+  box-shadow: 0 6px 8px -1px rgba(32, 201, 151, 0.4) !important;
+}
+
+/* --- Responsive --- */
 @media (max-width: 900px) {
-  .user-help-desk-card-body {
+  .help-desk-user-card-body {
     grid-template-columns: 1fr; 
     gap: 1.5rem;
     padding: 2rem 1.5rem;
   }
-
-  .user-help-desk-item-container, 
-  .found-item-container {
+  .help-desk-user-item-container, .help-desk-user-found-item-container {
     justify-content: center; 
   }
-
-  .user-help-desk-item-display,
-  .found-item-container .user-help-desk-item-display {
+  .help-desk-user-item-display, .help-desk-user-found-item-container .help-desk-user-item-display {
     flex-direction: column; 
     text-align: center;
     flex-direction: column !important; 
   }
-
-  .user-help-desk-connector {
+  .help-desk-user-connector {
     transform: rotate(90deg); 
     margin: 1rem 0;
   }
-  .user-help-desk-connector-line {
-    display: none; 
-  }
-  
-  .user-help-desk-card-actions {
+  .help-desk-user-connector-line { display: none; }
+  .help-desk-user-card-actions {
     flex-direction: column-reverse; 
     width: 100%;
     box-sizing: border-box;
   }
-  .user-help-desk-card-actions button {
-    width: 100%;
-  }
+  .help-desk-user-card-actions button { width: 100%; }
 }

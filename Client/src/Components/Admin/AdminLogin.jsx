@@ -1,6 +1,6 @@
 import React, { useState, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { FaUserShield, FaEnvelope, FaLock } from 'react-icons/fa';
+import { FaUserShield, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/baseUrl';
 
@@ -14,6 +14,7 @@ function AdminLogin() {
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -32,6 +33,10 @@ function AdminLogin() {
     const { name, value } = e.target;
     setError(null);
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -57,16 +62,8 @@ function AdminLogin() {
   return (
     <>
       <div className="admin-login-page" ref={main}>
-        {/* Animated Background Shapes */}
         <div className="background-shapes">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
         </div>
 
         <div className="admin-login-card">
@@ -80,7 +77,7 @@ function AdminLogin() {
             <p className="admin-login-subtitle">Please enter your credentials to proceed.</p>
             {error && <p className="admin-login-error-message">{error}</p>}
 
-            <form onSubmit={handleSubmit} className="admin-login-form">
+            <form onSubmit={handleSubmit} className="admin-login-form" autoComplete="off">
               <div className="admin-login-form-group">
                 <FaEnvelope className="admin-login-input-icon" />
                 <input
@@ -91,19 +88,24 @@ function AdminLogin() {
                   value={formData.email}
                   onChange={handleChange}
                   required
+                  autoComplete="off" 
                 />
               </div>
-              <div className="admin-login-form-group">
+              <div className="admin-login-form-group password-group">
                 <FaLock className="admin-login-input-icon" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
                   placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
                   required
+                  autoComplete="off"
                 />
+                <span className="password-toggle-icon" onClick={togglePasswordVisibility}>
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </div>
 
               <div className="admin-login-form-group">

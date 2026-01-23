@@ -159,7 +159,7 @@ function LandingPage() {
               <h1>
                 <div className="landing-hero-h1-word"><span>Lost Items & Pets,</span></div>
                 <div className="landing-hero-h1-word"><span>Reunited by</span></div>
-                <div className="landing-hero-h1-word"><span className="landing-brand-name">Findy.</span></div>
+                <div className="landing-hero-h1-word"><span className="landing-brand-name">Findmate.</span></div>
               </h1>
               <p className="landing-hero-subtitle">The community platform for reuniting you with your lost pets, phones, wallets, and more. Your neighbors are ready to help.</p>
               <Link to="/User/register" className="landing-cta-button">Join the Community</Link>
@@ -169,7 +169,7 @@ function LandingPage() {
 
         <section className="landing-why-us-section landing-section">
           <div className="landing-container">
-            <h2 className="landing-section-title">Why Choose Findy?</h2>
+            <h2 className="landing-section-title">Why Choose Findmate?</h2>
             <p className="landing-section-subtitle">A faster, safer, and more effective way to find your lost companions and valuables.</p>
             <div className="landing-info-grid">
               <div className="landing-info-card">
@@ -221,7 +221,7 @@ function LandingPage() {
         <section className="landing-features-section landing-section">
           <div className="landing-container">
             <h2 className="landing-section-title">For Every Situation</h2>
-            <p className="landing-section-subtitle">Life is unpredictable. Findy is designed for the things that matter most in our modern lives.</p>
+            <p className="landing-section-subtitle">Life is unpredictable. Findmate is designed for the things that matter most in our modern lives.</p>
 
             <div className="landing-feature-item">
               <div className="landing-feature-image">
@@ -281,7 +281,7 @@ function LandingPage() {
 
         <footer className="landing-site-footer">
           <div className="landing-container">
-            <p>&copy; {new Date().getFullYear()} Findy. All Rights Reserved. A community project for good.</p>
+            <p>&copy; {new Date().getFullYear()} Findmate. All Rights Reserved. A community project for good.</p>
           </div>
         </footer>
       </div>

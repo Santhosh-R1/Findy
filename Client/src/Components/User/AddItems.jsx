@@ -27,7 +27,14 @@ function AddItems() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  const getTodayDateString = () => new Date().toISOString().split("T")[0];
+  // --- FIX 1: Correct Local Date String for Input 'max' attribute ---
+  const getTodayDateString = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   const handleMainCategoryChange = (e) => {
     setMainCategory(e.target.value);
@@ -68,12 +75,22 @@ function AddItems() {
   const validateForm = () => {
     const errors = {};
     const nameRegex = /^[A-Za-z\s]+$/;
+
+    // --- FIX 2: Correct Date Comparison (Local Time) ---
     if (formData.purchaseDate) {
-      const selectedDate = new Date(formData.purchaseDate);
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      if (selectedDate > today) errors.purchaseDate = "This date cannot be in the future.";
+      today.setHours(0, 0, 0, 0); // Reset time part
+
+      // Parse "YYYY-MM-DD" manually to avoid UTC conversion issues
+      const [year, month, day] = formData.purchaseDate.split('-').map(Number);
+      const selectedDate = new Date(year, month - 1, day); // Month is 0-indexed
+      selectedDate.setHours(0, 0, 0, 0);
+
+      if (selectedDate > today) {
+        errors.purchaseDate = "This date cannot be in the future.";
+      }
     }
+    
     if (!formData.description.trim()) errors.description = "Additional details are required.";
     
     if (mainCategory === 'pets') {
@@ -198,7 +215,6 @@ function AddItems() {
                 <Select labelId="main-category-label" label="Item Type" name="mainCategory" value={mainCategory} onChange={handleMainCategoryChange}>
                   <MenuItem value="electronics"><FaLaptop style={{ marginRight: '12px' }} />Electronics</MenuItem>
                   <MenuItem value="pets"><FaPaw style={{ marginRight: '12px' }} />Pet</MenuItem>
-                  {/* 2. Added new main category */}
                   <MenuItem value="accessories"><FaShoppingBag style={{ marginRight: '12px' }} />Accessories</MenuItem>
                 </Select>
               </FormControl>

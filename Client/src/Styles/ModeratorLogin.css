@@ -308,3 +308,18 @@
     text-align: center;
   }
 }
+/* Add this to ModeratorLogin.css */
+
+.moderator-login-form-group.password-group {
+    position: relative;
+}
+
+
+
+.password-toggle-icon:hover {
+    color: var(--mod-primary-color);
+}
+
+.moderator-login-form-group input {
+    padding-right: 40px; /* Make space for icon */
+}

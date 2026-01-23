@@ -101,7 +101,7 @@ function About() {
                 <span>Connecting Communities,</span>
                 <span>One Reunion at a Time.</span>
               </h1>
-              <p>Findy was born from a simple idea: that technology, when paired with human kindness, can create powerful connections and bring immense relief.</p>
+              <p>Findmate was born from a simple idea: that technology, when paired with human kindness, can create powerful connections and bring immense relief.</p>
             </div>
           </div>
         </section>
@@ -111,7 +111,7 @@ function About() {
             <h2 className="about-section-title">From a Simple Problem to a Shared Solution</h2>
             <div className="about-origin-story-content">
               <p>It started with a lost laptop in a bustling coffee shop. The panic, the lost work, the feeling of disconnection—it was overwhelming. Traditional methods felt slow and hopeless. That experience sparked a question: "What if there was a better way?"</p>
-              <p>That question became Findy. We set out to build not just a tool, but a dedicated network of helpers. A place where a moment of honesty from one person could completely turn around another's day. We focused on pets and essential tech because they aren't just 'items'—they're family members and livelihoods.</p>
+              <p>That question became Findmate. We set out to build not just a tool, but a dedicated network of helpers. A place where a moment of honesty from one person could completely turn around another's day. We focused on pets and essential tech because they aren't just 'items'—they're family members and livelihoods.</p>
             </div>
           </div>
         </section>
@@ -123,14 +123,14 @@ function About() {
             </div>
             <div className="about-mission-content">
               <h2 className="about-section-title" style={{ textAlign: 'left' }}>Our Mission</h2>
-              <p>Our mission is to bridge the gap between losing something valuable and the moment of joyful reunion. We believe in the power of community and the inherent honesty of people. Findy is more than an app; it's a network of neighbors helping neighbors.</p>
+              <p>Our mission is to bridge the gap between losing something valuable and the moment of joyful reunion. We believe in the power of community and the inherent honesty of people. Findmate is more than an app; it's a network of neighbors helping neighbors.</p>
             </div>
           </div>
         </section>
 
         <section className="about-ecosystem-section about-section">
           <div className="about-container">
-            <h2 className="about-section-title">The Findy Ecosystem</h2>
+            <h2 className="about-section-title">The Findmate Ecosystem</h2>
             <p className="about-section-subtitle">Our platform thrives because of the people who use it. Every member plays a vital role.</p>
             <div className="about-ecosystem-image-wrapper">
               <img src={ecosystemImage} alt="A diverse group of people working together" />
