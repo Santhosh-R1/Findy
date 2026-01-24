@@ -16,7 +16,7 @@ const Database = require('./DataBase'); // Ensure this connects to MongoDB Atlas
 // Routes
 const userRoutes = require('./routes/userRoutes');
 const OrganisationRoutes = require('./routes/organaisationRoute');
-const adminRoutes = require('./routes/adminRoute');
+const adminRoutes = require('./routes/adminroute');
 const contactRoute = require('./routes/contact');
 const moderatorRoutes = require('./routes/moderatorroute');
 const itemRoutes = require('./routes/itemroute');
