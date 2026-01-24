@@ -310,3 +310,11 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+
+
+.user-registration-password-toggle-icon:hover {
+    color: #20c997 !important;
+}
+

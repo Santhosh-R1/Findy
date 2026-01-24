@@ -114,7 +114,7 @@ function ModeratorLogin() {
                   readOnly
                   onFocus={(e) => e.target.removeAttribute('readonly')}
                 />
-                <span className="password-toggle-icon" onClick={togglePasswordVisibility}>
+                <span className="password-toggle-icon moderator-login-password-toggle-icon" onClick={togglePasswordVisibility}>
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>

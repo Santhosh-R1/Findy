@@ -11,7 +11,9 @@
   text-align: left;
   width: 100%;
 }
-
+.org-registration-password-toggle-icon:hover {
+    color: #5a349b !important;
+}
 .org-registration-error-message,
 .org-registration-success-message {
   width: 100%;

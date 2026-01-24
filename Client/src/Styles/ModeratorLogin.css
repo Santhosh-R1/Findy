@@ -11,7 +11,9 @@
   --font-heading: 'Poppins', sans-serif;
   --font-body: 'Lato', sans-serif;
 }
-
+.moderator-login-password-toggle-icon:hover{
+  color: #e86a02 !important;
+}
 .moderator-login-page {
   display: flex;
   align-items: center;

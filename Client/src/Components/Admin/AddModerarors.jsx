@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 import {
   FaUser, FaEnvelope, FaPhone, FaLock, FaHome,
   FaMars, FaVenus, FaGenderless, FaCamera, FaPencilAlt,
-  FaIdCard, FaAddressCard
+  FaIdCard, FaAddressCard, FaEye, FaEyeSlash // Added Eye Icons
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/AddModerators.css';
@@ -16,6 +16,10 @@ function AddModerators() {
   const [serverError, setServerError] = useState('');
   const [success, setSuccess] = useState('');
   const [errors, setErrors] = useState({});
+
+  // --- Password Visibility State ---
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -228,14 +232,38 @@ function AddModerators() {
             </div>
 
             <div className="add-moderator-form-row">
-              <div className="add-moderator-form-group">
+              {/* --- PASSWORD FIELD WITH EYE ICON --- */}
+              <div className="add-moderator-form-group add-moderator-password-group">
                 <FaLock className="add-moderator-input-icon" />
-                <input type="password" name="password" placeholder="Create Password" value={formData.password} onChange={handleChange} required minLength="8" />
+                <input 
+                    type={showPassword ? "text" : "password"} 
+                    name="password" 
+                    placeholder="Create Password" 
+                    value={formData.password} 
+                    onChange={handleChange} 
+                    required 
+                    minLength="8" 
+                />
+                <span className="password-toggle-icon add-moderator-password-toggle-icon" onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
                 {errors.password && <p className="add-moderator-validation-error">{errors.password}</p>}
               </div>
-              <div className="add-moderator-form-group">
+
+              {/* --- CONFIRM PASSWORD FIELD WITH EYE ICON --- */}
+              <div className="add-moderator-form-group add-moderator-password-group">
                 <FaLock className="add-moderator-input-icon" />
-                <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} required />
+                <input 
+                    type={showConfirmPassword ? "text" : "password"} 
+                    name="confirmPassword" 
+                    placeholder="Confirm Password" 
+                    value={formData.confirmPassword} 
+                    onChange={handleChange} 
+                    required 
+                />
+                <span className="password-toggle-icon add-moderator-password-toggle-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
                 {errors.confirmPassword && <p className="add-moderator-validation-error">{errors.confirmPassword}</p>}
               </div>
             </div>

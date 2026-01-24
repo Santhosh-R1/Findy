@@ -18,7 +18,9 @@
   text-align: left;
   width: 100%;
 }
-
+.add-moderator-password-toggle-icon:hover {
+    color: #0056b3 !important;
+}
 .add-moderator-form-group {
   position: relative;
   margin-bottom: 1.2rem; 

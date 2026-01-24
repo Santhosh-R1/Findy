@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
 import {
   FaBuilding, FaSitemap, FaUser, FaIdCard, FaEnvelope, FaGlobe, FaMapMarkerAlt,
-  FaLock, FaImage, FaPencilAlt, FaPhone
+  FaLock, FaImage, FaPencilAlt, FaPhone, FaEye, FaEyeSlash // Added Eye Icons
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/OrganisationRegistration.css';
@@ -36,6 +36,10 @@ function OrganisationRegistration() {
     confirmPassword: '',
     organisationLogo: null,
   });
+
+  // --- Password Visibility State ---
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState('');
@@ -229,16 +233,42 @@ function OrganisationRegistration() {
             </div>
 
             <div className="org-registration-form-row">
-              <div className="org-registration-form-group">
+              
+              {/* --- PASSWORD FIELD --- */}
+              <div className="org-registration-form-group password-group">
                 <FaLock className="org-registration-input-icon" />
-                <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required minLength="8" />
+                <input 
+                  type={showPassword ? "text" : "password"} 
+                  name="password" 
+                  placeholder="Password" 
+                  value={formData.password} 
+                  onChange={handleChange} 
+                  required 
+                  minLength="8" 
+                />
+                <span className="password-toggle-icon org-registration-password-toggle-icon" onClick={() => setShowPassword(!showPassword)}>
+                   {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
                 {errors.password && <p className="org-registration-validation-error">{errors.password}</p>}
               </div>
-              <div className="org-registration-form-group">
+
+              {/* --- CONFIRM PASSWORD FIELD --- */}
+              <div className="org-registration-form-group password-group">
                 <FaLock className="org-registration-input-icon" />
-                <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} required />
+                <input 
+                  type={showConfirmPassword ? "text" : "password"} 
+                  name="confirmPassword" 
+                  placeholder="Confirm Password" 
+                  value={formData.confirmPassword} 
+                  onChange={handleChange} 
+                  required 
+                />
+                <span className="password-toggle-icon org-registration-password-toggle-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                   {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
                 {errors.confirmPassword && <p className="org-registration-validation-error">{errors.confirmPassword}</p>}
               </div>
+
             </div>
 
             <div className="org-registration-form-group">

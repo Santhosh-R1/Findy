@@ -2,7 +2,8 @@ import React, { useState, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import {
   FaUser, FaEnvelope, FaPhone, FaLock, FaUserPlus, FaHome,
-  FaMars, FaVenus, FaGenderless, FaCamera, FaPencilAlt
+  FaMars, FaVenus, FaGenderless, FaCamera, FaPencilAlt,
+  FaEye, FaEyeSlash // Imported new icons
 } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/baseUrl';
@@ -17,6 +18,10 @@ function UserRegistration() {
   const [serverError, setServerError] = useState(''); 
   const [success, setSuccess] = useState('');
   const [errors, setErrors] = useState({}); 
+  
+  // --- New State for Password Visibility ---
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -204,14 +209,38 @@ function UserRegistration() {
               </div>
 
               <div className="registration-form-row">
-                <div className="registration-form-group">
+                {/* --- PASSWORD FIELD WITH EYE ICON --- */}
+                <div className="registration-form-group password-group">
                   <FaLock className="registration-input-icon" />
-                  <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required minLength="8" />
+                  <input 
+                    type={showPassword ? "text" : "password"} 
+                    name="password" 
+                    placeholder="Password" 
+                    value={formData.password} 
+                    onChange={handleChange} 
+                    required 
+                    minLength="8" 
+                  />
+                  <span className="password-toggle-icon user-registration-password-toggle-icon" onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
                   {errors.password && <p className="registration-validation-error">{errors.password}</p>}
                 </div>
-                <div className="registration-form-group">
+
+                {/* --- CONFIRM PASSWORD FIELD WITH EYE ICON --- */}
+                <div className="registration-form-group password-group">
                   <FaLock className="registration-input-icon" />
-                  <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} required />
+                  <input 
+                    type={showConfirmPassword ? "text" : "password"} 
+                    name="confirmPassword" 
+                    placeholder="Confirm Password" 
+                    value={formData.confirmPassword} 
+                    onChange={handleChange} 
+                    required 
+                  />
+                  <span className="password-toggle-icon user-registration-password-toggle-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                      {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
                   {errors.confirmPassword && <p className="registration-validation-error">{errors.confirmPassword}</p>}
                 </div>
               </div>
