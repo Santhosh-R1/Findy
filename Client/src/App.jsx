@@ -19,21 +19,12 @@ import AdminSidemenu from './Components/Admin/AdminSidemenu';
 import AddModerators from './Components/Admin/AddModerarors';
 import ModeratorForgotPass from './Components/Moderator/ModeratorForgotPass';
 import ModeratorResetPass from './Components/Moderator/ModeratorResetPass';
-import ManageModerators from './Components/Admin/ManageModerators';
-import ManageOrganaisation from './Components/Admin/ManageOrganaisation';
-import ViewUsers from './Components/Admin/ViewUsers';
 import UserSideMenu from './Components/User/UserSideMenu';
 import UserDashBoard from './Components/User/UserDashBoard';
 import AddItems from './Components/User/AddItems';
-import ViewItems from './Components/User/ViewItems';
-import EditItem from './Components/User/EditItem';
 import UserViewProfile from './Components/User/UserViewProfile';
 import UserNav from './Components/User/UserNav';
-import LostItem from './Components/User/LostItem';
-import FoundItem from './Components/User/FoundItem';
-import UserFounds from './Components/User/UserFounds';
 import UserLostItems from './Components/User/UserLostItems';
-import AdminViewAllLost from './Components/Admin/AdminViewAllLost';
 import OrganaisationDashBoard from './Components/Organisation/OrganaisationDashBoard'
 import OrganaisationSidemenu from './Components/Organisation/OrganaisationSidemenu';
 import OrganaisationFounds from './Components/Organisation/OrganaisationFounds';
@@ -43,12 +34,7 @@ import ModeratorDashBoard from './Components/Moderator/ModeratorDashBoard';
 import ModeratorSidemenu from './Components/Moderator/ModeratorSidemenu';
 import ModeratorLost from './Components/Moderator/ModeratorLost';
 import ModeratorsFound from './Components/Moderator/ModeratorsFound';
-import MatchReviewPage from './Components/User/MatchReviewPage';
-import ManageClaim from './Components/Moderator/ManageClaim';
-import UserHelpDesk from './Components/User/HelpDesk';
 import ModeratorProfile from './Components/Moderator/ModeratorProfile';
-import OrganisationSidemenu from './Components/Organisation/OrganaisationSidemenu';
-import OrganisationHelpDesk from './Components/Organisation/OrganisationHelpDesk';
 import OrganaisationNav from './Components/Organisation/OrganisationNav';
 import ModeratorNav from './Components/Moderator/ModeratorNav';
 
@@ -75,19 +61,9 @@ function App() {
         <Route path="/admin/AddModerators" element={[<AdminSidemenu />, <AddModerators />]} />
         <Route path="/moderator/Forgot-Password" element={[<LandingNav />, <ModeratorForgotPass />]} />
         <Route path="/moderator/reset-password/:token" element={[<ModeratorResetPass />]} />
-        <Route path="/admin/manage-moderators" element={[<AdminSidemenu />, <ManageModerators />]} />
-        <Route path="/admin/manage-organisation" element={[<AdminSidemenu />, <ManageOrganaisation />]} />
-        <Route path="/admin/view-users" element={[<AdminSidemenu />, <ViewUsers />]} />
         <Route path="/user/dashboard" element={[<UserNav />, <UserSideMenu />, <UserDashBoard />]} />
         <Route path="/user/add-item" element={[<UserNav />, <UserSideMenu />, <AddItems />]} />
-        <Route path="/user/view-items" element={[<UserNav />, <UserSideMenu />, <ViewItems />]} />
-        <Route path="/user/edit-item/:itemId" element={[<UserNav />, <UserSideMenu />, <EditItem />]} />
         <Route path="/user/profile" element={[<UserNav />, <UserSideMenu />, <UserViewProfile />]} />
-        {/* <Route path="/user/lost-items" element={[<UserNav/>,<UserSideMenu/>,<LostItem />]} /> */}
-        <Route path="/user/found-items" element={[<UserNav />, <UserSideMenu />, <FoundItem />]} />
-        <Route path="/user/my-found-items" element={[<UserNav />, <UserSideMenu />, <UserFounds />]} />
-        <Route path="/user/lost-items-others" element={[<UserNav />, <UserSideMenu />, <UserLostItems />]} />
-        <Route path="/admin/view-all-lost" element={[<AdminSidemenu />, <AdminViewAllLost />]} />
         <Route path="/organisation/DashBoard" element={[<OrganaisationNav />, <OrganaisationSidemenu />, <OrganaisationDashBoard />]} />
         <Route path="/organisation/founts" element={[<OrganaisationNav />, <OrganaisationSidemenu />, <OrganaisationFounds />]} />
         <Route path="/organisation/my-found-items" element={[<OrganaisationNav />, <OrganaisationSidemenu />, <OrganaisationFinds />]} />
@@ -96,11 +72,7 @@ function App() {
         <Route path="/moderator/DashBoard" element={[<ModeratorNav />, <ModeratorSidemenu />, < ModeratorDashBoard />]} />
         <Route path="/moderator/LostItems" element={[<ModeratorNav />, <ModeratorSidemenu />, < ModeratorLost />]} />
         <Route path="/moderator/FoundItems" element={[<ModeratorNav />, <ModeratorSidemenu />, < ModeratorsFound />]} />
-        <Route path="/match-review" element={[<UserNav />, <UserSideMenu />, <MatchReviewPage />]} />
-        <Route path="/moderator/manage-claims" element={[<ModeratorNav />, <ModeratorSidemenu />, < ManageClaim />]} />
-        <Route path="/user/HelpDesk" element={[<UserNav />, <UserSideMenu />, < UserHelpDesk />]} />
         <Route path="/moderator/profile" element={[<ModeratorNav />, < ModeratorSidemenu />, < ModeratorProfile />]} />
-        <Route path="/Organisation/Help-Desk" element={[<OrganaisationNav />, < OrganisationSidemenu />, < OrganisationHelpDesk />]} />
 
       </Routes>
     </Router>
