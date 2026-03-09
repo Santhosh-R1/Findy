@@ -7,12 +7,12 @@ import {
   FaCheckSquare,
   FaUsers,
   FaSignOutAlt,
-  FaUserCircle 
+  FaUserCircle
 } from 'react-icons/fa';
-import axiosInstance from '../../api/baseUrl'; 
-import '../../Styles/ModeratorSidemenu.css'; 
+import axiosInstance from '../../api/baseUrl';
+import '../../Styles/ModeratorSidemenu.css';
 
-function ModeratorSidemenu() {
+function ModeratorSidemenu({ onLogoutClick }) {
   const navigate = useNavigate();
   const [moderator, setModerator] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,12 +24,12 @@ function ModeratorSidemenu() {
         const parsedData = JSON.parse(storedModeratorInfo);
 
         if (parsedData && parsedData._id) {
-          setModerator(parsedData); 
-          setLoading(false); 
+          setModerator(parsedData);
+          setLoading(false);
 
           try {
             const response = await axiosInstance.get(`/api/moderator/get-by-id/${parsedData._id}`);
-            setModerator(response.data.data); 
+            setModerator(response.data.data);
           } catch (apiError) {
             console.error("Failed to fetch updated moderator info from API, using local data.", apiError);
           }
@@ -64,6 +64,10 @@ function ModeratorSidemenu() {
   }, [loadModeratorData]);
 
   const handleLogout = () => {
+    if (onLogoutClick) {
+      onLogoutClick();
+      return;
+    }
     localStorage.removeItem('moderatorInfo');
     localStorage.removeItem('moderatorToken');
     setModerator(null);
@@ -83,7 +87,7 @@ function ModeratorSidemenu() {
       const profilePicUrl = moderator.profileImage
         ? `http://localhost:5001${moderator.profileImage.replace(/\\/g, '/')}`
         : '';
-        
+
       return (
         <Link to="/moderator/profile" className="moderators-profile-link">
           <Box className="moderators-profile-section">
@@ -95,7 +99,7 @@ function ModeratorSidemenu() {
               {moderator.firstName ? moderator.firstName.charAt(0).toUpperCase() : <FaUserCircle />}
             </Avatar>
             <Typography variant="subtitle1" className="moderators-profile-name">
-              {moderator.firstName} 
+              {moderator.firstName}
             </Typography>
           </Box>
         </Link>

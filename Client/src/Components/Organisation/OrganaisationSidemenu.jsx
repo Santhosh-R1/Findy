@@ -9,12 +9,12 @@ import {
     FaSearchPlus,
     FaSearch,
     FaIdCard,
-    FaHeadset 
+    FaHeadset
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/OrganisationSideMenu.css';
 
-function OrganisationSidemenu() {
+function OrganisationSidemenu({ onLogoutClick }) {
     const navigate = useNavigate();
     const [organisation, setOrganisation] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -54,6 +54,10 @@ function OrganisationSidemenu() {
     }, [loadOrganisationDataFromAPI]);
 
     const handleLogout = () => {
+        if (onLogoutClick) {
+            onLogoutClick();
+            return;
+        }
         localStorage.removeItem('organisationInfo');
         localStorage.removeItem('organisationToken');
         setOrganisation(null);
@@ -106,7 +110,7 @@ function OrganisationSidemenu() {
                     <li><NavLink to="/organisation/founts"><FaSearchPlus className="organisation-sidemenu-icon" /><span>Report Found Item</span></NavLink></li>
                     <li><NavLink to="/organisation/my-found-items"><FaListUl className="organisation-sidemenu-icon" /><span> My Found Items</span></NavLink></li>
                     {/* <li><NavLink to="/organisation/lost-items-others"><FaSearch className="organisation-sidemenu-icon" /><span>Lost Items Network</span></NavLink></li> */}
-                    <li><NavLink to="/organisation/help-desk"><FaHeadset className="organisation-sidemenu-icon" /><span>Help Desk</span></NavLink></li> 
+                    <li><NavLink to="/organisation/help-desk"><FaHeadset className="organisation-sidemenu-icon" /><span>Help Desk</span></NavLink></li>
                     <li><NavLink to="/organisation/profile"><FaIdCard className="organisation-sidemenu-icon" /><span>View Profile</span></NavLink></li>
                 </ul>
             </nav>

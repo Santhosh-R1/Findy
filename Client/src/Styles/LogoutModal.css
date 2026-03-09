@@ -1,0 +1,92 @@
+.logout-dialog-paper {
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  max-width: 400px !important;
+  width: 90% !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
+}
+
+.logout-modal-content {
+  padding: 2rem 1.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.logout-icon-container {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: white;
+  font-size: 2rem;
+  box-shadow: 0 10px 20px rgba(255, 65, 108, 0.3);
+}
+
+.logout-title {
+  font-family: "Poppins", sans-serif !important;
+  font-weight: 700 !important;
+  color: #2d3436 !important;
+  padding: 0 !important;
+  margin-bottom: 1rem !important;
+  font-size: 1.5rem !important;
+}
+
+.logout-message {
+  color: #636e72 !important;
+  font-size: 1rem !important;
+  line-height: 1.6 !important;
+  margin-bottom: 2rem !important;
+}
+
+.logout-actions {
+  justify-content: center !important;
+  gap: 1rem;
+  padding: 0 !important;
+}
+
+.logout-cancel-btn {
+  border-radius: 12px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  padding: 10px 25px !important;
+  border: 2px solid #dfe6e9 !important;
+  color: #636e72 !important;
+  transition: all 0.3s ease !important;
+}
+
+.logout-cancel-btn:hover {
+  background: #f1f2f6 !important;
+  border-color: #ced6e0 !important;
+}
+
+.logout-confirm-btn {
+  border-radius: 12px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  padding: 10px 25px !important;
+  background: linear-gradient(135deg, #ff416c, #ff4b2b) !important;
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4) !important;
+  transition: all 0.3s ease !important;
+}
+
+.logout-confirm-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 65, 108, 0.5) !important;
+}
+
+.logout-close-btn {
+  color: #b2bec3 !important;
+  transition: color 0.3s ease !important;
+}
+
+.logout-close-btn:hover {
+  color: #2d3436 !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+}

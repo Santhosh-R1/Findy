@@ -1,20 +1,24 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { 
-  FaTachometerAlt, 
-  FaBoxOpen, 
-  FaUserPlus, 
-  FaUsersCog, 
-  FaBuilding, 
-  FaUsers, 
-  FaSignOutAlt 
+import {
+  FaTachometerAlt,
+  FaBoxOpen,
+  FaUserPlus,
+  FaUsersCog,
+  FaBuilding,
+  FaUsers,
+  FaSignOutAlt
 } from 'react-icons/fa';
 import '../../Styles/AdminSidemenu.css';
 
-function AdminSidemenu() {
+function AdminSidemenu({ onLogoutClick }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    if (onLogoutClick) {
+      onLogoutClick();
+      return;
+    }
     localStorage.removeItem('adminToken');
     navigate('/login/admin');
   };

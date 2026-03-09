@@ -3,7 +3,7 @@
   --user-primary-dark: #19a47a;
 }
 .registration-validation-error {
-  color: #e74c3c; 
+  color: #e74c3c;
   font-size: 0.8rem;
   font-weight: 500;
   margin-top: 5px;
@@ -16,7 +16,7 @@
 }
 .registration-form-group {
   position: relative;
-  margin-bottom: 1.2rem; 
+  margin-bottom: 1.2rem;
 }
 
 .registration-page {
@@ -40,7 +40,11 @@
 }
 
 .registration-visual {
-  background: linear-gradient(135deg, var(--user-primary-color), var(--user-primary-dark));
+  background: linear-gradient(
+    135deg,
+    var(--user-primary-color),
+    var(--user-primary-dark)
+  );
   color: var(--light-color);
   padding: 3rem;
   display: flex;
@@ -181,7 +185,9 @@
   border-radius: 8px;
   font-family: var(--font-body);
   font-size: 1rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
   background-color: var(--bg-light-gray);
 }
 
@@ -311,10 +317,6 @@
   }
 }
 
-
-
-
 .user-registration-password-toggle-icon:hover {
-    color: #20c997 !important;
+  color: #20c997 !important;
 }
-

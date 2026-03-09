@@ -11,12 +11,12 @@ import {
   FaSignOutAlt,
   FaQuestionCircle,
   FaSearchPlus,
-  FaBoxOpen 
+  FaBoxOpen
 } from 'react-icons/fa';
 import axiosInstance from '../../api/baseUrl';
 import '../../Styles/UserSideMenu.css';
 
-function UserSideMenu() {
+function UserSideMenu({ onLogoutClick }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -52,6 +52,10 @@ function UserSideMenu() {
   }, [loadUserDataFromAPI]);
 
   const handleLogout = () => {
+    if (onLogoutClick) {
+      onLogoutClick();
+      return;
+    }
     localStorage.removeItem('userInfo');
     localStorage.removeItem('userToken');
     setUser(null);
@@ -98,32 +102,32 @@ function UserSideMenu() {
         <ul>
           <li>
             <NavLink to="/user/dashboard" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <FaTachometerAlt className="user-sidemenu-icon" /><span>Dashboard</span>
+              <FaTachometerAlt className="user-sidemenu-icon" /><span>Dashboard</span>
             </NavLink>
           </li>
           <li>
             <NavLink to="/user/add-item" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <FaPlusCircle className="user-sidemenu-icon" /><span>Add Item</span>
+              <FaPlusCircle className="user-sidemenu-icon" /><span>Add Item</span>
             </NavLink>
           </li>
           <li>
             <NavLink to="/user/view-items" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <FaBoxOpen className="user-sidemenu-icon" /><span>View My Items</span>
+              <FaBoxOpen className="user-sidemenu-icon" /><span>View My Items</span>
             </NavLink>
           </li>
           <li>
             <NavLink to="/user/HelpDesk" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <FaQuestionCircle className="user-sidemenu-icon" /><span>Help Desk</span>
+              <FaQuestionCircle className="user-sidemenu-icon" /><span>Help Desk</span>
             </NavLink>
           </li>
           <li>
             <NavLink to="/user/found-items" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <FaSearchPlus className="user-sidemenu-icon" /><span>Found Items</span>
+              <FaSearchPlus className="user-sidemenu-icon" /><span>Found Items</span>
             </NavLink>
           </li>
           <li>
             <NavLink to="/user/profile" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <FaUserCircle className="user-sidemenu-icon" /><span>My Profile</span>
+              <FaUserCircle className="user-sidemenu-icon" /><span>My Profile</span>
             </NavLink>
           </li>
         </ul>
