@@ -84,7 +84,7 @@ function ModeratorNav() {
               display: { xs: 'none', sm: 'block' }
             }}
           >
-            FINDY <Typography component="span" variant="caption" sx={{ opacity: 0.7, ml: 1, color: '#fd7e14' }}>MODERATOR</Typography>
+            Findmate <Typography component="span" variant="caption" sx={{ opacity: 0.7, ml: 1, color: '#fd7e14' }}>MODERATOR</Typography>
           </Typography>
         </Link>
 

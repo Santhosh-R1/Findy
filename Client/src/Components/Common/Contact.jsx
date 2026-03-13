@@ -100,7 +100,7 @@ function Contact() {
                 <h3>Contact Information</h3>
                 <p>Fill out the form to send us a message, or reach out to us directly using the details below. We typically respond within 24 hours.</p>
                 <ul>
-                  <li><FaEnvelope className="contact-info-icon" /><span>support@findy.com</span></li>
+                  <li><FaEnvelope className="contact-info-icon" /><span>support@Findmate.com</span></li>
                   <li><FaPhoneAlt className="contact-info-icon" /><span>+1 (555) 123-4567</span></li>
                 </ul>
                 <div className="contact-social-links">

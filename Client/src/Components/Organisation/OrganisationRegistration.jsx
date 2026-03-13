@@ -144,7 +144,7 @@ function OrganisationRegistration() {
       <div className="org-registration-card">
         <div className="org-registration-visual">
           <FaBuilding className="org-registration-icon" />
-          <h2>Partner with Findy</h2>
+          <h2>Partner with Findmate</h2>
           <p>Register your organization to become a verified part of our recovery network.</p>
         </div>
 

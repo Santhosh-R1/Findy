@@ -26,7 +26,7 @@ function AdminSidemenu({ onLogoutClick }) {
   return (
     <aside className="admin-sidemenu">
       <div className="admin-sidemenu-header">
-        <h3>Findy Admin</h3>
+        <h3>Findmate Admin</h3>
       </div>
       <nav className="admin-sidemenu-nav">
         <ul>

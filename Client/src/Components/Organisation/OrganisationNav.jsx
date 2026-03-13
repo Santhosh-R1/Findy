@@ -86,7 +86,7 @@ function OrganisationNav() {
               display: { xs: 'none', sm: 'block' }
             }}
           >
-            FINDY <Typography component="span" variant="caption" sx={{ opacity: 0.7, ml: 1 }}>ORG PORTAL</Typography>
+            Findmate <Typography component="span" variant="caption" sx={{ opacity: 0.7, ml: 1 }}>ORG PORTAL</Typography>
           </Typography>
         </Link>
 

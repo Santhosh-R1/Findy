@@ -90,7 +90,7 @@ function UserSideMenu({ onLogoutClick }) {
     }
     return (
       <div className="user-sidemenu-header-placeholder">
-        <h3>Findy</h3>
+        <h3>FINDMATE</h3>
       </div>
     );
   };

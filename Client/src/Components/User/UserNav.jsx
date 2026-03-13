@@ -91,7 +91,7 @@ function UserNav() {
               display: { xs: 'none', sm: 'block' } 
             }}
           >
-            FINDY
+            FINDMATE
           </Typography>
         </Link>
 
