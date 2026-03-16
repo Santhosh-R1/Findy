@@ -19,7 +19,7 @@ import {
 } from '@mui/icons-material';
 import axiosInstance from '../../api/baseUrl';
 import UserChatModal from '../user/UserChatModal'; 
-import '../../Styles/UserHelpDesk.css'; 
+import '../../Styles/OrganisationHelpDesk.css'; 
 
 const getImageUrl = (path) => {
   const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
@@ -38,11 +38,11 @@ const renderStatusChip = (status) => {
 };
 
 const ItemDisplay = ({ label, color, item }) => (
-  <div className="user-help-desk-item-display">
-    <Avatar variant="rounded" src={getImageUrl(item.itemImage)} alt={item.itemName} className="user-help-desk-item-avatar" />
+  <div className="help-desk-user-item-display">
+    <Avatar variant="rounded" src={getImageUrl(item.itemImage)} alt={item.itemName} className="help-desk-user-item-avatar" />
     <Box>
-      <Chip label={label} size="small" color={color} className="user-help-desk-item-tag" />
-      <Typography className="user-help-desk-item-name">{item.itemName || item.subCategory}</Typography>
+      <Chip label={label} size="small" color={color} className="help-desk-user-item-tag" />
+      <Typography className="help-desk-user-item-name">{item.itemName || item.subCategory}</Typography>
       <Typography variant="caption" color="text.secondary">Status: <strong>{item.status}</strong></Typography>
     </Box>
   </div>
@@ -71,29 +71,29 @@ const MatchCard = ({ match, onOpenChat, currentOrgId, onInitiateClaim }) => {
   const chatTooltip = canChat ? "Open conversation with Item Owner" : "Chat locked until Moderator approval";
 
   return (
-    <Paper variant="outlined" className="user-help-desk-match-card">
-      <div className="user-help-desk-card-header">
-        <Typography variant="h6" className="user-help-desk-card-title">
+    <Paper variant="outlined" className="help-desk-user-match-card">
+      <div className="help-desk-user-card-header">
+        <Typography variant="h6" className="help-desk-user-card-title">
           {isResolved ? "Match Resolved - Item Claimed" : "Potential Match Notification"}
         </Typography>
         {renderStatusChip(match.status)}
       </div>
 
-      <div className="user-help-desk-card-body">
-        <div className="user-help-desk-item-container">
+      <div className="help-desk-user-card-body">
+        <div className="help-desk-user-item-container">
           <ItemDisplay label={leftItemData.label} color={leftItemData.color} item={leftItemData.item} />
         </div>
-        <div className="user-help-desk-connector">
-          <div className="user-help-desk-connector-line"></div>
-          {isResolved ? <VerifiedIcon color="success" /> : <ExchangeIcon className="user-help-desk-connector-icon" />}
-          <div className="user-help-desk-connector-line"></div>
+        <div className="help-desk-user-connector">
+          <div className="help-desk-user-connector-line"></div>
+          {isResolved ? <VerifiedIcon color="success" /> : <ExchangeIcon className="help-desk-user-connector-icon" />}
+          <div className="help-desk-user-connector-line"></div>
         </div>
-        <div className="user-help-desk-item-container found-item-container">
+        <div className="help-desk-user-item-container help-desk-user-found-item-container">
           <ItemDisplay label={rightItemData.label} color={rightItemData.color} item={rightItemData.item} />
         </div>
       </div>
 
-      <div className="user-help-desk-card-actions">
+      <div className="help-desk-user-card-actions">
         
         {isResolved ? (
           <Button variant="contained" color="success" startIcon={<VerifiedIcon />} disabled style={{ cursor: 'default' }}>
@@ -119,7 +119,7 @@ const MatchCard = ({ match, onOpenChat, currentOrgId, onInitiateClaim }) => {
           <span>
             <Button
                 variant="outlined"
-                className="user-help-desk-chat-btn"
+                className="help-desk-user-chat-btn"
                 startIcon={canChat ? <ChatIcon /> : <LockIcon />}
                 onClick={() => onOpenChat(match._id)}
                 disabled={!canChat}
@@ -186,11 +186,11 @@ function OrganisationHelpDesk() {
   };
 
   const renderContent = () => {
-    if (loading) return <Box className="user-help-desk-status-container"><CircularProgress /></Box>;
-    if (error) return <Box className="user-help-desk-status-container"><Alert severity="error">{error}</Alert></Box>;
+    if (loading) return <Box className="help-desk-user-status-container"><CircularProgress /></Box>;
+    if (error) return <Box className="help-desk-user-status-container"><Alert severity="error">{error}</Alert></Box>;
     if (matches.length === 0) return (
-      <Paper variant="outlined" className="user-help-desk-status-container user-help-desk-no-items">
-        <NoMatchesIcon className="user-help-desk-no-items-icon" />
+      <Paper variant="outlined" className="help-desk-user-status-container help-desk-user-no-items">
+        <NoMatchesIcon className="help-desk-user-no-items-icon" />
         <Typography variant="h5">No Active Matches</Typography>
         <Typography color="text.secondary">Matches for items you report found will appear here.</Typography>
       </Paper>
@@ -211,22 +211,28 @@ function OrganisationHelpDesk() {
   };
 
   return (
-    <Box className="user-help-desk-page-wrapper">
-      <Container maxWidth="lg" className="user-help-desk-container">
-        <Box className="user-help-desk-header">
-          <Typography variant="h3" component="h1" className="user-help-desk-header-title">Organisation Help Desk</Typography>
+    <Box className="help-desk-user-page-wrapper">
+      <Container maxWidth="lg" className="help-desk-user-container">
+        <Box className="help-desk-user-header">
+          <Typography variant="h3" component="h1" className="help-desk-user-header-title">Organisation Help Desk</Typography>
           <Typography variant="subtitle1" color="text.secondary">Manage communications for items found by your organization.</Typography>
         </Box>
         {renderContent()}
         
         {chatState.matchId && <UserChatModal open={chatState.open} onClose={handleCloseChat} matchId={chatState.matchId} />}
 
-        <Dialog open={claimModalOpen} onClose={handleCloseClaimModal}>
-            <DialogTitle>Confirm Item Claim</DialogTitle>
-            <DialogContent><DialogContentText>Confirm that you have received this item? This will mark the match as resolved.</DialogContentText></DialogContent>
-            <DialogActions>
-                <Button onClick={handleCloseClaimModal} color="secondary">Cancel</Button>
-                <Button onClick={handleConfirmClaim} variant="contained" color="primary" autoFocus>Confirm Receipt</Button>
+        <Dialog
+            open={claimModalOpen}
+            onClose={handleCloseClaimModal}
+            PaperProps={{ className: 'help-desk-user-modal-paper' }}
+        >
+            <DialogTitle className="help-desk-user-modal-title">Confirm Item Claim</DialogTitle>
+            <DialogContent className="help-desk-user-modal-content">
+                <DialogContentText className="help-desk-user-modal-text">Confirm that you have received this item? This will mark the match as resolved.</DialogContentText>
+            </DialogContent>
+            <DialogActions className="help-desk-user-modal-actions">
+                <Button onClick={handleCloseClaimModal} className="help-desk-user-modal-cancel">Cancel</Button>
+                <Button onClick={handleConfirmClaim} variant="contained" className="help-desk-user-modal-confirm" autoFocus>Confirm Receipt</Button>
             </DialogActions>
         </Dialog>
       </Container>
